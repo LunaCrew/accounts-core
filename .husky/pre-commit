@@ -1,0 +1,8 @@
+#!/bin/bash
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '# check depedencies'
+npm run check-dependencies
+
+echo '# lint'
+npm run lint
