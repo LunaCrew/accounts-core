@@ -1,0 +1,35 @@
+{
+  "name": "luna-app-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check-dependencies": "node ./scripts/checkDependencies.js",
+    "lint": "npx eslint . --fix",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LunaCrew/luna-app-backend.git"
+  },
+  "author": "Ash Trindade",
+  "license": "CC BY-NC-SA 4.0",
+  "bugs": {
+    "url": "https://github.com/LunaCrew/luna-app-backend/issues"
+  },
+  "homepage": "https://github.com/LunaCrew/luna-app-backend#readme",
+  "devDependencies": {
+    "eslint": "8.55.0",
+    "husky": "8.0.3",
+    "jest": "29.7.0",
+    "nodemon": "3.0.2"
+  },
+  "dependencies": {
+    "colors": "1.4.0",
+    "dotenv": "16.3.1",
+    "express": "4.18.2",
+    "swagger-ui-express": "5.0.0",
+    "zod": "3.22.4"
+  }
+}
