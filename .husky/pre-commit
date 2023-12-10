@@ -1,8 +1,8 @@
 #!/bin/bash
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo '# check depedencies'
-npm run check-dependencies
+echo -e '\033[1;34m# Check dependencies\033[0m'
+bash scripts/check-deps.sh
 
-echo '# lint'
+echo -e '\033[1;34m# Lint\033[0m'
 npm run lint
