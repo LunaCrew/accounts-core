@@ -7,7 +7,7 @@
     "src": "./build/src/"
   },
   "scripts": {
-    "test": "npm run test:unit",
+    "test": "npm run test:coverage",
     "test:unit": "jest --verbose ./test/unit",
     "test:coverage": "jest --verbose ./test/unit --coverage",
     "build": "tsc",
