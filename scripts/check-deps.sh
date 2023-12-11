@@ -11,7 +11,7 @@ regex='^[~^]'
 
 for dep in "${deps[@]}"; do
   if [[ $dep =~ $regex ]]; then
-    echo -e "\033[1;31m^ e ~ não são permitidos no package.json\033[0m\n"
+    echo -e "\033[1;31m^ and ~ are not allowed in package.json\033[0m\n"
     exit 1
   fi
 done
