@@ -1,15 +1,15 @@
 import colors from 'colors'
-import enumLog from '../enum/enumLog'
+import LogType from '../enum/LogType'
 
 const logMessage = (type: string, message: string) => {
   switch (type) {
-  case enumLog.SUCCESS:
+  case LogType.SUCCESS:
     console.log(colors.green(message))
     break
-  case enumLog.WARNING:
+  case LogType.WARNING:
     console.log(colors.yellow(message))
     break
-  case enumLog.ERROR:
+  case LogType.ERROR:
     console.log(colors.red(message))
   }
 }

@@ -1,20 +1,20 @@
 import logMessage from 'src/util/log/logMessage'
-import enumLog from 'src/util/enum/enumLog'
+import LogType from 'src/util/enum/LogType'
 
-describe(':: Util :: Log ::', () => {
+describe(':: Util :: Log :: LogMessage ::', () => {
 
   it('should call logMessage with a success message', () => {
-    const message = logMessage(enumLog.SUCCESS, 'Success message should be green')
+    const message = logMessage(LogType.SUCCESS, 'Success message should be green')
     expect(message).toHaveBeenCalled
   })
 
   it('should call logMessage with a warning message', () => {
-    const message = logMessage(enumLog.WARNING, 'Warning message should be yellow')
+    const message = logMessage(LogType.WARNING, 'Warning message should be yellow')
     expect(message).toHaveBeenCalled
   })
 
   it('should call logMessage with a error message', () => {
-    const message = logMessage(enumLog.ERROR, 'Error message should be red')
+    const message = logMessage(LogType.ERROR, 'Error message should be red')
     expect(message).toHaveBeenCalled
   })
 })

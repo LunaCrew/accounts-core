@@ -1,7 +1,7 @@
-enum enumLog {
+enum LogType {
   SUCCESS = 'success',
   WARNING = 'warning',
   ERROR = 'error'
 }
 
-export default enumLog
+export default LogType

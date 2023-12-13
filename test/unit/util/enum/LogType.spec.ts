@@ -1,9 +1,9 @@
-import enumLog from 'src/util/enum/enumLog'
+import LogType from 'src/util/enum/LogType'
 
-describe(':: Util :: Enum ::', () => {
+describe(':: Util :: Enum :: LogType ::', () => {
 
   it('should return expected keys', () => {
-    const actualKeys = Object.keys(enumLog)
+    const actualKeys = Object.keys(LogType)
     const expectedKeys = ['SUCCESS', 'WARNING', 'ERROR']
 
     actualKeys.forEach((key, index) => {
@@ -12,7 +12,7 @@ describe(':: Util :: Enum ::', () => {
   })
 
   it('should return expected values', () => {
-    const actualValues = Object.values(enumLog)
+    const actualValues = Object.values(LogType)
     const expectedValues = ['success', 'warning', 'error']
 
     actualValues.forEach((value, index) => {
