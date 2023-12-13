@@ -3,20 +3,20 @@ import LogType from 'src/util/enum/LogType'
 describe(':: Util :: Enum :: LogType ::', () => {
 
   it('should return expected keys', () => {
-    const actualKeys = Object.keys(LogType)
-    const expectedKeys = ['SUCCESS', 'WARNING', 'ERROR']
+    const enumKeys = Object.keys(LogType)
+    const keys = ['SUCCESS', 'WARNING', 'ERROR']
 
-    actualKeys.forEach((key, index) => {
-      expect(key).toBe(expectedKeys[index])
+    enumKeys.forEach((key, index) => {
+      expect(key).toBe(keys[index])
     })
   })
 
   it('should return expected values', () => {
-    const actualValues = Object.values(LogType)
-    const expectedValues = ['success', 'warning', 'error']
+    const enumValues = Object.values(LogType)
+    const values = ['success', 'warning', 'error']
 
-    actualValues.forEach((value, index) => {
-      expect(value).toBe(expectedValues[index])
+    enumValues.forEach((value, index) => {
+      expect(value).toBe(values[index])
     })
   })
 })
