@@ -7,9 +7,9 @@
     "src": "./build/src/"
   },
   "scripts": {
-    "test": "npm run test:unit",
-    "test:unit": "jest --verbose ./test/unit",
-    "test:coverage": "jest --verbose ./test/unit --coverage",
+    "test": "npm run test:coverage",
+    "test:unit": "jest --verbose ./test/unit/",
+    "test:coverage": "jest --verbose ./test/unit/ --coverage",
     "build": "tsc",
     "lint": "npx eslint . --fix",
     "prepare": "husky install"
@@ -19,7 +19,7 @@
     "url": "https://github.com/LunaCrew/luna-app-backend.git"
   },
   "author": "Ash Trindade",
-  "license": "CC BY-NC-SA 4.0",
+  "license": "All rights reserved",
   "bugs": {
     "url": "https://github.com/LunaCrew/luna-app-backend/issues"
   },
