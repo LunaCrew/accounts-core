@@ -10,8 +10,8 @@ jobs:
     name: Deploy Development App
     runs-on: ubuntu-latest
     steps:
-      - run: touch .env
-          echo DB_URI=${{ secrets.DB_URI }} >> .env
+      - run: touch src/.env
+      - run: echo DB_URI=${{ secrets.DB_URI }} >> src/.env
       - uses: actions/checkout@v2
       - uses: superfly/flyctl-actions@master
         with:
