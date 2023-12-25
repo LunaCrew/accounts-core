@@ -1,0 +1,16 @@
+name: Deploy develop branch to luna-app-backend-dev on fly
+on:
+  push:
+    branches:
+      - develop
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_DEV_TOKEN }}
+jobs:
+  deploy:
+    name: Deploy Development App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: superfly/flyctl-actions@master
+        with:
+          args: "deploy -a luna-app-backend-dev --remote-only"
