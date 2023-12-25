@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 import Logger from './util/log/Logger'
 import HttpStatusCode from './util/enum/HttpStatusCode'
 import * as dotenv from 'dotenv'
-dotenv.config({ path: 'src/.env' })
+dotenv.config({ path: '.env' })
 
 const PORT = process.env.PORT || 3000
 const app: express.Application = express()
