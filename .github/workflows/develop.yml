@@ -1,10 +1,10 @@
-name: Deploy develop branch to luna-app-backend-dev on fly
+name: Deploy Develop
 on:
   push:
     branches:
       - develop
 env:
-  FLY_API_TOKEN: ${{ secrets.FLY_DEV_TOKEN }}
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
   deploy:
     name: Deploy Development App
