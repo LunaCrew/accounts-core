@@ -3,18 +3,18 @@ import actionSchema from 'src/schema/ActionSchema'
 import ActionType from 'src/util/enum/ActionType'
 
 describe(':: Schema :: ActionSchema ::', () => {
-  it('should validate a buttom action', () => {
-    const buttom = {
+  it('should validate a button action', () => {
+    const button = {
       actions: [{
         id: uuid(),
-        type: ActionType.BUTTOM,
-        name: 'buttom',
-        text: 'this is a buttom',
+        type: ActionType.BUTTON,
+        name: 'button',
+        text: 'this is a button',
         favorite: true
       }]
     }
 
-    const result = actionSchema.validate(buttom)
+    const result = actionSchema.validate(button)
     expect(result.error).toBeUndefined()
   })
 
@@ -25,7 +25,7 @@ describe(':: Schema :: ActionSchema ::', () => {
         type: ActionType.REMINDER,
         priority: 3,
         requiredEnergy: 7,
-        datetime: '2023-12-31T10:30:00-0300',
+        dateTime: '2023-12-31T10:30:00-0300',
         message: 'this is a reminder'
       }]
     }
@@ -54,9 +54,9 @@ describe(':: Schema :: ActionSchema ::', () => {
       actions: [
         {
           id: uuid(),
-          type: ActionType.BUTTOM,
-          name: 'buttom',
-          text: 'this is a buttom',
+          type: ActionType.BUTTON,
+          name: 'button',
+          text: 'this is a button',
           favorite: true
         },
         {
@@ -64,7 +64,7 @@ describe(':: Schema :: ActionSchema ::', () => {
           type: ActionType.REMINDER,
           priority: 3,
           requiredEnergy: 7,
-          datetime: '2023-12-31T10:30:00-0300',
+          dateTime: '2023-12-31T10:30:00-0300',
           message: 'this is a reminder'
         },
         {
@@ -101,17 +101,17 @@ describe(':: Schema :: ActionSchema ::', () => {
         },
         {
           id: '123453685168',
-          type: ActionType.BUTTOM,
+          type: ActionType.BUTTON,
           name: 'a'.repeat(17),
           text: 'a'.repeat(281),
           favorite: 'not a boolean'
         },
         {
           id: '123453685168',
-          type: ActionType.BUTTOM,
+          type: ActionType.BUTTON,
           priority: 'aaa',
           requiredEnergy: 'aaa',
-          datetime: '2023-12-31',
+          dateTime: '2023-12-31',
           message: 'a'
         },
         {
@@ -119,7 +119,7 @@ describe(':: Schema :: ActionSchema ::', () => {
           type: ActionType.REMINDER,
           priority: 0,
           requiredEnergy: 0,
-          datetime: '2023-12-31',
+          dateTime: '2023-12-31',
           message: 'a'.repeat(145)
         },
         {
@@ -127,7 +127,7 @@ describe(':: Schema :: ActionSchema ::', () => {
           type: ActionType.REMINDER,
           priority: 6,
           requiredEnergy: 11,
-          datetime: '2023-12-31',
+          dateTime: '2023-12-31',
           message: 'a'
         },
         {
@@ -158,7 +158,7 @@ describe(':: Schema :: ActionSchema ::', () => {
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
       '"actions[0].id" must be a valid GUID',
-      '"actions[0].type" must be one of [buttom, reminder, timer]',
+      '"actions[0].type" must be one of [button, reminder, timer]',
       '"actions[0].name" length must be at least 2 characters long',
       '"actions[0].favorite" must be a boolean',
       '"actions[1].id" must be a valid GUID',
@@ -179,7 +179,7 @@ describe(':: Schema :: ActionSchema ::', () => {
       '"actions[4].requiredEnergy" must be less than or equal to 10',
       '"actions[4].message" length must be at least 2 characters long',
       '"actions[5].id" must be a valid GUID',
-      '"actions[5].type" must be one of [buttom, reminder, timer]',
+      '"actions[5].type" must be one of [button, reminder, timer]',
       '"actions[5].name" length must be at least 2 characters long',
       '"actions[5].focusTimer" must be a number',
       '"actions[5].pauseTimer" must be a number',

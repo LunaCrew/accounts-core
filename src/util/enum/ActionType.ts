@@ -1,5 +1,5 @@
 enum ActionType {
-  BUTTOM = 'buttom',
+  BUTTON = 'button',
   REMINDER = 'reminder',
   TIMER = 'timer'
 }
