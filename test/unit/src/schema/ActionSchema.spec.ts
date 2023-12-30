@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4'
+import { v4 as uuid } from 'uuid' 
 import actionSchema from 'src/schema/ActionSchema'
 import ActionType from 'src/util/enum/ActionType'
 
