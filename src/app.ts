@@ -2,6 +2,7 @@ import { connect } from 'mongoose'
 import express, { Request, Response } from 'express'
 import Logger from './util/log/Logger'
 import HttpStatusCode from './util/enum/HttpStatusCode'
+import routes from './router/routes'
 import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
 
@@ -19,9 +20,11 @@ try {
   Logger.error(':: App :: Base URL ::', error)
 }
 
+routes(app)
+
 try {
   app.listen(PORT, () => {
-    Logger.success(`:: Server runing on port ${PORT} ::`)
+    Logger.success(`:: Server running on port ${PORT} ::`)
   })
 } catch (error) {
   Logger.error(':: App :: Start server ::', error)
