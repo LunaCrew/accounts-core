@@ -18,11 +18,10 @@ describe(':: Util :: Log :: LogMessage ::', () => {
   })
 
   it('should call logMessage with a error message', () => {
-    const error = new Error
-    error.name = 'Error name',
-    error.message = 'Error description'
+    const error = new Error('Test error')    
     
-    const logger = Logger.error(':: Error message should be red ::', error)
-    expect(logger).toHaveBeenCalled
+    expect(() => {
+      Logger.error(':: Error message should be red ::', error)
+    }).toThrow(error)
   })
 })
