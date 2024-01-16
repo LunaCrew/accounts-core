@@ -1,11 +1,9 @@
-import { v4 as uuid } from 'uuid'
-import actionSchema from 'src/schema/ActionSchema'
+import actionSchema from 'src/schema/actionSchema'
 import ActionType from 'src/util/enum/ActionType'
 
 describe(':: Schema :: ActionSchema ::', () => {
   it('should validate a button action', () => {
     const button = {
-      id: uuid(),
       type: ActionType.BUTTON,
       name: 'button',
       text: 'this is a button',
@@ -28,10 +26,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(button, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" must be a string',
       '"favorite" must be a boolean',
-      '"text" must be a string'
+      '"text" must be a string',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -50,10 +48,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(button, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" length must be at least 2 characters long',
       '"favorite" must be a boolean',
-      '"text" length must be at least 2 characters long'
+      '"text" length must be at least 2 characters long',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -72,10 +70,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(button, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" length must be less than or equal to 16 characters long',
       '"favorite" must be a boolean',
-      '"text" length must be less than or equal to 280 characters long'
+      '"text" length must be less than or equal to 280 characters long',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -84,7 +82,6 @@ describe(':: Schema :: ActionSchema ::', () => {
 
   it('should validate a reminder action', () => {
     const reminder = {
-      id: uuid(),
       type: ActionType.REMINDER,
       priority: 3,
       requiredEnergy: 7,
@@ -109,11 +106,11 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(reminder, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"priority" must be a number',
       '"requiredEnergy" must be a number',
       '"dateTime" must be a string',
-      '"message" must be a string'
+      '"message" must be a string',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(5)
@@ -133,11 +130,11 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(reminder, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"priority" must be greater than or equal to 1',
       '"requiredEnergy" must be greater than or equal to 1',
       '"dateTime" must be in ISO format <YYYY-MM-DD>T<HH:mm:ss>-<HH:mm>',
-      '"message" length must be at least 2 characters long'
+      '"message" length must be at least 2 characters long',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(5)
@@ -157,11 +154,11 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(reminder, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"priority" must be less than or equal to 5',
       '"requiredEnergy" must be less than or equal to 10',
       '"dateTime" must be in ISO format <YYYY-MM-DD>T<HH:mm:ss>-<HH:mm>',
-      '"message" length must be less than or equal to 144 characters long'
+      '"message" length must be less than or equal to 144 characters long',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(5)
@@ -170,7 +167,6 @@ describe(':: Schema :: ActionSchema ::', () => {
 
   it('should validate a timer action', () => {
     const timer = {
-      id: uuid(),
       type: ActionType.TIMER,
       name: 'timer',
       focusTimer: 25,
@@ -193,10 +189,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(timer, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" must be a string',
       '"focusTimer" must be a number',
-      '"pauseTimer" must be a number'
+      '"pauseTimer" must be a number',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -215,10 +211,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(timer, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" length must be at least 2 characters long',
       '"focusTimer" must be greater than 1',
-      '"pauseTimer" must be greater than 1'
+      '"pauseTimer" must be greater than 1',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -237,10 +233,10 @@ describe(':: Schema :: ActionSchema ::', () => {
     const { error } = actionSchema.validate(timer, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
       '"name" length must be less than or equal to 16 characters long',
       '"focusTimer" must be less than 60',
-      '"pauseTimer" must be less than 60'
+      '"pauseTimer" must be less than 60',
+      '"id" is not allowed'
     ]
 
     expect(error?.details).toHaveLength(4)
@@ -253,12 +249,11 @@ describe(':: Schema :: ActionSchema ::', () => {
     const receivedMessages = error?.details.map(error => error.message)
 
     const expectedMessages = [
-      '"id" is required',
       '"type" is required',
       '"name" is required'
     ]
 
-    expect(error?.details).toHaveLength(3)
+    expect(error?.details).toHaveLength(2)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 })
