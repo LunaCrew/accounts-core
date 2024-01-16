@@ -1,10 +1,8 @@
-import { v4 as uuid } from 'uuid'
-import noteSchema from 'src/schema/NoteSchema'
+import noteSchema from 'src/schema/noteSchema'
 
 describe(':: Schema :: NoteSchema ::', () => {
   it('should validate a note', () => {
     const note = {
-      id: uuid(),
       createdAt: new Date().toISOString(),
       note: 'this is a note'
     }
@@ -18,12 +16,10 @@ describe(':: Schema :: NoteSchema ::', () => {
     const { error } = noteSchema.validate(note, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" is required',
-      '"createdAt" is required',
       '"note" is required'
     ]
 
-    expect(error?.details).toHaveLength(3)
+    expect(error?.details).toHaveLength(1)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
@@ -37,13 +33,11 @@ describe(':: Schema :: NoteSchema ::', () => {
     const { error } = noteSchema.validate(note, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"id" must be a valid GUID',
-      '"createdAt" must be in iso format',
-      '"updatedAt" must be in iso format',
-      '"note" length must be less than or equal to 2000 characters long'
+      '"note" length must be less than or equal to 2000 characters long',
+      '"id" is not allowed'
     ]
 
-    expect(error?.details).toHaveLength(4)
+    expect(error?.details).toHaveLength(2)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 })
