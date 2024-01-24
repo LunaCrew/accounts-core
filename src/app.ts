@@ -1,8 +1,9 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'
 import express from 'express'
-import Logger from './util/log/Logger'
-import { routes } from './router/routes'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 import * as dotenv from 'dotenv'
+import { routes } from './router/routes'
+import Logger from './util/log/Logger'
+
 dotenv.config({ path: '.env' })
 
 const PORT = process.env.PORT || 3000
@@ -18,7 +19,7 @@ export const client = new MongoClient(process.env.DB_URI || '', {
   }
 })
 
-async function start(): Promise<void> {
+const start = () => {
   try {
     app.listen(PORT, () => {
       Logger.success(`:: Server running on port ${PORT} ::`)
@@ -28,7 +29,7 @@ async function start(): Promise<void> {
   }
 }
 
-async function connect(): Promise<void> {
+const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
@@ -40,6 +41,7 @@ async function connect(): Promise<void> {
 }
 
 export const usersCollection = client.db().collection('users')
+export default app
 
 start()
 connect()
