@@ -1,7 +1,7 @@
 import joi from 'joi'
-import ActionType from 'src/util/enum/ActionType'
-import InputPattern from 'src/util/enum/InputPattern'
-import CustomError from 'src/util/enum/CustomError'
+import ActionType from '../util/enum/ActionType'
+import InputPattern from '../util/enum/InputPattern'
+import CustomError from '../util/enum/CustomError'
 
 const actionSchema = joi.object({
   type: joi.string().valid(...Object.values(ActionType)).required(),

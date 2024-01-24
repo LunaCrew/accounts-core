@@ -1,11 +1,11 @@
 import joi from 'joi'
-import InputPattern from 'src/util/enum/InputPattern'
 import actionSchema from './actionSchema'
 import noteSchema from './noteSchema'
-import Theme from 'src/util/enum/Theme'
-import NotificationType from 'src/util/enum/NotificationType'
-import SpeechType from 'src/util/enum/SpeechType'
-import CustomError from 'src/util/enum/CustomError'
+import Theme from '../util/enum/Theme'
+import InputPattern from '../util/enum/InputPattern'
+import NotificationType from '../util/enum/NotificationType'
+import SpeechType from '../util/enum/SpeechType'
+import CustomError from '../util/enum/CustomError'
 
 const settingsSchema = joi.object({
   theme: joi.string().valid(...Object.values(Theme)).default(Theme.DARK),

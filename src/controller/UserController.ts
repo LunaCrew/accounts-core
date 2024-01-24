@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { v4 as newUUID } from 'uuid'
-import HttpStatusCode from 'src/util/enum/HttpStatusCode'
-import Password from 'src/util/security/Password'
-import ParserError from 'src/util/parser/ParserError'
-import userSchema from 'src/schema/userSchema'
-import { usersCollection } from 'src/app'
-import Logger from 'src/util/log/Logger'
+import { usersCollection } from '../app'
+import userSchema from '../schema/userSchema'
+import HttpStatusCode from '../util/enum/HttpStatusCode'
+import Password from '../util/security/Password'
+import ParserError from '../util/parser/ParserError'
+import Logger from '../util/log/Logger'
 
 export default class UserController {
   public static createUser = async (req: Request, res: Response): Promise<void> => {
