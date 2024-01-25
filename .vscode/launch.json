@@ -5,6 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Run Application",
+      "preLaunchTask": "npm: build",
       "program": "${workspaceRoot}/build/src/app.js",
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart"
