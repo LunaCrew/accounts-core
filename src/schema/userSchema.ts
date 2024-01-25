@@ -28,4 +28,11 @@ const userSchema = joi.object({
   actions: joi.array().items(actionSchema).required()
 })
 
+const userParams = joi.object({
+  id: joi.string().guid({ version: 'uuidv4' }),
+  email: joi.string().lowercase().email(),
+  username: joi.string().lowercase().min(3).max(12)
+})
+
+export { userParams }
 export default userSchema
