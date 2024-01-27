@@ -14,6 +14,9 @@
     "test:coverage": "jest --verbose ./test/unit/ --coverage",
     "build": "tsc",
     "lint": "npx eslint . --fix",
+    "reset": "rm -rf node_modules && rm package-lock.json && npm install",
+    "clear:build": "rm -rf build",
+    "clear:coverage": "rm -rf coverage",
     "prepare": "husky install"
   },
   "repository": {
