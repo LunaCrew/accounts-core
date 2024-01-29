@@ -1,85 +1,50 @@
 import { Request, Response } from 'express'
-import { v4 as newUUID } from 'uuid'
 import { usersCollection } from '../app'
-import userSchema from '../schema/userSchema'
 import HttpStatusCode from '../util/enum/HttpStatusCode'
-import Password from '../util/security/Password'
 import ParserError from '../util/parser/ParserError'
-import { userParams } from '../schema/userSchema'
+import CreateUserService from 'src/service/CreateUserService'
 import Logger from '../util/log/Logger'
+import GetUserService from 'src/service/GetUserService'
 
 export default class UserController {
-  public static createUser = (req: Request, res: Response) => {
-    const { error, value } = userSchema.validate(req.body)
-    const user = value
-
-    if (error) {
-      res.status(parseInt(HttpStatusCode.BAD_REQUEST)).json({ error: error.details })
-      return
-    }
-
-    user._id = newUUID()
-    user.password = Password.encrypt(req.body.password)
-
+  public static createUser = async (req: Request, res: Response) => {
     try {
-      usersCollection.insertOne(user).then((result) => {
-        if (result) {
-          res.status(parseInt(HttpStatusCode.CREATED)).json(result)
-        } else {
-          res.status(parseInt(HttpStatusCode.INTERNAL_SERVER_ERROR)).json(
-            ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'internal error')
-          )
-        }
-      })
+      const user = new CreateUserService(req, res)
+      const result = await usersCollection.insertOne(user)
+
+      if (result) {
+        res.status(HttpStatusCode.CREATED).json({ id: result.insertedId })
+      } else {
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(
+          ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'internal error')
+        )
+        Logger.error(':: Controller :: UserController :: CreateUser ::', result)
+      }
       Logger.info(':: Calling Endpoint :: CreateUser ::')
     } catch (error) {
       Logger.error(':: Controller :: UserController :: CreateUser ::', error)
-      res.status(parseInt(HttpStatusCode.INTERNAL_SERVER_ERROR)).json(
+      res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(
         ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'An error occurred')
       )
     }
   }
 
-  public static getUser = (req: Request, res: Response) => {
-    const params = {
-      id: req.query.id,
-      email: req.query.email,
-      username: req.query.username
-    }
-    
-    
-    const { error } = userParams.validate(params)
-    if (error) {
-      res.status(parseInt(HttpStatusCode.BAD_REQUEST)).json({ error: error.details })
-      return
-    }
-    
+  public static getUser = async (req: Request, res: Response) => {
     try {
-      const query: { $and: Array<object> } = { $and: [] }
-      if (params.id) query.$and.push({ _id: params.id })
-      if (params.email) query.$and.push({ email: params.email })
-      if (params.username) query.$and.push({ username: params.username })
+      const query = new GetUserService(req, res)
+      const result = await usersCollection.findOne(query, { projection: { password: 0 } })
 
-      if (query.$and.length === 0) {
-        res.status(parseInt(HttpStatusCode.BAD_REQUEST)).json(
-          ParserError.http(HttpStatusCode.BAD_REQUEST, 'id, email or username is required')
+      if (result) {
+        res.status(HttpStatusCode.OK).json(result)
+      } else {
+        res.status(HttpStatusCode.NOT_FOUND).json(
+          ParserError.http(HttpStatusCode.NOT_FOUND, 'not found')
         )
-        return
       }
-
-      usersCollection.findOne(query, { projection: { password: 0 } }).then((result) => {
-        if (result) {
-          res.status(parseInt(HttpStatusCode.OK)).json(result)
-        } else {
-          res.status(parseInt(HttpStatusCode.NOT_FOUND)).json(
-            ParserError.http(HttpStatusCode.NOT_FOUND, 'not found')
-          )
-        }
-      })
       Logger.info(':: Calling Endpoint :: GetUser ::')
     } catch (error) {
-      Logger.error(':: Controller :: UserController :: GetUserById ::', error)
-      res.status(parseInt(HttpStatusCode.INTERNAL_SERVER_ERROR)).json(
+      Logger.error(':: Controller :: UserController :: GetUser ::', error)
+      res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(
         ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'An error occurred')
       )
     }
