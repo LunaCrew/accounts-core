@@ -13,8 +13,8 @@ const settingsSchema = joi.object({
 })
 
 const energySchema = joi.object({
-  total: joi.number().greater(0).less(100).required(),
-  dailyRecovery: joi.number().greater(0).less(100).required()
+  total: joi.number().greater(0).less(100).default(null),
+  dailyRecovery: joi.number().greater(0).less(100).default(null),
 })
 
 const userSchema = joi.object({
