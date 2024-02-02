@@ -40,10 +40,17 @@ const connect = async () => {
   }
 }
 
-const usersCollection = client.db().collection('users')
-const notesCollection = client.db().collection('notes')
-const actionsCollection = client.db().collection('actions')
-export { usersCollection, notesCollection, actionsCollection }
+const collections = {
+  users: client.db().collection('users'),
+  notes: client.db().collection('notes'),
+  reminders: client.db().collection('reminders'),
+  altComms: client.db().collection('alt-comms'),
+  pomodoroTimers: client.db().collection('pomodoro-timers'),
+  tasks: client.db().collection('tasks'),
+  routines: client.db().collection('routines')
+}
+
+export { collections }
 export default app
 
 start()
