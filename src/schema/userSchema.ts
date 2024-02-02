@@ -12,6 +12,11 @@ const settingsSchema = joi.object({
   speechType: joi.string().valid(...Object.values(SpeechType)).default(SpeechType.NEUTRAL)
 })
 
+const energySchema = joi.object({
+  total: joi.number().greater(0).less(100).required(),
+  dailyRecovery: joi.number().greater(0).less(100).required()
+})
+
 const userSchema = joi.object({
   displayName: joi.string().min(2).max(16).required(),
   username: joi.string().lowercase().min(3).max(12).required(),
@@ -21,7 +26,8 @@ const userSchema = joi.object({
   syncDeviceSettings: joi.boolean().default(true),
   createdAt: joi.string().default(new Date().toISOString()),
   deletedAt: joi.string().default(null),
-  settings: joi.object().concat(settingsSchema).required()
+  settings: joi.object().concat(settingsSchema).required(),
+  energy: joi.object().concat(energySchema).required()
 })
 
 const userParams = joi.object({

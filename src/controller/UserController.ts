@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { usersCollection } from '../app'
+import { collections } from '../app'
 import HttpStatusCode from '../util/enum/HttpStatusCode'
 import ParserError from '../util/parser/ParserError'
 import CreateUserService from 'src/service/CreateUserService'
@@ -10,7 +10,7 @@ export default class UserController {
   public static createUser = async (req: Request, res: Response) => {
     try {
       const user = new CreateUserService(req, res)
-      const result = await usersCollection.insertOne(user)
+      const result = await collections.users.insertOne(user)
 
       if (result) {
         res.status(HttpStatusCode.CREATED).json({ id: result.insertedId })
@@ -32,7 +32,7 @@ export default class UserController {
   public static getUser = async (req: Request, res: Response) => {
     try {
       const query = new GetUserService(req, res)
-      const result = await usersCollection.findOne(query, { projection: { password: 0 } })
+      const result = await collections.users.findOne(query, { projection: { password: 0 } })
 
       if (result) {
         res.status(HttpStatusCode.OK).json(result)
