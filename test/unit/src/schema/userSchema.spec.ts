@@ -1,5 +1,4 @@
 import userSchema from 'src/schema/userSchema'
-import ActionType from 'src/util/enum/ActionType'
 import NotificationType from 'src/util/enum/NotificationType'
 import SpeechType from 'src/util/enum/SpeechType'
 import Theme from 'src/util/enum/Theme'
@@ -16,17 +15,7 @@ describe(':: Schema :: UserSchema ::', () => {
         animations: true,
         notificationType: NotificationType.SILENT,
         speechType: SpeechType.NEUTRAL
-      },
-      notes: [{
-        createdAt: new Date().toISOString(),
-        note: 'this is a note'
-      }],
-      actions: [{
-        type: ActionType.BUTTON,
-        name: 'button',
-        text: 'this is a button',
-        favorite: true
-      }]
+      }
     }
 
     const result = userSchema.validate(user)
@@ -45,17 +34,7 @@ describe(':: Schema :: UserSchema ::', () => {
         animations: 123132,
         notificationType: 12312313,
         speechType: 123123
-      },
-      notes: [{
-        createdAt: 123123,
-        note: 123123
-      }],
-      actions: [{
-        type: 1231231,
-        name: 123123,
-        text: 1231231,
-        favorite: 1231312
-      }]
+      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
@@ -71,17 +50,10 @@ describe(':: Schema :: UserSchema ::', () => {
       '"settings.notificationType" must be one of [popup, balloon, silent]',
       '"settings.notificationType" must be a string',
       '"settings.speechType" must be one of [male, female, neutral]',
-      '"settings.speechType" must be a string',
-      '"notes[0].createdAt" must be a string',
-      '"notes[0].note" must be a string',
-      '"actions[0].type" must be one of [button, reminder, timer]',
-      '"actions[0].type" must be a string',
-      '"actions[0].name" must be a string',
-      '"actions[0].favorite" is not allowed',
-      '"actions[0].text" is not allowed'
+      '"settings.speechType" must be a string'
     ]
 
-    expect(error?.details).toHaveLength(18)
+    expect(error?.details).toHaveLength(11)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
@@ -91,9 +63,7 @@ describe(':: Schema :: UserSchema ::', () => {
       username: 'a',
       email: 'aaaaa',
       password: 'a',
-      settings: {},
-      notes: [],
-      actions: []
+      settings: {}
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
@@ -116,9 +86,7 @@ describe(':: Schema :: UserSchema ::', () => {
       username: 'a'.repeat(13),
       email: 'aaaaa',
       password: 'a'.repeat(17),
-      settings: {},
-      notes: [],
-      actions: []
+      settings: {}
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })

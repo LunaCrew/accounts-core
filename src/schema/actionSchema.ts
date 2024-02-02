@@ -4,6 +4,7 @@ import InputPattern from '../util/enum/InputPattern'
 import CustomError from '../util/enum/CustomError'
 
 const actionSchema = joi.object({
+  userId: joi.string().guid({ version: 'uuidv4' }).required(),
   type: joi.string().valid(...Object.values(ActionType)).required(),
   name: joi.string().when('type', { is: ActionType.REMINDER, then: joi.string().forbidden(), otherwise: joi.string().min(2).max(16).required() }),
   favorite: joi.boolean().when('type', { is: ActionType.BUTTON, then: joi.boolean().default(false), otherwise: joi.boolean().forbidden() }),

@@ -1,6 +1,4 @@
 import joi from 'joi'
-import actionSchema from './actionSchema'
-import noteSchema from './noteSchema'
 import Theme from '../util/enum/Theme'
 import InputPattern from '../util/enum/InputPattern'
 import NotificationType from '../util/enum/NotificationType'
@@ -23,9 +21,7 @@ const userSchema = joi.object({
   syncDeviceSettings: joi.boolean().default(true),
   createdAt: joi.string().default(new Date().toISOString()),
   deletedAt: joi.string().default(null),
-  settings: joi.object().concat(settingsSchema).required(),
-  notes: joi.array().items(noteSchema).required(),
-  actions: joi.array().items(actionSchema).required()
+  settings: joi.object().concat(settingsSchema).required()
 })
 
 const userParams = joi.object({
