@@ -40,7 +40,10 @@ const connect = async () => {
   }
 }
 
-export const usersCollection = client.db().collection('users')
+const usersCollection = client.db().collection('users')
+const notesCollection = client.db().collection('notes')
+const actionsCollection = client.db().collection('actions')
+export { usersCollection, notesCollection, actionsCollection }
 export default app
 
 start()
