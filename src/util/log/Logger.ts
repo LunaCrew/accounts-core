@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import colors from 'colors'
 
-class Logger {
+export default class Logger {
   static success = (message: string) => {
     console.log(colors.green.bold(message), '\n')
   }
@@ -18,12 +18,10 @@ class Logger {
     const logError = {
       name: error.name,
       message: error.message,
-      stack: error.stack
+      stacktrace: error.stack
     }
 
     console.log(colors.red.bold(message), '\n')
-    throw logError
+    console.log(logError)
   }
-}
-
-export default Logger
+} 
