@@ -2,29 +2,30 @@ import { Request, Response } from 'express'
 import { v4 as newUUID } from 'uuid'
 import userSchema from '../schema/userSchema'
 import Password from '../util/security/Password'
-import ParserError from '../util/parser/ParserError'
 import HttpStatusCode from '../util/enum/HttpStatusCode'
 import Logger from '../util/log/Logger'
 
-export default class CreateUserService {
-  constructor(req: Request, res: Response) {
+class CreateUserService {
+  static create(req: Request, res: Response): CreateUserService | null {
     try {
       const { error, value } = userSchema.validate(req.body)
-      const user = value
 
       if (error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ error: error.details })
-        return
-      }
 
-      user._id = newUUID()
-      user.password = Password.encrypt(req.body.password)
-      return user
+        Logger.error(':: Service :: CreateUserService :: Validation ::', error)
+        return null
+      } else {
+        const user = value
+        user._id = newUUID()
+        user.password = Password.encrypt(req.body.password)
+        return user
+      }
     } catch (error) {
       Logger.error(':: Service :: CreateUserService ::', error)
-      res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(
-        ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'An error occurred')
-      )
+      return null
     }
   }
 }
+
+export default CreateUserService.create

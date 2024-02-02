@@ -2,14 +2,16 @@ import { Request, Response } from 'express'
 import { collections } from '../app'
 import HttpStatusCode from '../util/enum/HttpStatusCode'
 import ParserError from '../util/parser/ParserError'
-import CreateUserService from 'src/service/CreateUserService'
+import CreateUserService from '../service/CreateUserService'
+import GetUserService from '../service/GetUserService'
 import Logger from '../util/log/Logger'
-import GetUserService from 'src/service/GetUserService'
 
 export default class UserController {
   public static createUser = async (req: Request, res: Response) => {
     try {
-      const user = new CreateUserService(req, res)
+      const user = CreateUserService(req, res)
+      if (!user) return
+
       const result = await collections.users.insertOne(user)
 
       if (result) {
