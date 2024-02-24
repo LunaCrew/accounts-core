@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "nodemon -r tsconfig-paths/register src/app.ts",
+    "debug": "npm run build && npm run dev",
     "start": "node build/src/app.js",
     "test": "npm run test:coverage",
     "test:unit": "jest --verbose ./test/unit/",
@@ -17,7 +18,8 @@
     "reset": "rm -rf node_modules && rm package-lock.json && npm install",
     "clear:build": "rm -rf build",
     "clear:coverage": "rm -rf coverage",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "help": "bash scripts/scripts-list.sh"
   },
   "repository": {
     "type": "git",
