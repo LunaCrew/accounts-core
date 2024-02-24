@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import HttpStatusCode from 'src/util/enum/HttpStatusCode'
+import HttpStatus from 'src/util/enum/HttpStatusCode'
 
 describe(':: Util :: Enum :: HttpStatusCode ::', () => {
   it('should have all the keys', () => {
@@ -18,12 +18,9 @@ describe(':: Util :: Enum :: HttpStatusCode ::', () => {
       'CONNECTION_TIMED_OUT'
     ]
 
-    const enumKeysDeclared = Object.keys(HttpStatusCode).filter((key: any) => isNaN(key))
+    const enumKeysDeclared = Object.keys(HttpStatus.code)
 
-    expect(expectedKeys.length).toEqual(enumKeysDeclared.length)
-    expectedKeys.forEach((key, index) => {
-      expect(key).toEqual(enumKeysDeclared[index])
-    })
+    expect(expectedKeys).toEqual(enumKeysDeclared)
   })
 
   it('should have all the values', () => {
@@ -42,10 +39,7 @@ describe(':: Util :: Enum :: HttpStatusCode ::', () => {
       522
     ]
 
-    const enumValuesDeclared = Object.values(HttpStatusCode).filter((key: any) => !isNaN(key))
-    expect(expectedValues.length).toEqual(enumValuesDeclared.length)
-    expectedValues.forEach((value, index) => {
-      expect(value).toEqual(enumValuesDeclared[index])
-    })
+    const enumValuesDeclared = Object.values(HttpStatus.code)
+    expect(expectedValues).toEqual(enumValuesDeclared)
   })
 })
