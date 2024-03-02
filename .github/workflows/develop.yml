@@ -3,14 +3,32 @@ on:
   push:
     branches:
       - develop
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  workflow_dispatch:
+
 jobs:
-  deploy:
-    name: Deploy Development App
+  build:
+
     runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/develop'
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
       - uses: actions/checkout@v2
-      - uses: superfly/flyctl-actions@master
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test
+
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@5.1
         with:
-          args: "deploy -a luna-app-backend-dev --remote-only"
+          switches: -avzr --delete
+          path: ./*
+          remote_path: /var/www/my-app/
+          remote_host: <host>.compute.amazonaws.com
+          remote_user: ubuntu
+          remote_key: "${{ secrets.AWS_DEV_KEY }}"
