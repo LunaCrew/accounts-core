@@ -2,6 +2,7 @@ import express from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import * as dotenv from 'dotenv'
 import { routes } from './router/routes'
+import { errorHandler } from './middleware/ErrorHandler'
 import Logger from './util/log/Logger'
 
 dotenv.config({ path: '.env' })
@@ -21,11 +22,13 @@ export const client = new MongoClient(process.env.DB_URI || '', {
 
 const start = () => {
   try {
+    app.use(errorHandler)
+
     app.listen(PORT, () => {
-      Logger.success(`:: Server running on port ${PORT} ::`)
+      Logger.success(`:: Server running on http://localhost:${PORT} ::`)
     })
   } catch (error) {
-    Logger.error(':: App :: Start server ::', error)
+    Logger.error(':: App :: Start server ::', `${error}`)
   }
 }
 
@@ -36,7 +39,7 @@ const connect = async () => {
     Logger.success(':: Connected to MongoDB! ::')
   } catch (error) {
     await client.close()
-    Logger.error(':: Database Connection ::', error)
+    Logger.error(':: Database Connection ::', `${error}`)
   }
 }
 
