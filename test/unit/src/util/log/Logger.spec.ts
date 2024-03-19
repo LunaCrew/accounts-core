@@ -18,7 +18,7 @@ describe(':: Util :: Log :: LogMessage ::', () => {
   })
 
   it('should call logMessage with a error message', () => {
-    const logger = Logger.error(':: Error message should be red ::', new Error())
+    const logger = Logger.error(':: Error message should be red ::')
     expect(logger).toHaveBeenCalled
   })
 })

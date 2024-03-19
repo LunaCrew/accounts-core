@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import HttpStatus from 'src/util/enum/HttpStatusCode'
+import HttpStatus from 'src/util/enum/HttpStatus'
 
 describe(':: Util :: Enum :: HttpStatusCode ::', () => {
   it('should have all the keys', () => {
