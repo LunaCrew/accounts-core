@@ -3,7 +3,7 @@ import Theme from '../util/enum/Theme'
 import InputPattern from '../util/enum/InputPattern'
 import NotificationType from '../util/enum/NotificationType'
 import SpeechType from '../util/enum/SpeechType'
-import CustomError from '../util/enum/CustomError'
+import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 
 const settingsSchema = joi.object({
   theme: joi.string().valid(...Object.values(Theme)).default(Theme.DARK),
@@ -21,7 +21,7 @@ const userSchema = joi.object({
   displayName: joi.string().min(2).max(16).required(),
   username: joi.string().lowercase().min(3).max(12).required(),
   email: joi.string().lowercase().email().required(),
-  password: joi.string().min(8).max(16).pattern(InputPattern.PASSWORD).messages({ 'string.pattern.base': CustomError.PASSWORD }).required(),
+  password: joi.string().min(8).max(16).pattern(InputPattern.PASSWORD).messages({ 'string.pattern.base': CustomErrorMessage.PASSWORD }).required(),
   publicKey: joi.string().default(null),
   syncDeviceSettings: joi.boolean().default(true),
   createdAt: joi.string().default(new Date().toISOString()),
@@ -34,7 +34,7 @@ const userParams = joi.object({
   id: joi.string().guid({ version: 'uuidv4' }),
   email: joi.string().lowercase().email(),
   username: joi.string().lowercase().min(3).max(12)
-})
+}).or('id', 'email', 'username').required()
 
 export { userParams }
 export default userSchema
