@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
+import Log from '@ashtrindade/logger'
 import BaseError from '../error/BaseError'
 import { ValidationError } from '../error/CustomError'
-import Logger from '../util/log/Logger'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
@@ -23,7 +23,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
           message: err.message
         })
       } else {
-        Logger.error(err.message, err.stack)
+        Log.e(err.message, err.stack)
         return res.status(err.status).json({
           status: 'error',
           message: CustomErrorMessage.GENERIC
@@ -32,7 +32,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
     }
     case err instanceof MongoServerError: {
       if (err.code === MongoDBError.code.DUPLICATE_KEY) {
-        Logger.error(err.message, err.stack)
+        Log.e(err.message, err.stack)
 
         switch (true) {
           case err.message.includes('email'): {
@@ -61,7 +61,8 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
           }
         }
       } else {
-        Logger.error(err.message, err.stack)
+        const error = `message: ${err.message} \n stack: ${err.stack}`
+        Log.e('ErrorHandler', `${error}`)
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({
           status: 'fail',
           message: CustomErrorMessage.INTERNAL_SERVER_ERROR

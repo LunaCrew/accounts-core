@@ -1,9 +1,9 @@
 import { NextFunction, Request } from 'express'
+import Log from '@ashtrindade/logger'
 import { UserParams } from '../types/User'
 import { UserService } from '../types/Service'
 import { userParams } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
-import Logger from '../util/log/Logger'
 
 export default class GetUserService {
   static execute(req: Request, next: NextFunction): UserService {
@@ -27,7 +27,7 @@ export default class GetUserService {
         return this._buildQuery(value)
       }	
     } catch (error) {
-      Logger.error(':: Service :: GetUserService ::', `${error}`)
+      Log.e('GetUserService', `${error}`)
     }
   }
 

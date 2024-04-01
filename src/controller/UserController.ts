@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import Log from '@ashtrindade/logger'
 import { collections } from '../app'
 import { NotFound } from '../error/CustomError'
 import { UserService } from '../types/Service'
@@ -6,7 +7,6 @@ import CreateUserService from '../service/CreateUserService'
 import GetUserService from '../service/GetUserService'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
-import Logger from '../util/log/Logger'
 
 export default class UserController {
   public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -21,9 +21,9 @@ export default class UserController {
       if (result) {
         res.status(HttpStatus.code.CREATED).json({ id: result.insertedId })
       }
-      Logger.info(':: Calling Endpoint :: CreateUser ::')
+      Log.i('UserController', 'Calling Endpoint :: CreateUser')
     } catch (error) {
-      Logger.error(':: Controller :: UserController :: CreateUser ::', `${error}`)
+      Log.e('UserController :: CreateUser', `${error}`)
     }
   }
 
@@ -40,9 +40,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Logger.info(':: Calling Endpoint :: GetUser ::')
+      Log.i('UserController', 'Calling Endpoint :: GetUser')
     } catch (error) {
-      Logger.error(':: Controller :: UserController :: GetUser ::', `${error}`)
+      Log.e('UserController :: GetUser', `${error}`)
     }
   }
 }

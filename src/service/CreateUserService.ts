@@ -1,11 +1,11 @@
 import { NextFunction, Request } from 'express'
 import { v4 as newUUID } from 'uuid'
+import Log from '@ashtrindade/logger'
 import { UserService } from '../types/Service'
 import { User } from '../types/User'
 import userSchema from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
-import Logger from '../util/log/Logger'
 
 export default class CreateUserService {
   static execute(req: Request, next: NextFunction): UserService {
@@ -24,7 +24,7 @@ export default class CreateUserService {
         return this._buildQuery(value)
       }
     } catch (error) {
-      Logger.error(':: Service :: CreateUserService ::', `${error}`)
+      Log.e('CreateUserService', `${error}`)
       return null
     }
   }
