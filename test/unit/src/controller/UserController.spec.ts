@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import UserController from 'src/controller/UserController'
 
 describe(':: Controller :: UserController ::', () => {
-  const err = Error('error')
+  const next = jest.fn()
 
   describe(':: CreateUser ::', () => {
     const mockedUser = {
@@ -31,7 +31,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { body: mockedUser } as Request
 
-      UserController.createUser(err, req, res)
+      UserController.createUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(201)
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
@@ -44,7 +44,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { body: { ...mockedUser, email: 'invalid' } } as Request
 
-      UserController.createUser(err, req, res)
+      UserController.createUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
@@ -84,7 +84,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: { id: mockedUser.id } } as unknown as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(mockedUser)
@@ -94,7 +94,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: { email: mockedUser.email } } as unknown as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(mockedUser)
@@ -104,7 +104,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: { username: mockedUser.username } } as unknown as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(200)
       expect(res.json).toHaveBeenCalledWith(mockedUser)
@@ -114,7 +114,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: { id: 'invalid' } } as unknown as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(404)
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
@@ -128,7 +128,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: { id: 'invalid', email: 'invalid', username: 'invalid' } } as unknown as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
@@ -144,7 +144,7 @@ describe(':: Controller :: UserController ::', () => {
       const res = { status: jest.fn(), json: jest.fn() } as unknown as Response
       const req = { query: {} } as Request
 
-      UserController.getUser(err, req, res)
+      UserController.getUser(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(400)
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({

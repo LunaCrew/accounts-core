@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import Log from '@ashtrindade/logger'
 import * as dotenv from 'dotenv'
@@ -8,7 +8,7 @@ import { errorHandler } from './middleware/ErrorHandler'
 dotenv.config({ path: '.env' })
 
 const PORT = process.env.PORT || 3000
-const app: express.Application = express()
+const app: Application = express()
 
 routes(app)
 
