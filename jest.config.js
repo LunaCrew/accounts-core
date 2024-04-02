@@ -8,9 +8,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.ts', '!**/node_modules/**'],
   rootDir: '.',
   modulePaths: ['<rootDir>'],
-  globals: {
-    'ts-jest': {
-      isolatedModules: true
-    }
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {isolatedModules: true}]
   }
 };
