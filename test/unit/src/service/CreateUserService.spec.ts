@@ -3,9 +3,7 @@ import CreateUserService from 'src/service/CreateUserService'
 import userSchema from 'src/schema/userSchema'
 
 describe(':: Service :: CreateUserService ::', () => {
-  beforeAll(() => {
-
-  })
+  const next = jest.fn()
 
   it('should return a user payload', () => {
     const mockedUser = {
@@ -17,7 +15,7 @@ describe(':: Service :: CreateUserService ::', () => {
       energy: {}
     }
     const req = { body: mockedUser } as Request
-    const user = CreateUserService.execute(req)
+    const user = CreateUserService.execute(req, next)
 
     expect(user).toBeDefined()
     expect(user).toHaveProperty('_id')
@@ -49,12 +47,11 @@ describe(':: Service :: CreateUserService ::', () => {
         path: ['email'], type: 'string.empty',
         context: { value: '', key: 'email', label: 'email' }
       }]
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as unknown as any)
+    } as never)
 
     const req = { body: mockedUser } as Request
 
-    CreateUserService.execute(req)
+    CreateUserService.execute(req, next)
 
     expect(userSchema.validate).toHaveBeenCalledWith(mockedUser)
   })
