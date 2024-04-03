@@ -7,12 +7,12 @@ import { errorHandler } from './middleware/ErrorHandler'
 
 dotenv.config({ path: '.env' })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT ?? 3000
 const app: Application = express()
 
 routes(app)
 
-export const client = new MongoClient(process.env.DB_URI || '', {
+export const client = new MongoClient(process.env.DB_URI ?? '', {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
