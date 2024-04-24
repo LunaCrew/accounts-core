@@ -1,36 +1,49 @@
-import { Request, Response } from 'express'
-import { v4 as newUUID } from 'uuid'
-import { usersCollection } from '../app'
-import userSchema from '../schema/userSchema'
-import HttpStatusCode from '../util/enum/HttpStatusCode'
-import Password from '../util/security/Password'
-import ParserError from '../util/parser/ParserError'
-import Logger from '../util/log/Logger'
+import { NextFunction, Request, Response } from 'express'
+import Log from '@ashtrindade/logger'
+import { collections } from '../app'
+import { NotFound } from '../error/CustomError'
+import { UserService } from '../types/Service'
+import CreateUserService from '../service/CreateUserService'
+import GetUserService from '../service/GetUserService'
+import CustomErrorMessage from '../util/enum/CustomErrorMessage'
+import HttpStatus from '../util/enum/HttpStatus'
 
 export default class UserController {
-  public static createUser = async (req: Request, res: Response): Promise<void> => {
-    const { error, value } = userSchema.validate(req.body)
-    const user = value
 
-    if (error) {
-      res.status(parseInt(HttpStatusCode.BAD_REQUEST)).json({ error: error.details })
-      return
-    }
-
-    user._id = newUUID()
-    user.password = Password.encrypt(req.body.password)
-
+  public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await usersCollection.insertOne(user).then((result) => {
-        if (result) {
-          res.status(parseInt(HttpStatusCode.CREATED)).json(result)
-        } else {
-          res.status(parseInt(HttpStatusCode.INTERNAL_SERVER_ERROR)).json(ParserError.http(HttpStatusCode.INTERNAL_SERVER_ERROR, 'internal error'))
-        }
+      const user: UserService = CreateUserService.execute(req, next)
+      if (!user) return
+
+      const result = await collections.users.insertOne(user).catch((error) => {
+        next(error)
       })
-      Logger.info(':: Calling Endpoint :: CreateUser ::')
+
+      if (result) {
+        res.status(HttpStatus.code.CREATED).json({ id: result.insertedId })
+      }
+      Log.i('UserController:: Calling Endpoint :: CreateUser')
     } catch (error) {
-      Logger.error(':: Controller :: UserController :: CreateUser ::', error)
+      Log.e(`${error}`, 'UserController :: CreateUser')
+    }
+  }
+
+  public static readonly getUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: UserService = GetUserService.execute(req, next)
+      if (!query) return
+
+      const result = await collections.users.findOne(query, { projection: { password: 0 } })
+
+      if (result) {
+        res.status(HttpStatus.code.OK).json(result)
+      } else {
+        next(new NotFound(CustomErrorMessage.NOT_FOUND))
+        next()
+      }
+      Log.i('UserController :: Calling Endpoint :: GetUser')
+    } catch (error) {
+      Log.e(`${error}`, 'UserController :: GetUser')
     }
   }
 }

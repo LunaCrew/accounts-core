@@ -1,5 +1,4 @@
 import userSchema from 'src/schema/userSchema'
-import ActionType from 'src/util/enum/ActionType'
 import NotificationType from 'src/util/enum/NotificationType'
 import SpeechType from 'src/util/enum/SpeechType'
 import Theme from 'src/util/enum/Theme'
@@ -17,16 +16,10 @@ describe(':: Schema :: UserSchema ::', () => {
         notificationType: NotificationType.SILENT,
         speechType: SpeechType.NEUTRAL
       },
-      notes: [{
-        createdAt: new Date().toISOString(),
-        note: 'this is a note'
-      }],
-      actions: [{
-        type: ActionType.BUTTON,
-        name: 'button',
-        text: 'this is a button',
-        favorite: true
-      }]
+      energy: {
+        total: 50,
+        dailyRecovery: 10
+      }
     }
 
     const result = userSchema.validate(user)
@@ -46,16 +39,10 @@ describe(':: Schema :: UserSchema ::', () => {
         notificationType: 12312313,
         speechType: 123123
       },
-      notes: [{
-        createdAt: 123123,
-        note: 123123
-      }],
-      actions: [{
-        type: 1231231,
-        name: 123123,
-        text: 1231231,
-        favorite: 1231312
-      }]
+      energy: {
+        total: 'aaa',
+        dailyRecovery: 'aaaa'
+      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
@@ -72,16 +59,11 @@ describe(':: Schema :: UserSchema ::', () => {
       '"settings.notificationType" must be a string',
       '"settings.speechType" must be one of [male, female, neutral]',
       '"settings.speechType" must be a string',
-      '"notes[0].createdAt" must be a string',
-      '"notes[0].note" must be a string',
-      '"actions[0].type" must be one of [button, reminder, timer]',
-      '"actions[0].type" must be a string',
-      '"actions[0].name" must be a string',
-      '"actions[0].favorite" is not allowed',
-      '"actions[0].text" is not allowed'
+      '"energy.total" must be a number',
+      '"energy.dailyRecovery" must be a number'
     ]
 
-    expect(error?.details).toHaveLength(18)
+    expect(error?.details).toHaveLength(13)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
@@ -92,8 +74,10 @@ describe(':: Schema :: UserSchema ::', () => {
       email: 'aaaaa',
       password: 'a',
       settings: {},
-      notes: [],
-      actions: []
+      energy: {
+        total: 0,
+        dailyRecovery: 0
+      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
@@ -103,22 +87,26 @@ describe(':: Schema :: UserSchema ::', () => {
       '"username" length must be at least 3 characters long',
       '"email" must be a valid email',
       '"password" length must be at least 8 characters long',
-      '"password" must have uppercase and lowercase letters, numbers and special characters'
+      '"password" must have uppercase and lowercase letters, numbers and special characters',
+      '"energy.total" must be greater than 0',
+      '"energy.dailyRecovery" must be greater than 0'
     ]
 
-    expect(error?.details).toHaveLength(5)
+    expect(error?.details).toHaveLength(7)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
-  it('should return the correct error messages with min values', () => {
+  it('should return the correct error messages with max values', () => {
     const user = {
       displayName: 'a'.repeat(17),
       username: 'a'.repeat(13),
       email: 'aaaaa',
       password: 'a'.repeat(17),
       settings: {},
-      notes: [],
-      actions: []
+      energy: {
+        total: 100,
+        dailyRecovery: 100
+      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
@@ -128,10 +116,12 @@ describe(':: Schema :: UserSchema ::', () => {
       '"username" length must be less than or equal to 12 characters long',
       '"email" must be a valid email',
       '"password" length must be less than or equal to 16 characters long',
-      '"password" must have uppercase and lowercase letters, numbers and special characters'
+      '"password" must have uppercase and lowercase letters, numbers and special characters',
+      '"energy.total" must be less than 100',
+      '"energy.dailyRecovery" must be less than 100'
     ]
 
-    expect(error?.details).toHaveLength(5)
+    expect(error?.details).toHaveLength(7)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 })

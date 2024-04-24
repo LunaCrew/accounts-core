@@ -4,7 +4,7 @@ import Password from 'src/util/security/Password'
 describe(':: Util :: Log :: Password ::', () => {
   it('should encrypt the password correctly', () => {
     const password = 'testPassword'
-    const expectedHash = crypto.createHash('sha512').update(password).digest('hex')
+    const expectedHash = crypto.createHash('sha256').update(password).digest('hex')
     const result = Password.encrypt(password)
     expect(result).toEqual(expectedHash)
   })

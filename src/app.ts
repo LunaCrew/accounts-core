@@ -1,17 +1,18 @@
-import express from 'express'
+import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import Log from '@ashtrindade/logger'
 import * as dotenv from 'dotenv'
 import { routes } from './router/routes'
-import Logger from './util/log/Logger'
+import { errorHandler } from './middleware/ErrorHandler'
 
 dotenv.config({ path: '.env' })
 
-const PORT = process.env.PORT || 3000
-const app: express.Application = express()
+const PORT = process.env.PORT ?? 3000
+const app: Application = express()
 
 routes(app)
 
-export const client = new MongoClient(process.env.DB_URI || '', {
+export const client = new MongoClient(process.env.DB_URI ?? '', {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -21,11 +22,13 @@ export const client = new MongoClient(process.env.DB_URI || '', {
 
 const start = () => {
   try {
+    app.use(errorHandler)
+
     app.listen(PORT, () => {
-      Logger.success(`:: Server running on port ${PORT} ::`)
+      Log.i(`Server running on http://localhost:${PORT}`)
     })
   } catch (error) {
-    Logger.error(':: App :: Start server ::', error)
+    Log.e(`${error}`, 'Error starting server')
   }
 }
 
@@ -33,14 +36,24 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Logger.success(':: Connected to MongoDB! ::')
+    Log.i('Database Connection', 'Connected to MongoDB!')
   } catch (error) {
     await client.close()
-    Logger.error(':: Database Connection ::', error)
+    Log.e('Database Connection', `${error}`)
   }
 }
 
-export const usersCollection = client.db().collection('users')
+const collections = {
+  users: client.db().collection('users'),
+  notes: client.db().collection('notes'),
+  reminders: client.db().collection('reminders'),
+  altComms: client.db().collection('alt-comms'),
+  pomodoroTimers: client.db().collection('pomodoro-timers'),
+  tasks: client.db().collection('tasks'),
+  routines: client.db().collection('routines')
+}
+
+export { collections }
 export default app
 
 start()
