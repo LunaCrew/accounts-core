@@ -9,6 +9,7 @@ import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 
 export default class UserController {
+
   public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const user: UserService = CreateUserService.execute(req, next)
