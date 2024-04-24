@@ -25,10 +25,10 @@ const start = () => {
     app.use(errorHandler)
 
     app.listen(PORT, () => {
-      Log.i('Start server', `Server running on http://localhost:${PORT}`)
+      Log.i(`Server running on http://localhost:${PORT}`)
     })
   } catch (error) {
-    Log.e('Start server', `${error}`)
+    Log.e(`${error}`, 'Error starting server')
   }
 }
 

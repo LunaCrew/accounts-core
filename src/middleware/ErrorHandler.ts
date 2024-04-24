@@ -32,7 +32,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
     }
     case err instanceof MongoServerError: {
       if (err.code === MongoDBError.code.DUPLICATE_KEY) {
-        Log.e(err.message, err.stack)
+        Log.e(err.stack, err.message)
 
         switch (true) {
           case err.message.includes('email'): {
@@ -62,7 +62,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
         }
       } else {
         const error = `message: ${err.message} \n stack: ${err.stack}`
-        Log.e('ErrorHandler', `${error}`)
+        Log.e(`${error}`, 'ErrorHandler')
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({
           status: 'fail',
           message: CustomErrorMessage.INTERNAL_SERVER_ERROR

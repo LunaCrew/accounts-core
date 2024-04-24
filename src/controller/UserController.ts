@@ -22,9 +22,9 @@ export default class UserController {
       if (result) {
         res.status(HttpStatus.code.CREATED).json({ id: result.insertedId })
       }
-      Log.i('UserController', 'Calling Endpoint :: CreateUser')
+      Log.i('UserController:: Calling Endpoint :: CreateUser')
     } catch (error) {
-      Log.e('UserController :: CreateUser', `${error}`)
+      Log.e(`${error}`, 'UserController :: CreateUser')
     }
   }
 
@@ -41,9 +41,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController', 'Calling Endpoint :: GetUser')
+      Log.i('UserController :: Calling Endpoint :: GetUser')
     } catch (error) {
-      Log.e('UserController :: GetUser', `${error}`)
+      Log.e(`${error}`, 'UserController :: GetUser')
     }
   }
 }

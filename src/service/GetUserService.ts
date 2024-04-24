@@ -27,7 +27,7 @@ export default class GetUserService {
         return this._buildQuery(value)
       }	
     } catch (error) {
-      Log.e('GetUserService', `${error}`)
+      Log.e(`${error}`, 'GetUserService')
     }
   }
 
