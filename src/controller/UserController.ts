@@ -7,7 +7,7 @@ import CreateUserService from '../service/CreateUserService'
 import GetUserService from '../service/GetUserService'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
-import DeleteUserService from 'src/service/DeleteUserService'
+import DeleteUserService from '../service/DeleteUserService'
 
 export default class UserController {
 
