@@ -3,17 +3,16 @@ import Log from '@ashtrindade/logger'
 import { UserService } from '../types/Service'
 import ValidateUser from '../util/validation/ValidateUser'
 
-export default class GetUserService {
+export default class DeleteUserService {
   static execute(req: Request, next: NextFunction): UserService {
     try {
       const params = {
-        id: req.query.id,
-        email: req.query.email
+        id: req.params.id
       }
 
       return ValidateUser(params, next)
     } catch (error) {
-      Log.e(`${error}`, 'GetUserService')
+      Log.e(`${error}`, 'DeleteUserService')
     }
   }
 }

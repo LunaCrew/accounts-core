@@ -1,11 +1,8 @@
 export type User = {
   _id: string
   email: string
-  username: string
-  displayName: string
+  name: string
   password: string
-  publicKey: string | null
-  syncDeviceSettings: boolean
   createdAt: string
   deletedAt: string | null
   settings: {
@@ -13,15 +10,22 @@ export type User = {
     animations: boolean
     notificationType: string
     speechType: string
-  }
-  energy: {
-    total: number | null
-    dailyRecovery: number | null
+    publicKey: string | null
+    mfa: {
+      mfaToken: string | null
+      mfaSecret: string | null
+      mfaRecoveryCodes: string[] | null
+      mfaRecoveryCodesGeneratedAt: string | null
+      mfaRecoveryCodesUsedAt: string | null
+      mfaRecoveryCodesRegeneratedAt: string | null
+      mfaRecoveryCodesUsedCount: number | null
+    }
+    backupAccount: string | null
+    buildVersion: string
   }
 }
 
 export type UserParams = {
   id: string
   email: string
-  username: string
 }

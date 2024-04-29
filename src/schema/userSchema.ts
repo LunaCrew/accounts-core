@@ -39,8 +39,7 @@ const userSchema = joi.object({
 const userParams = joi.object({
   id: joi.string().guid({ version: 'uuidv4' }),
   email: joi.string().lowercase().email(),
-  username: joi.string().lowercase().min(3).max(12)
-}).or('id', 'email', 'username').required()
+}).or('id', 'email').required()
 
 export { userParams }
 export default userSchema
