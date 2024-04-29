@@ -1,26 +1,37 @@
-import { Request } from 'express'
-import DeleteUserService from 'src/service/DeleteUserService'
+import { Request, Response, NextFunction } from 'express'
+import DeleteUserService from '../../../../src/service/DeleteUserService'
 
 describe('DeleteUserService', () => {
-  const next = jest.fn()
+  let req: Request
+  let _res: Response
+  let next: NextFunction
 
-  it('should return a query using id', () => {
-    const id = '4768b952-3904-427c-a855-ebd729b81c85'
-    const req = { params: { id: id } } as unknown as Request
+  beforeEach(() => {
+    req = {} as Request
+    _res = {} as Response
+    next = jest.fn()
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
+  it('should validate the user', () => {
+    req.params = { id: '8fa40850-e31c-448a-9121-815b3cd5582a' }
 
     const query = DeleteUserService.execute(req, next)
 
     expect(query).toBeDefined()
-    expect(query).toEqual({
-      '$and': [{ '_id': '4768b952-3904-427c-a855-ebd729b81c85' }]
-    })
+    expect(query).toEqual({'$and': [{'_id': '8fa40850-e31c-448a-9121-815b3cd5582a'}]})
   })
 
-  it('should fail to return a query using no query parameters', () => {
-    const req = { params: {} } as unknown as Request
+  it('should return undefined if the user is not valid', () => {
+    req.params = { id: '8fa40850' }
 
     const query = DeleteUserService.execute(req, next)
 
+    expect(next).toHaveBeenCalledTimes(2)
     expect(query).toBeUndefined()
   })
 })
+

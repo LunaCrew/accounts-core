@@ -5,11 +5,8 @@ describe('User type', () => {
     const user: User = {
       _id: '1',
       email: 'test@example.com',
-      username: 'testuser',
-      displayName: 'Test User',
+      name: 'Test User',
       password: 'password',
-      publicKey: null,
-      syncDeviceSettings: true,
       createdAt: '2022-01-01',
       deletedAt: null,
       settings: {
@@ -17,28 +14,41 @@ describe('User type', () => {
         animations: true,
         notificationType: 'email',
         speechType: 'text-to-speech',
-      },
-      energy: {
-        total: 100,
-        dailyRecovery: 10,
-      },
+        publicKey: null,
+        mfa: {
+          mfaToken: null,
+          mfaSecret: null,
+          mfaRecoveryCodes: null,
+          mfaRecoveryCodesGeneratedAt: null,
+          mfaRecoveryCodesUsedAt: null,
+          mfaRecoveryCodesRegeneratedAt: null,
+          mfaRecoveryCodesUsedCount: null
+        },
+        backupAccount: null,
+        buildVersion: 'debug'
+      }
     }
 
     expect(user._id).toBe('1')
     expect(user.email).toBe('test@example.com')
-    expect(user.username).toBe('testuser')
-    expect(user.displayName).toBe('Test User')
+    expect(user.name).toBe('Test User')
     expect(user.password).toBe('password')
-    expect(user.publicKey).toBeNull()
-    expect(user.syncDeviceSettings).toBe(true)
     expect(user.createdAt).toBe('2022-01-01')
     expect(user.deletedAt).toBeNull()
     expect(user.settings.theme).toBe('light')
     expect(user.settings.animations).toBe(true)
     expect(user.settings.notificationType).toBe('email')
     expect(user.settings.speechType).toBe('text-to-speech')
-    expect(user.energy.total).toBe(100)
-    expect(user.energy.dailyRecovery).toBe(10)
+    expect(user.settings.publicKey).toBeNull()
+    expect(user.settings.mfa.mfaToken).toBeNull()
+    expect(user.settings.mfa.mfaSecret).toBeNull()
+    expect(user.settings.mfa.mfaRecoveryCodes).toBeNull()
+    expect(user.settings.mfa.mfaRecoveryCodesGeneratedAt).toBeNull()
+    expect(user.settings.mfa.mfaRecoveryCodesUsedAt).toBeNull()
+    expect(user.settings.mfa.mfaRecoveryCodesRegeneratedAt).toBeNull()
+    expect(user.settings.mfa.mfaRecoveryCodesUsedCount).toBeNull()
+    expect(user.settings.backupAccount).toBeNull()
+    expect(user.settings.buildVersion).toBe('debug')
   })
 })
 
@@ -46,12 +56,10 @@ describe('UserParams type', () => {
   it('should have the correct properties', () => {
     const userParams: UserParams = {
       id: '1',
-      email: 'test@xample.com',
-      username: 'testuser',
+      email: 'test@xample.com'
     }
 
     expect(userParams.id).toBe('1')
     expect(userParams.email).toBe('test@xample.com')
-    expect(userParams.username).toBe('testuser')
   })
 })

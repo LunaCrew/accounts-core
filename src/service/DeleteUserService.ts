@@ -1,9 +1,7 @@
 import { NextFunction, Request } from 'express'
 import Log from '@ashtrindade/logger'
-import { UserParams } from '../types/User'
 import { UserService } from '../types/Service'
-import { userParams } from '../schema/userSchema'
-import { ValidationError } from '../error/CustomError'
+import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DeleteUserService {
   static execute(req: Request, next: NextFunction): UserService {
@@ -12,28 +10,9 @@ export default class DeleteUserService {
         id: req.params.id
       }
 
-      const { error, value } = userParams.validate(params)
-      if (error) {
-        next(new ValidationError(error.details.map((detail) => {
-          const key = detail.context?.key ?? ''
-          return {
-            [key]: detail.message
-          }
-        })))
-        next()
-      } else {
-        return this._buildQuery(value)
-      }	
+      return ValidateUser(params, next)
     } catch (error) {
       Log.e(`${error}`, 'DeleteUserService')
     }
-  }
-
-  private static _buildQuery(params: UserParams): object {
-    const query: { $and: Array<object> } = { $and: [] }
-
-    if (params.id) query.$and.push({ _id: params.id })
-
-    return query
   }
 }
