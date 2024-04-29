@@ -7,38 +7,39 @@ describe(':: Service :: CreateUserService ::', () => {
 
   it('should return a user payload', () => {
     const mockedUser = {
-      displayName: 'Jane Doe',
-      username: 'jane',
+      name: 'Jane Doe',
       email: 'jane@doe.com',
       password: 'Abcd123/*',
-      settings: {},
-      energy: {}
+      settings: {
+        mfa: {},
+      }
     }
     const req = { body: mockedUser } as Request
     const user = CreateUserService.execute(req, next)
 
     expect(user).toBeDefined()
     expect(user).toHaveProperty('_id')
-    expect(user).toHaveProperty('displayName')
-    expect(user).toHaveProperty('username')
+    expect(user).toHaveProperty('name')
     expect(user).toHaveProperty('email')
     expect(user).toHaveProperty('password')
     expect(user).toHaveProperty('settings.theme')
     expect(user).toHaveProperty('settings.animations')
     expect(user).toHaveProperty('settings.notificationType')
     expect(user).toHaveProperty('settings.speechType')
-    expect(user).toHaveProperty('energy.total')
-    expect(user).toHaveProperty('energy.dailyRecovery')
+    expect(user).toHaveProperty('settings.publicKey')
+    expect(user).toHaveProperty('settings.mfa')
+    expect(user).toHaveProperty('settings.backupAccount')
+    expect(user).toHaveProperty('settings.buildVersion')
   })
 
   it('should return a bad request status', () => {
     const mockedUser = {
-      displayName: 'Jane Doe',
-      username: 'jane',
+      name: 'Jane Doe',
       email: '',
       password: 'Abcd123/*',
-      settings: {},
-      energy: {}
+      settings: {
+        mfa: {},
+      }
     }
 
     jest.spyOn(userSchema, 'validate').mockReturnValue({
