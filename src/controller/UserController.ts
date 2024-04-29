@@ -7,6 +7,7 @@ import CreateUserService from '../service/CreateUserService'
 import GetUserService from '../service/GetUserService'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
+import DeleteUserService from 'src/service/DeleteUserService'
 
 export default class UserController {
 
@@ -44,6 +45,27 @@ export default class UserController {
       Log.i('UserController :: Calling Endpoint :: GetUser')
     } catch (error) {
       Log.e(`${error}`, 'UserController :: GetUser')
+    }
+  }
+
+  public static readonly deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: UserService = DeleteUserService.execute(req, next)
+      if (!query) return
+
+      const result = await collections.users.deleteOne(query).catch((error) => {
+        next(error)
+      })
+
+      if (result && result.deletedCount) {
+        res.status(HttpStatus.code.NO_CONTENT).send()
+      } else {
+        next(new NotFound(CustomErrorMessage.NOT_FOUND))
+        next()
+      }
+      Log.i('UserController :: Calling Endpoint :: DeleteUser')
+    } catch (error) {
+      Log.e(`${error}`, 'UserController :: DeleteUser')
     }
   }
 }
