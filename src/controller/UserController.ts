@@ -57,7 +57,7 @@ export default class UserController {
         next(error)
       })
 
-      if (result && result.deletedCount) {
+      if (result?.deletedCount) {
         res.status(HttpStatus.code.NO_CONTENT).send()
       } else {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
