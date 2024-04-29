@@ -6,19 +6,26 @@ import Theme from 'src/util/enum/Theme'
 describe(':: Schema :: UserSchema ::', () => {
   it('should validate a user', () => {
     const user = {
-      displayName: 'Jane Doe',
-      username: 'janedoe',
+      name: 'Jane Doe',
       email: 'jane@doe.com',
       password: 'Abcd123/*',
-      settings: {        
+      settings: {
         theme: Theme.DARK,
         animations: true,
         notificationType: NotificationType.SILENT,
-        speechType: SpeechType.NEUTRAL
-      },
-      energy: {
-        total: 50,
-        dailyRecovery: 10
+        speechType: SpeechType.NEUTRAL,
+        publicKey: 'public-key',
+        mfa: {
+          mfaToken: 'mfa-token',
+          mfaSecret: 'mfa-secret',
+          mfaRecoveryCodes: ['code1', 'code2'],
+          mfaRecoveryCodesGeneratedAt: '2021-01-01',
+          mfaRecoveryCodesUsedAt: '2021-01-01',
+          mfaRecoveryCodesRegeneratedAt: '2021-01-01',
+          mfaRecoveryCodesUsedCount: 1,
+        },
+        backupAccount: 'example@example.com',
+        buildVersion: 'debug'
       }
     }
 
@@ -26,30 +33,28 @@ describe(':: Schema :: UserSchema ::', () => {
     expect(result.error).toBeUndefined()
   })
 
-  
+
   it('should return the correct error messages with wrong types', () => {
     const user = {
-      displayName: 12321,
-      username: 132132,
+      name: 12321,
       email: 123123,
       password: 123131,
-      settings: {        
+      settings: {
         theme: 2323131,
         animations: 123132,
         notificationType: 12312313,
-        speechType: 123123
-      },
-      energy: {
-        total: 'aaa',
-        dailyRecovery: 'aaaa'
+        speechType: 123123,
+        publicKey: 123123,
+        mfa: 123123,
+        backupAccount: 123123,
+        buildVersion: 123123
       }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"displayName" must be a string',
-      '"username" must be a string',
+      '"name" must be a string',
       '"email" must be a string',
       '"password" must be a string',
       '"settings.theme" must be one of [dark, light]',
@@ -59,69 +64,58 @@ describe(':: Schema :: UserSchema ::', () => {
       '"settings.notificationType" must be a string',
       '"settings.speechType" must be one of [male, female, neutral]',
       '"settings.speechType" must be a string',
-      '"energy.total" must be a number',
-      '"energy.dailyRecovery" must be a number'
+      '"settings.publicKey" must be a string',
+      '"settings.mfa" must be of type object',
+      '"settings.backupAccount" must be a string',
+      '"settings.buildVersion" must be one of [debug, canary, stable]',
+      '"settings.buildVersion" must be a string'
     ]
 
-    expect(error?.details).toHaveLength(13)
+    expect(error?.details).toHaveLength(15)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
   it('should return the correct error messages with min values', () => {
     const user = {
-      displayName: 'a',
-      username: 'a',
+      name: 'a',
       email: 'aaaaa',
       password: 'a',
       settings: {},
-      energy: {
-        total: 0,
-        dailyRecovery: 0
-      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"displayName" length must be at least 2 characters long',
-      '"username" length must be at least 3 characters long',
+      '"name" length must be at least 2 characters long',
       '"email" must be a valid email',
       '"password" length must be at least 8 characters long',
       '"password" must have uppercase and lowercase letters, numbers and special characters',
-      '"energy.total" must be greater than 0',
-      '"energy.dailyRecovery" must be greater than 0'
+      '"settings.mfa" is required',
     ]
 
-    expect(error?.details).toHaveLength(7)
+    expect(error?.details).toHaveLength(5)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
   it('should return the correct error messages with max values', () => {
     const user = {
-      displayName: 'a'.repeat(17),
-      username: 'a'.repeat(13),
+      name: 'a'.repeat(17),
       email: 'aaaaa',
       password: 'a'.repeat(17),
       settings: {},
-      energy: {
-        total: 100,
-        dailyRecovery: 100
-      }
     }
 
     const { error } = userSchema.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"displayName" length must be less than or equal to 16 characters long',
-      '"username" length must be less than or equal to 12 characters long',
+      '"name" length must be less than or equal to 16 characters long',
       '"email" must be a valid email',
       '"password" length must be less than or equal to 16 characters long',
       '"password" must have uppercase and lowercase letters, numbers and special characters',
-      '"energy.total" must be less than 100',
-      '"energy.dailyRecovery" must be less than 100'
+      '"settings.mfa" is required',
     ]
 
-    expect(error?.details).toHaveLength(7)
+    expect(error?.details).toHaveLength(5)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 })

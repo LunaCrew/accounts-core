@@ -12,9 +12,7 @@ module.exports = {
       'env': {
         'node': true
       },
-      'files': [
-        '.eslintrc.{js,cjs}'
-      ],
+      'files': ['.eslintrc.{js,cjs}'],
       'parserOptions': {
         'sourceType': 'script'
       }
@@ -25,27 +23,13 @@ module.exports = {
     'ecmaVersion': 'latest',
     'sourceType': 'module'
   },
-  'plugins': [
-    '@typescript-eslint'
-  ],
+  'plugins': ['@typescript-eslint'],
   'rules': {
-    'indent': [
-      'error',
-      2,
-      { 'SwitchCase': 1 }
-    ],
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
-    'quotes': [
-      'error',
-      'single'
-    ],
-    'semi': [
-      'error',
-      'never'
-    ],
+    'indent': ['error', 2, { 'SwitchCase': 1 }],
+    'linebreak-style': ['error', 'unix'],
+    'eol-last': ['error', 'always'],
+    'quotes': ['error', 'single'],
+    'semi': ['error', 'never'],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
