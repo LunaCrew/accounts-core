@@ -22,7 +22,7 @@ export default class UserController {
       if (result) {
         res.status(HttpStatus.code.CREATED).json({ id: result.insertedId })
       }
-      Log.i('UserController:: Calling Endpoint :: CreateUser')
+      Log.i('UserController :: Calling Endpoint :: CreateUser')
     } catch (error) {
       Log.e(`${error}`, 'UserController :: CreateUser')
     }
