@@ -1,14 +1,16 @@
 import crypto from 'crypto'
 
 class Password {
-  static encrypt = (password: string) => {
-    const hash = crypto.createHash('sha256').update(password).digest('hex')
+  static readonly encrypt = (password: string) => {
+    const salt = crypto.createHash('sha256').update('16').digest('hex')
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha256').toString('hex')
     return hash
   }
 
-  static validate = (hashedPassword: string, plainPassword: string): boolean => {
-    const hash = crypto.createHash('sha256').update(plainPassword).digest('hex')
-    if (hashedPassword === hash) {
+  static readonly validate = (password: string, hashed: string): boolean => {
+    const hash = this.encrypt(password)
+
+    if (hashed === hash) {
       return true
     } else {
       return false
