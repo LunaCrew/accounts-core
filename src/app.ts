@@ -23,7 +23,13 @@ export const client = new MongoClient(process.env.DB_URI ?? '', {
 
 const start = () => {
   try {
-    app.use(cors())
+    const corsOptions = {
+      origin: '',
+      methods: '',
+      allowedHeaders: 'Content-Type'
+    }
+    
+    app.use(cors(corsOptions))
     app.use(errorHandler)
 
     app.listen(PORT, () => {
