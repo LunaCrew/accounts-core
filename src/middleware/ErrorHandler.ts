@@ -41,12 +41,6 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
               message: CustomErrorMessage.CONFLICT_EMAIL
             })
           }
-          case err.message.includes('username'): {
-            return res.status(HttpStatus.code.CONFLICT).json({
-              status: 'fail',
-              message: CustomErrorMessage.CONFLICT_USERNAME
-            })
-          }
           case err.message.includes('id'): {
             return res.status(HttpStatus.code.CONFLICT).json({
               status: 'fail',
