@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import cors from 'cors'
 import Log from '@ashtrindade/logger'
 import * as dotenv from 'dotenv'
 import { routes } from './router/routes'
@@ -22,6 +23,7 @@ export const client = new MongoClient(process.env.DB_URI ?? '', {
 
 const start = () => {
   try {
+    app.use(cors())
     app.use(errorHandler)
 
     app.listen(PORT, () => {
