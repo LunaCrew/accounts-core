@@ -25,3 +25,10 @@ export class Conflict extends MongoServerError {
     Object.setPrototypeOf(this, Conflict.prototype)
   }
 }
+
+export class BadRequest extends BaseError {
+  constructor(message: string) {
+    super(message, HttpStatus.code.BAD_REQUEST)
+    Object.setPrototypeOf(this, BadRequest.prototype)
+  }
+}
