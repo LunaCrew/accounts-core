@@ -3,9 +3,12 @@ import { MongoClient, ServerApiVersion } from 'mongodb'
 import cors from 'cors'
 import Log from '@ashtrindade/logger'
 import * as dotenv from 'dotenv'
+import passport from 'passport'
 import { routes } from './router/routes'
 import { errorHandler } from './middleware/ErrorHandler'
+import configurePassport from './util/security/Passport'
 
+configurePassport(passport)
 dotenv.config({ path: '.env' })
 
 const PORT = process.env.PORT ?? 3000
@@ -28,13 +31,16 @@ const start = () => {
       methods: '',
       allowedHeaders: 'Content-Type'
     }
-    
-    app.use(cors(corsOptions))
-    app.use(errorHandler)
+
+    app
+      .use(cors(corsOptions))
+      .use(passport.initialize())
+      .use(errorHandler)
 
     app.listen(PORT, () => {
       Log.i(`Server running on http://localhost:${PORT}`)
     })
+
   } catch (error) {
     Log.e(`${error}`, 'Error starting server')
   }
@@ -52,13 +58,7 @@ const connect = async () => {
 }
 
 const collections = {
-  users: client.db().collection('users'),
-  notes: client.db().collection('notes'),
-  reminders: client.db().collection('reminders'),
-  altComms: client.db().collection('alt-comms'),
-  pomodoroTimers: client.db().collection('pomodoro-timers'),
-  tasks: client.db().collection('tasks'),
-  routines: client.db().collection('routines')
+  users: client.db().collection('users')
 }
 
 export { collections }
