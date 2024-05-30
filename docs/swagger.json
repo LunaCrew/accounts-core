@@ -2,12 +2,43 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Accounts Core API",
-    "description": "API documentation for the Accounts Core service",
-    "version": "0.1.0"
+    "description": "API documentation for the Accounts Core service.",
+    "version": "0.1.0",
+    "license": {
+      "name": "AGPL-3.0",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.html"
+    }
   },
+  "externalDocs": {
+    "description": "Extended documentation",
+    "url": "https://lunacrew.github.io/accounts-core/"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local"
+    },
+    {
+      "url": "",
+      "description": "Test"
+    }
+  ],
+  "tags": [
+    {
+      "name": "open",
+      "description": "🔓 can be performed without authentication, but has limited requests"
+    },
+    {
+      "name": "auth",
+      "description": "🔒 requires authentication and have no request limit"
+    }
+  ],
   "paths": {
     "/api/user": {
       "post": {
+        "tags": [
+          "open"
+        ],
         "summary": "Create a new user",
         "responses": {
           "201": {
@@ -84,6 +115,9 @@
         }
       },
       "get": {
+        "tags": [
+          "auth"
+        ],
         "summary": "Get user details",
         "parameters": [
           {
@@ -163,6 +197,9 @@
     },
     "/api/user/{id}": {
       "delete": {
+        "tags": [
+          "auth"
+        ],
         "summary": "Delete a user",
         "responses": {
           "204": {
@@ -182,6 +219,9 @@
     },
     "/api/auth/login": {
       "post": {
+        "tags": [
+          "open"
+        ],
         "summary": "Login",
         "parameters": [
           {
@@ -193,7 +233,7 @@
             }
           }
         ],
-        "requestBody":{
+        "requestBody": {
           "content": {
             "application_json": {
               "schema": {
@@ -204,7 +244,6 @@
                   }
                 }
               }
-            
             }
           }
         },
