@@ -1,7 +1,7 @@
 # Index
 
 * [Stacks](./stacks.md)
-* [API](./api.md)
+* API *(coming soon)*
 * [Architecture](./architecture.md)
 * [References](./references.md)
 * [License](https://github.com/LunaCrew/accounts-core/blob/main/LICENSE.md)
