@@ -3,14 +3,13 @@ import { PassportStatic } from 'passport'
 import { collections } from '../../app'
 import { JwtPayload, Done } from '../../types/JwtPayload'
 import { User } from '../../types/User'
-import KeyPair from './KeyPair'
+import dotenv from 'dotenv'
 
-if (!KeyPair.exists()) KeyPair.genKeyPair()
+dotenv.config()
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: KeyPair.getPublicKey(),
-  type: 'RS256',
+  secretOrKey: process.env.JWT_SECRET as string
 }
 
 export default (passport: PassportStatic) => {

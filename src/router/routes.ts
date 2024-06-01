@@ -1,9 +1,9 @@
 import express, { Application, Router, Request, Response } from 'express'
-import passport from 'passport'
 import UserController from '../controller/UserController'
-import rateLimiter from '../middleware/RateLimiter'
+import rateLimiter from '../middleware/rateLimiter'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerFile from '../../docs/swagger.json'
+import auth from '../middleware/auth'
 
 const userRouter: Router = Router()
 
@@ -26,14 +26,14 @@ const routes = (app: Application) => {
 
     .get(
       '/api/user',
-      passport.authenticate('jwt', { session: false }),
+      auth,
       UserController.getUser,
       userRouter
     )
 
     .delete(
       '/api/user/:id',
-      passport.authenticate('jwt', { session: false }),
+      auth,
       UserController.deleteUser,
       userRouter
     )
