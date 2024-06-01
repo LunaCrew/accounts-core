@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import Log from '@ashtrindade/logger'
+import Log from '@lunacrew/logger'
 import { collections } from '../app'
 import { NotFound, BadRequest } from '../error/CustomError'
 import { UserService } from '../types/Service'
