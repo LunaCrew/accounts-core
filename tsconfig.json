@@ -17,5 +17,5 @@
       },
       "sourceMap": true
   },
-  "exclude": ["node_modules", "coverage"]
+  "exclude": ["node_modules", "coverage", "docs"]
 }
