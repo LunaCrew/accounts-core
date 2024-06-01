@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
-import Log from '@ashtrindade/logger'
+import { MongoServerError } from 'mongodb'
+import Log from '@lunacrew/logger'
 import BaseError from '../error/BaseError'
 import { ValidationError } from '../error/CustomError'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
-import { MongoServerError } from 'mongodb'
 
-const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
+const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction)=> {
   switch (true) {
     case err instanceof ValidationError: {
       return res.status(err.status).json({
@@ -23,7 +23,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
           message: err.message
         })
       } else {
-        Log.e(err.message, err.stack)
+        Log.e(`message: ${err.message} \nstack: ${err.stack}`, err.message)
         return res.status(err.status).json({
           status: 'error',
           message: CustomErrorMessage.GENERIC
@@ -32,7 +32,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
     }
     case err instanceof MongoServerError: {
       if (err.code === MongoDBError.code.DUPLICATE_KEY) {
-        Log.e(err.stack, err.message)
+        Log.e(`message: ${err.message} \nstack: ${err.stack}`, err.message)
 
         switch (true) {
           case err.message.includes('email'): {
@@ -55,8 +55,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
           }
         }
       } else {
-        const error = `message: ${err.message} \n stack: ${err.stack}`
-        Log.e(`${error}`, 'ErrorHandler')
+        Log.e(`message: ${err.message} \nstack: ${err.stack}`, 'ErrorHandler')
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({
           status: 'fail',
           message: CustomErrorMessage.INTERNAL_SERVER_ERROR
