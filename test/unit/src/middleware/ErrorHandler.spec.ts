@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
-import { errorHandler } from 'src/middleware/ErrorHandler'
+import { errorHandler } from 'src/middleware/errorHandler'
 import { ValidationError } from 'src/error/CustomError'
 import BaseError from 'src/error/BaseError'
 import HttpStatus from 'src/util/enum/HttpStatus'
@@ -34,13 +34,13 @@ describe('errorHandler', () => {
     const error = new ValidationError([{ field: 'test', message: 'test' }])
     errorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
-    expect(res.json).toHaveBeenCalledWith({ message: 'Validation Error', data: [{field: 'test', message: 'test'}] ,status: 'fail' })
+    expect(res.json).toHaveBeenCalledWith({ error: '400 - Validation Error', data: [{ field: 'test', message: 'test' }] })
   })
 
   it('should handle MongoDBError', () => {
-    const error = new MongoServerError({ message: 'MongoDB error', code: 11000})
+    const error = new MongoServerError({ message: 'MongoDB error', code: 11000 })
     errorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.CONFLICT)
-    expect(res.json).toHaveBeenCalledWith({ message: 'User Already Exists', status: 'fail' })
+    expect(res.json).toHaveBeenCalledWith({ error: '409 - Conflict' })
   })
 })

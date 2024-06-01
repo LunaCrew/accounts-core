@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit'
-import rateLimiter from 'src/middleware/RateLimiter'
+import rateLimiter from 'src/middleware/rateLimiter'
 
 jest.mock('express-rate-limit')
 
