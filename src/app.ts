@@ -1,10 +1,12 @@
 import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import cors from 'cors'
-import Log from '@ashtrindade/logger'
+import Log from '@lunacrew/logger'
 import * as dotenv from 'dotenv'
+import passport from 'passport'
 import { routes } from './router/routes'
-import { errorHandler } from './middleware/ErrorHandler'
+import { errorHandler } from './middleware/errorHandler'
+import configurePassport from './util/security/Passport'
 
 dotenv.config({ path: '.env' })
 
@@ -13,7 +15,7 @@ const app: Application = express()
 
 routes(app)
 
-export const client = new MongoClient(process.env.DB_URI ?? '', {
+export const client = new MongoClient(process.env.DB_URI as string, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -23,18 +25,23 @@ export const client = new MongoClient(process.env.DB_URI ?? '', {
 
 const start = () => {
   try {
+    configurePassport(passport)
+
     const corsOptions = {
       origin: '',
       methods: '',
       allowedHeaders: 'Content-Type'
     }
-    
-    app.use(cors(corsOptions))
-    app.use(errorHandler)
+
+    app
+      .use(cors(corsOptions))
+      .use(passport.initialize())
+      .use(errorHandler)
 
     app.listen(PORT, () => {
-      Log.i(`Server running on http://localhost:${PORT}`)
+      Log.d(`Running at http://localhost:${PORT}`, 'Server')
     })
+
   } catch (error) {
     Log.e(`${error}`, 'Error starting server')
   }
@@ -44,21 +51,15 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.i('Database Connection', 'Connected to MongoDB!')
+    Log.d('Connected', 'MongoDB')
   } catch (error) {
     await client.close()
-    Log.e('Database Connection', `${error}`)
+    Log.e(`${error}`, 'MongoDB Connection')
   }
 }
 
 const collections = {
-  users: client.db().collection('users'),
-  notes: client.db().collection('notes'),
-  reminders: client.db().collection('reminders'),
-  altComms: client.db().collection('alt-comms'),
-  pomodoroTimers: client.db().collection('pomodoro-timers'),
-  tasks: client.db().collection('tasks'),
-  routines: client.db().collection('routines')
+  users: client.db().collection('users')
 }
 
 export { collections }

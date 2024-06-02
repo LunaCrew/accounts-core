@@ -41,5 +41,10 @@ const userParams = joi.object({
   email: joi.string().lowercase().email(),
 }).or('id', 'email').required()
 
-export { userParams }
+const loginParams = joi.object({  
+  email: joi.string().lowercase().email().required(),
+  password: joi.string().min(8).max(16).required(),
+})
+
+export { userParams, loginParams }
 export default userSchema

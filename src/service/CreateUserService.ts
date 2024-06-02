@@ -1,6 +1,6 @@
 import { NextFunction, Request } from 'express'
 import { v4 as newUUID } from 'uuid'
-import Log from '@ashtrindade/logger'
+import Log from '@lunacrew/logger'
 import { UserService } from '../types/Service'
 import { User } from '../types/User'
 import userSchema from '../schema/userSchema'

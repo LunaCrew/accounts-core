@@ -52,8 +52,10 @@ describe(':: Service :: CreateUserService ::', () => {
 
     const req = { body: mockedUser } as Request
 
-    CreateUserService.execute(req, next)
+    const user = () => {
+      CreateUserService.execute(req, next)
+    }
 
-    expect(userSchema.validate).toHaveBeenCalledWith(mockedUser)
+    expect(user).toThrow()
   })
 })

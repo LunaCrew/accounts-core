@@ -1,5 +1,5 @@
 import { NextFunction, Request } from 'express'
-import Log from '@ashtrindade/logger'
+import Log from '@lunacrew/logger'
 import { UserService } from '../types/Service'
 import ValidateUser from '../util/validation/ValidateUser'
 
