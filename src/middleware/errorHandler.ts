@@ -46,9 +46,14 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
       }
     }
 
+    case err instanceof SyntaxError: {
+      Log.custom(`${err.stack}`, { tag: 'ErrorHandler' })
+      return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.BAD_REQUEST })
+    }
+
     default: {
       Log.custom(`${err.stack}`, { tag: 'ErrorHandler' })
-      return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: CustomErrorMessage.GENERIC })
+      return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: err.message })
     }
   }
 }

@@ -9,7 +9,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   const secret = process.env.JWT_SECRET as string
 
   if (!token) {
-    return res.status(HttpStatus.code.UNAUTHORIZED).json({ error: CustomErrorMessage.AUTH_NOT_PROVIDED })
+    return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.AUTH_NOT_PROVIDED })
   }
 
   try {
