@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import CreateUserService from 'src/service/CreateUserService'
-import userSchema from 'src/schema/userSchema'
+import { userCreate } from 'src/schema/userSchema'
 
 describe(':: Service :: CreateUserService ::', () => {
   const next = jest.fn()
@@ -11,8 +11,8 @@ describe(':: Service :: CreateUserService ::', () => {
       email: 'jane@doe.com',
       password: 'Abcd123/*',
       settings: {
-        mfa: {},
-      }
+      },
+      mfa: {}
     }
     const req = { body: mockedUser } as Request
     const user = CreateUserService.execute(req, next)
@@ -22,12 +22,12 @@ describe(':: Service :: CreateUserService ::', () => {
     expect(user).toHaveProperty('name')
     expect(user).toHaveProperty('email')
     expect(user).toHaveProperty('password')
+    expect(user).toHaveProperty('mfa')
     expect(user).toHaveProperty('settings.theme')
     expect(user).toHaveProperty('settings.animations')
     expect(user).toHaveProperty('settings.notificationType')
     expect(user).toHaveProperty('settings.speechType')
     expect(user).toHaveProperty('settings.publicKey')
-    expect(user).toHaveProperty('settings.mfa')
     expect(user).toHaveProperty('settings.backupAccount')
     expect(user).toHaveProperty('settings.buildVersion')
   })
@@ -42,7 +42,7 @@ describe(':: Service :: CreateUserService ::', () => {
       }
     }
 
-    jest.spyOn(userSchema, 'validate').mockReturnValue({
+    jest.spyOn(userCreate, 'validate').mockReturnValue({
       error: [{
         message: '"email" is not allowed to be empty',
         path: ['email'], type: 'string.empty',

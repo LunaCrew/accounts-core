@@ -4,8 +4,8 @@ describe(':: Util :: Enum :: Build ::', () => {
   it('should have the correct keys', () => {
     const expectedKeys = [
       'DEBUG',
-      'CANARY',
-      'STABLE'
+      'BETA',
+      'RELEASE'
     ]
 
     const enumKeysDeclared = Object.keys(Build)
@@ -16,8 +16,8 @@ describe(':: Util :: Enum :: Build ::', () => {
   it('should have the correct values', () => {
     const expectedValues = [
       'debug',
-      'canary',
-      'stable'
+      'beta',
+      'release'
     ]
 
     const enumValuesDeclared = Object.values(Build)

@@ -7,7 +7,7 @@ describe('RateLimiter middleware', () => {
   it('should call express-rate-limit with the correct configuration', () => {
     expect(rateLimit).toHaveBeenCalledWith({
       windowMs: 60 * 1000 * 5,
-      max: 10,
+      max: 100,
       message: 'Too many requests, please try again later.'
     })
   })

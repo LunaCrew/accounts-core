@@ -34,7 +34,7 @@ describe('errorHandler', () => {
     const error = new ValidationError([{ field: 'test', message: 'test' }])
     errorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
-    expect(res.json).toHaveBeenCalledWith({ error: '400 - Validation Error', data: [{ field: 'test', message: 'test' }] })
+    expect(res.json).toHaveBeenCalledWith({ error: '400 - Bad Request', data: [{ field: 'test', message: 'test' }] })
   })
 
   it('should handle MongoDBError', () => {

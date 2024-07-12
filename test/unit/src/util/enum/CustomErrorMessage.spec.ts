@@ -5,7 +5,7 @@ describe(':: Util :: Enum :: CustomErrorMessage ::', () => {
     const expectedKeys = [
       'PASSWORD',
       'DATE_TIME_TIMEZONE',
-      'VALIDATION',
+      'BAD_REQUEST',
       'LOGIN_FAILED',
       'AUTH_NOT_PROVIDED',
       'UNAUTHORIZED',
@@ -28,9 +28,9 @@ describe(':: Util :: Enum :: CustomErrorMessage ::', () => {
     const expectedValues = [
       '"password" must have uppercase and lowercase letters, numbers and special characters',
       '"dateTime" must be in ISO format <YYYY-MM-DD>T<HH:mm:ss>-<HH:mm>',
-      '400 - Validation Error',
+      '400 - Bad Request',
       '400 - Login Failed - Invalid Credentials',
-      '401 - No token provided',
+      '400 - No token provided',
       '401 - Unauthorized',
       '403 - Forbidden',
       '404 - User Not Found',
