@@ -1,7 +1,7 @@
 enum Build {
   DEBUG = 'debug',
-  CANARY = 'canary',
-  STABLE = 'stable',
+  BETA = 'beta',
+  RELEASE = 'release',
 }
 
 export default Build
