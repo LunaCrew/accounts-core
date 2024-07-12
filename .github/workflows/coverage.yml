@@ -21,11 +21,7 @@ jobs:
     - name: Run Jest tests
       run: npx jest --verbose ./test/unit/ --coverage
 
-    - name: Publish coverage report
-      uses: MishaKav/jest-coverage-comment@main
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        coverage-summary-path: ./coverage/coverage-summary.json
-        title: Coverage Report
-        remove-links-to-files: false
-        remove-links-to-lines: true
+        token: ${{ secrets.CODECOV_TOKEN }}
