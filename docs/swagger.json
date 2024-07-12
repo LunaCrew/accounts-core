@@ -40,32 +40,6 @@
           "open"
         ],
         "summary": "Create a new user",
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "503": {
-            "description": "Service unavailable"
-          }
-        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -111,6 +85,35 @@
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "503": {
+            "description": "Service unavailable"
           }
         }
       },
@@ -189,6 +192,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "500": {
+            "description": "Internal server error"
+          },
           "503": {
             "description": "Service unavailable"
           }
@@ -201,6 +207,16 @@
           "auth"
         ],
         "summary": "Delete a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "No content"
@@ -210,6 +226,89 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "503": {
+            "description": "Service unavailable"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Update user details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "theme": {
+                        "type": "string"
+                      },
+                      "animations": {
+                        "type": "boolean"
+                      },
+                      "notificationType": {
+                        "type": "string"
+                      },
+                      "speechType": {
+                        "type": "string"
+                      },
+                      "publicKey": {
+                        "type": "string"
+                      },
+                      "backupAccount": {
+                        "type": "string"
+                      },
+                      "buildVersion": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
           },
           "503": {
             "description": "Service unavailable"
