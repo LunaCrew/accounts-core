@@ -1,6 +1,6 @@
 {
   "name": "accounts-core",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Accounts Core API - Luna's User Management",
   "main": "src/app.ts",
   "_moduleAliases": {

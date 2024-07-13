@@ -17,18 +17,6 @@ const routes = (app: Application) => {
       res.send({ status: 'API is OK!', docs: '/api/docs' })
     })
 
-    /**
-     * @openapi
-     * /api/user:
-     *  post:
-     *   tags:
-     *   - User
-     *  summary: Create a new user
-     * requestBody:
-     *  required: true
-     * content:
-     * application/json:
-     */
     .post(
       '/api/user',
       rateLimiter,
