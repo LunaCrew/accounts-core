@@ -85,12 +85,8 @@ export default class UserController {
         const isValid = Password.validate(req.body.password, user.password)
 
         if (isValid) {
-          const token = JWT.issueJWT(user._id.toString())
-          res.status(HttpStatus.code.OK).send({
-            success: true,
-            token: token.token,
-            expiresIn: token.expiresIn
-          })
+          const token = JWT.generate(user._id.toString())
+          res.status(HttpStatus.code.OK).send({token: token})
         } else {
           next(new BadRequest(CustomErrorMessage.LOGIN_FAILED))
           next()
