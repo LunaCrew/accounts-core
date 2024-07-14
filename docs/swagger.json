@@ -1,0 +1,498 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Accounts Core API",
+    "description": "API documentation for the Accounts Core service.",
+    "version": "0.5.0",
+    "license": {
+      "name": "AGPL-3.0",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.html"
+    }
+  },
+  "externalDocs": {
+    "description": "GitHub repository",
+    "url": "https://lunacrew.github.io/accounts-core/"
+  },
+  "tags": [
+    {
+      "name": "open",
+      "description": "🔓 can be performed without authentication, but has limited requests"
+    },
+    {
+      "name": "auth",
+      "description": "🔒 requires authentication and have no request limit"
+    }
+  ],
+  "paths": {
+    "/api/user": {
+      "post": {
+        "tags": [
+          "open"
+        ],
+        "summary": "Create an user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application_json": {
+              "schema": {
+                "$ref": "#/components/schemas/create_user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Retrieve user data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "open"
+        ],
+        "summary": "Login",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application_json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 32
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/:id": {
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Delete an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Update an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application_json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "create_user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 32
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 32
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "default": false
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "emailVerificationToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "mfa": {
+            "type": "object",
+            "properties": {
+              "mfaToken": {
+                "type": "string",
+                "nullable": true
+              },
+              "mfaSecret": {
+                "type": "string",
+                "nullable": true
+              },
+              "mfaRecoveryCodes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "mfaRecoveryCodesGeneratedAt": {
+                "type": "string",
+                "nullable": true
+              },
+              "mfaRecoveryCodesUsedAt": {
+                "type": "string",
+                "nullable": true
+              },
+              "mfaRecoveryCodesRegeneratedAt": {
+                "type": "string",
+                "nullable": true
+              },
+              "mfaRecoveryCodesUsedCount": {
+                "type": "integer",
+                "nullable": true
+              }
+            },
+            "required": [
+              "mfaToken",
+              "mfaSecret",
+              "mfaRecoveryCodes",
+              "mfaRecoveryCodesGeneratedAt",
+              "mfaRecoveryCodesUsedAt",
+              "mfaRecoveryCodesRegeneratedAt",
+              "mfaRecoveryCodesUsedCount"
+            ]
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "dark",
+                  "light"
+                ],
+                "default": "dark"
+              },
+              "animations": {
+                "type": "boolean",
+                "default": true
+              },
+              "notificationType": {
+                "type": "string",
+                "enum": [
+                  "popup",
+                  "silent",
+                  "balloon"
+                ],
+                "default": "popup"
+              },
+              "speechType": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "female",
+                  "male"
+                ],
+                "default": "neutral"
+              },
+              "publicKey": {
+                "type": "string",
+                "nullable": true
+              },
+              "backupAccount": {
+                "type": "string",
+                "format": "email",
+                "nullable": true
+              },
+              "buildVersion": {
+                "type": "string",
+                "enum": [
+                  "release",
+                  "beta",
+                  "debug"
+                ],
+                "default": "release"
+              }
+            },
+            "required": [
+              "theme",
+              "animations",
+              "notificationType",
+              "speechType",
+              "publicKey",
+              "backupAccount",
+              "buildVersion"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "password",
+          "mfa",
+          "settings"
+        ]
+      },
+      "update_user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 32
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 32
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "emailVerificationToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "mfa": {
+            "type": "object",
+            "properties": {
+              "mfaToken": {
+                "type": "string"
+              },
+              "mfaSecret": {
+                "type": "string"
+              },
+              "mfaRecoveryCodes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mfaRecoveryCodesGeneratedAt": {
+                "type": "string"
+              },
+              "mfaRecoveryCodesUsedAt": {
+                "type": "string"
+              },
+              "mfaRecoveryCodesRegeneratedAt": {
+                "type": "string"
+              },
+              "mfaRecoveryCodesUsedCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "mfaToken",
+              "mfaSecret",
+              "mfaRecoveryCodes",
+              "mfaRecoveryCodesGeneratedAt",
+              "mfaRecoveryCodesUsedAt",
+              "mfaRecoveryCodesRegeneratedAt",
+              "mfaRecoveryCodesUsedCount"
+            ]
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "theme": {
+                "type": "string",
+                "enum": [
+                  "light",
+                  "dark"
+                ]
+              },
+              "animations": {
+                "type": "boolean"
+              },
+              "notificationType": {
+                "type": "string",
+                "enum": [
+                  "popup",
+                  "balloon",
+                  "silent"
+                ]
+              },
+              "speechType": {
+                "type": "string",
+                "enum": [
+                  "neutral",
+                  "female",
+                  "male"
+                ]
+              },
+              "publicKey": {
+                "type": "string"
+              },
+              "backupAccount": {
+                "type": "string",
+                "format": "email"
+              },
+              "buildVersion": {
+                "type": "string",
+                "enum": [
+                  "release",
+                  "beta",
+                  "debug"
+                ]
+              }
+            },
+            "required": [
+              "theme",
+              "animations",
+              "notificationType",
+              "speechType",
+              "publicKey",
+              "backupAccount",
+              "buildVersion"
+            ]
+          }
+        },
+        "minProperties": 1
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "description": "Authenticate to access protected routes",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
