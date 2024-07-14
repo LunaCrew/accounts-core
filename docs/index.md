@@ -8,10 +8,8 @@
 
 ---
 
-<p align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/lunacrew/accounts-core?labelColor=181717&logo=github">
-  <img src="https://img.shields.io/github/actions/workflow/status/lunacrew/accounts-core/coverage.yml?logo=jest&logoColor=C21325&label=tests&labelColor=181717" alt="Tests Status" />
-</p>
+![GitHub License](https://img.shields.io/github/license/lunacrew/accounts-core?labelColor=181717&logo=github)
+![Tests Status](https://img.shields.io/github/actions/workflow/status/lunacrew/accounts-core/coverage.yml?logo=jest&logoColor=C21325&label=tests&labelColor=181717)
 
 ## Overview
 

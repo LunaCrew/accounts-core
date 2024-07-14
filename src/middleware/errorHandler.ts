@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
+import { JsonWebTokenError } from 'jsonwebtoken'
 import Log from '@lunacrew/logger'
 import BaseError from '../error/BaseError'
 import { ValidationError } from '../error/CustomError'
@@ -46,9 +47,19 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
       }
     }
 
+    case err instanceof SyntaxError: {
+      Log.custom(`${err.stack}`, { tag: 'ErrorHandler' })
+      return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.BAD_REQUEST })
+    }
+
+    case err instanceof JsonWebTokenError: {
+      Log.custom(`${err.stack}`, { tag: 'ErrorHandler' })
+      return res.status(HttpStatus.code.UNAUTHORIZED).json({ error: CustomErrorMessage.UNAUTHORIZED })
+    }
+
     default: {
       Log.custom(`${err.stack}`, { tag: 'ErrorHandler' })
-      return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: CustomErrorMessage.GENERIC })
+      return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: err.message })
     }
   }
 }

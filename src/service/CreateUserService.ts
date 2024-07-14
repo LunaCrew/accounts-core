@@ -3,14 +3,14 @@ import { v4 as newUUID } from 'uuid'
 import Log from '@lunacrew/logger'
 import { UserService } from '../types/Service'
 import { User } from '../types/User'
-import userSchema from '../schema/userSchema'
+import { userCreate } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
 
 export default class CreateUserService {
   static execute(req: Request, next: NextFunction): UserService {
     try {
-      const { error, value } = userSchema.validate(req.body)
+      const { error, value } = userCreate.validate(req.body)
 
       if (error) {
         next(new ValidationError(error.details.map((detail) => {

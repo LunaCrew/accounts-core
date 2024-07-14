@@ -3,7 +3,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   modulePathIgnorePatterns: ['build'],
-  coverageReporters: ['text'],
+  coverageReporters: ['text', 'cobertura'],
   coveragePathIgnorePatterns: ['src/app.ts'],
   collectCoverageFrom: ['src/**/*.ts', '!**/node_modules/**'],
   rootDir: '.',

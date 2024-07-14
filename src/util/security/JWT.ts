@@ -1,18 +1,26 @@
-import jsonwebtoken from 'jsonwebtoken'
+import { NextFunction } from 'express'
+import jwt from 'jsonwebtoken'
 
 export default class JWT {
-  static readonly issueJWT = (userId: string) => {
-    const secret = process.env.JWT_SECRET as string
-    const payload = { 
-      sub: userId,
-      iat: Date.now()
+  static readonly generate = (userId: string): string => {
+    const payload = {
+      userId: userId,
+      iat: Date.now() / 1000,
+      exp: Math.floor(Date.now() / 1000) + (60 * 60)
     }
 
-    const signedToken = jsonwebtoken.sign(payload, secret, { expiresIn: '1h' })
+    const signedToken = jwt.sign(payload, process.env.JWT_SECRET as string, { algorithm: 'HS256' })
 
-    return {
-      token: signedToken,
-      expiresIn: '1h'
+    return signedToken
+  }
+
+  static readonly verify = (token: string, next: NextFunction): jwt.JwtPayload | boolean => {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET as string) as jwt.JwtPayload
+      return payload
+    } catch (error) {
+      next(error)
+      return false
     }
   }
 }

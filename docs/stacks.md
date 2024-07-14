@@ -1,7 +1,5 @@
 # Stacks
 
-<center>
-
 ![[Node.js](https://nodejs.org/)](https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![[Express.js](https://expressjs.com/)](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![[MongoDB](https://www.mongodb.com/)](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -11,8 +9,6 @@
 ![[Swagger](https://swagger.io/)](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![[Docker](https://www.docker.com/)](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![[GitHub Actions](https://docs.github.com/en/actions)](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-
-</center>
 
 ## Project Stacks
 

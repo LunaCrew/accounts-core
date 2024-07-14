@@ -1,4 +1,4 @@
-import userSchema from 'src/schema/userSchema'
+import { userCreate } from 'src/schema/userSchema'
 import NotificationType from 'src/util/enum/NotificationType'
 import SpeechType from 'src/util/enum/SpeechType'
 import Theme from 'src/util/enum/Theme'
@@ -15,21 +15,21 @@ describe(':: Schema :: UserSchema ::', () => {
         notificationType: NotificationType.SILENT,
         speechType: SpeechType.NEUTRAL,
         publicKey: 'public-key',
-        mfa: {
-          mfaToken: 'mfa-token',
-          mfaSecret: 'mfa-secret',
-          mfaRecoveryCodes: ['code1', 'code2'],
-          mfaRecoveryCodesGeneratedAt: '2021-01-01',
-          mfaRecoveryCodesUsedAt: '2021-01-01',
-          mfaRecoveryCodesRegeneratedAt: '2021-01-01',
-          mfaRecoveryCodesUsedCount: 1,
-        },
         backupAccount: 'example@example.com',
         buildVersion: 'debug'
-      }
+      },
+      mfa: {
+        mfaToken: 'mfa-token',
+        mfaSecret: 'mfa-secret',
+        mfaRecoveryCodes: ['code1', 'code2'],
+        mfaRecoveryCodesGeneratedAt: '2021-01-01',
+        mfaRecoveryCodesUsedAt: '2021-01-01',
+        mfaRecoveryCodesRegeneratedAt: '2021-01-01',
+        mfaRecoveryCodesUsedCount: 1,
+      },
     }
 
-    const result = userSchema.validate(user)
+    const result = userCreate.validate(user)
     expect(result.error).toBeUndefined()
   })
 
@@ -45,18 +45,19 @@ describe(':: Schema :: UserSchema ::', () => {
         notificationType: 12312313,
         speechType: 123123,
         publicKey: 123123,
-        mfa: 123123,
         backupAccount: 123123,
         buildVersion: 123123
-      }
+      },
+      mfa: 123123
     }
 
-    const { error } = userSchema.validate(user, { abortEarly: false })
+    const { error } = userCreate.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
       '"name" must be a string',
       '"email" must be a string',
       '"password" must be a string',
+      '"mfa" must be of type object',
       '"settings.theme" must be one of [dark, light]',
       '"settings.theme" must be a string',
       '"settings.animations" must be a boolean',
@@ -65,9 +66,8 @@ describe(':: Schema :: UserSchema ::', () => {
       '"settings.speechType" must be one of [male, female, neutral]',
       '"settings.speechType" must be a string',
       '"settings.publicKey" must be a string',
-      '"settings.mfa" must be of type object',
       '"settings.backupAccount" must be a string',
-      '"settings.buildVersion" must be one of [debug, canary, stable]',
+      '"settings.buildVersion" must be one of [debug, beta, release]',
       '"settings.buildVersion" must be a string'
     ]
 
@@ -81,41 +81,39 @@ describe(':: Schema :: UserSchema ::', () => {
       email: 'aaaaa',
       password: 'a',
       settings: {},
+      mfa: {}
     }
 
-    const { error } = userSchema.validate(user, { abortEarly: false })
+    const { error } = userCreate.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
       '"name" length must be at least 2 characters long',
       '"email" must be a valid email',
-      '"password" length must be at least 8 characters long',
-      '"password" must have uppercase and lowercase letters, numbers and special characters',
-      '"settings.mfa" is required',
+      '"password" length must be at least 8 characters long'
     ]
 
-    expect(error?.details).toHaveLength(5)
+    expect(error?.details).toHaveLength(3)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 
   it('should return the correct error messages with max values', () => {
     const user = {
-      name: 'a'.repeat(17),
+      name: 'a'.repeat(33),
       email: 'aaaaa',
-      password: 'a'.repeat(17),
+      password: 'a'.repeat(33),
       settings: {},
+      mfa: {}
     }
 
-    const { error } = userSchema.validate(user, { abortEarly: false })
+    const { error } = userCreate.validate(user, { abortEarly: false })
     const receivedMessages = error?.details.map(error => error.message)
     const expectedMessages = [
-      '"name" length must be less than or equal to 16 characters long',
+      '"name" length must be less than or equal to 32 characters long',
       '"email" must be a valid email',
-      '"password" length must be less than or equal to 16 characters long',
-      '"password" must have uppercase and lowercase letters, numbers and special characters',
-      '"settings.mfa" is required',
+      '"password" length must be less than or equal to 32 characters long'
     ]
 
-    expect(error?.details).toHaveLength(5)
+    expect(error?.details).toHaveLength(3)
     expect(receivedMessages).toEqual(expectedMessages)
   })
 })

@@ -6,7 +6,7 @@ describe('CustomError', () => {
       const errorData = [{ field: 'name', message: 'Name is required' }]
       const error = new ValidationError(errorData)
       expect(error).toBeInstanceOf(ValidationError)
-      expect(error.message).toBe('400 - Validation Error')
+      expect(error.message).toBe('400 - Bad Request')
       expect(error.errorData).toEqual(errorData)
     })
   })

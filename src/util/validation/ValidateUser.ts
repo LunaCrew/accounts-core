@@ -1,10 +1,10 @@
 import { NextFunction } from 'express'
-import { userParams } from '../../schema/userSchema'
+import { userQueryParams } from '../../schema/userSchema'
 import { UserParams } from '../../types/User'
 import { ValidationError } from '../../error/CustomError'
 
 export default function ValidateUser(params: object, next: NextFunction) {
-  const { error, value } = userParams.validate(params)
+  const { error, value } = userQueryParams.validate(params)
   if (error) {
     next(new ValidationError(error.details.map((detail) => {
       const key = detail.context?.key ?? ''

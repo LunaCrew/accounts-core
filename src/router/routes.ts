@@ -27,6 +27,7 @@ const routes = (app: Application) => {
     .get(
       '/api/user',
       auth,
+      rateLimiter,
       UserController.getUser,
       userRouter
     )
@@ -34,6 +35,7 @@ const routes = (app: Application) => {
     .delete(
       '/api/user/:id',
       auth,
+      rateLimiter,
       UserController.deleteUser,
       userRouter
     )
@@ -42,6 +44,14 @@ const routes = (app: Application) => {
       '/api/auth/login',
       rateLimiter,
       UserController.login,
+      userRouter
+    )
+
+    .patch(
+      '/api/user/:id',
+      auth,
+      rateLimiter,
+      UserController.updateUser,
       userRouter
     )
 }
