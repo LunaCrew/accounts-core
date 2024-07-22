@@ -5,9 +5,12 @@ on:
     branches:
       - docs
 
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
+  id-token: write
 
 jobs:
   deploy:
@@ -28,7 +31,13 @@ jobs:
       - name: Build MkDocs site
         run: mkdocs build --config-file docs/mkdocs.yml
 
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/site'
+
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force --config-file docs/mkdocs.yml
+        id: deployment
+        uses: actions/deploy-pages@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
