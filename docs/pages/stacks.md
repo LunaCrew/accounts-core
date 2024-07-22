@@ -26,8 +26,3 @@
 
 * Architecture: [MSC](https://martinfowler.com/eaaCatalog/serviceLayer.html)
 * API: [REST](https://restfulapi.net/)
-
----
-> 📍 *You are here*
-
-| [Index](index) | [📍 Stacks](stacks) | [Architecture](architecture) | [References](references) | [License](https://github.com/LunaCrew/accounts-core/blob/main/LICENSE.md) |
