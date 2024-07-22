@@ -26,9 +26,9 @@ jobs:
         run: pip install -r docs/requirements.txt
 
       - name: Build MkDocs site
-        run: mkdocs build
+        run: mkdocs build --config-file docs/mkdocs.yml
 
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        run: mkdocs gh-deploy --force --config-file docs/mkdocs.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
