@@ -4,8 +4,9 @@ import cors from 'cors'
 import Log from '@lunacrew/logger'
 import * as dotenv from 'dotenv'
 import passport from 'passport'
+import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { routes } from './router/routes'
-import { errorHandler } from './middleware/errorHandler'
+import errorHandler from './middleware/ErrorHandler'
 import configurePassport from './util/security/Passport'
 
 dotenv.config({ path: '.env' })
@@ -26,6 +27,10 @@ export const client = new MongoClient(process.env.DB_URI as string, {
 const start = () => {
   try {
     configurePassport(passport)
+    initializeApp({
+      credential: applicationDefault(),
+      projectId: process.env.FIREBASE_PROJECT_ID
+    })
 
     const corsOptions = {
       origin: '',

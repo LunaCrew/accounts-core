@@ -11,17 +11,17 @@ export type User = {
     notificationType: string
     speechType: string
     publicKey: string | null
-    mfa: {
-      mfaToken: string | null
-      mfaSecret: string | null
-      mfaRecoveryCodes: string[] | null
-      mfaRecoveryCodesGeneratedAt: string | null
-      mfaRecoveryCodesUsedAt: string | null
-      mfaRecoveryCodesRegeneratedAt: string | null
-      mfaRecoveryCodesUsedCount: number | null
-    }
     backupAccount: string | null
     buildVersion: string
+  },
+  mfa: {
+    mfaToken: string | null
+    mfaSecret: string | null
+    mfaRecoveryCodes: string[] | null
+    mfaRecoveryCodesGeneratedAt: string | null
+    mfaRecoveryCodesUsedAt: string | null
+    mfaRecoveryCodesRegeneratedAt: string | null
+    mfaRecoveryCodesUsedCount: number | null
   }
 }
 
