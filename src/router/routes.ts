@@ -1,9 +1,9 @@
 import express, { Application, Router, Request, Response } from 'express'
 import UserController from '../controller/UserController'
-import rateLimiter from '../middleware/rateLimiter'
+import RateLimiter from '../middleware/RateLimiter'
+import Auth from '../middleware/Auth'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerFile from '../../docs/swagger.json'
-import auth from '../middleware/auth'
 
 const userRouter: Router = Router()
 
@@ -19,38 +19,38 @@ const routes = (app: Application) => {
 
     .post(
       '/api/user',
-      rateLimiter,
+      RateLimiter.default,
       UserController.createUser,
       userRouter
     )
 
     .get(
       '/api/user',
-      auth,
-      rateLimiter,
+      Auth.jwt,
+      RateLimiter.default,
       UserController.getUser,
       userRouter
     )
 
     .delete(
       '/api/user/:id',
-      auth,
-      rateLimiter,
+      Auth.jwt,
+      RateLimiter.default,
       UserController.deleteUser,
       userRouter
     )
 
     .post(
       '/api/auth/login',
-      rateLimiter,
+      RateLimiter.default,
       UserController.login,
       userRouter
     )
 
     .patch(
       '/api/user/:id',
-      auth,
-      rateLimiter,
+      Auth.jwt,
+      RateLimiter.default,
       UserController.updateUser,
       userRouter
     )
