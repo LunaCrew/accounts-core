@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
-import { errorHandler } from 'src/middleware/errorHandler'
+import errorHandler from 'src/middleware/ErrorHandler'
 import { ValidationError } from 'src/error/CustomError'
 import BaseError from 'src/error/BaseError'
 import HttpStatus from 'src/util/enum/HttpStatus'
@@ -35,7 +35,7 @@ describe('errorHandler', () => {
     const error = new ValidationError([{ field: 'test', message: 'test' }])
     errorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
-    expect(res.json).toHaveBeenCalledWith({ error: '400 - Bad Request', data: [{ field: 'test', message: 'test' }] })
+    expect(res.json).toHaveBeenCalledWith({ message: '400 - Bad Request',  status: 'fail', })
   })
 
   it('should handle MongoDBError', () => {
@@ -56,7 +56,7 @@ describe('errorHandler', () => {
     const error = new JsonWebTokenError('Expired token')
     errorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.UNAUTHORIZED)
-    expect(res.json).toHaveBeenCalledWith({ error: '401 - Unauthorized' })
+    expect(res.json).toHaveBeenCalledWith({ error: 'Expired token' })
   })
 
   it('should handle unknown error', () => {
