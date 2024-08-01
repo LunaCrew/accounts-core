@@ -15,18 +15,18 @@ describe('User type', () => {
         notificationType: 'email',
         speechType: 'text-to-speech',
         publicKey: null,
-        mfa: {
-          mfaToken: null,
-          mfaSecret: null,
-          mfaRecoveryCodes: null,
-          mfaRecoveryCodesGeneratedAt: null,
-          mfaRecoveryCodesUsedAt: null,
-          mfaRecoveryCodesRegeneratedAt: null,
-          mfaRecoveryCodesUsedCount: null
-        },
         backupAccount: null,
         buildVersion: 'debug'
-      }
+      },
+      mfa: {
+        mfaToken: null,
+        mfaSecret: null,
+        mfaRecoveryCodes: null,
+        mfaRecoveryCodesGeneratedAt: null,
+        mfaRecoveryCodesUsedAt: null,
+        mfaRecoveryCodesRegeneratedAt: null,
+        mfaRecoveryCodesUsedCount: null
+      },
     }
 
     expect(user._id).toBe('1')
@@ -40,13 +40,13 @@ describe('User type', () => {
     expect(user.settings.notificationType).toBe('email')
     expect(user.settings.speechType).toBe('text-to-speech')
     expect(user.settings.publicKey).toBeNull()
-    expect(user.settings.mfa.mfaToken).toBeNull()
-    expect(user.settings.mfa.mfaSecret).toBeNull()
-    expect(user.settings.mfa.mfaRecoveryCodes).toBeNull()
-    expect(user.settings.mfa.mfaRecoveryCodesGeneratedAt).toBeNull()
-    expect(user.settings.mfa.mfaRecoveryCodesUsedAt).toBeNull()
-    expect(user.settings.mfa.mfaRecoveryCodesRegeneratedAt).toBeNull()
-    expect(user.settings.mfa.mfaRecoveryCodesUsedCount).toBeNull()
+    expect(user.mfa.mfaToken).toBeNull()
+    expect(user.mfa.mfaSecret).toBeNull()
+    expect(user.mfa.mfaRecoveryCodes).toBeNull()
+    expect(user.mfa.mfaRecoveryCodesGeneratedAt).toBeNull()
+    expect(user.mfa.mfaRecoveryCodesUsedAt).toBeNull()
+    expect(user.mfa.mfaRecoveryCodesRegeneratedAt).toBeNull()
+    expect(user.mfa.mfaRecoveryCodesUsedCount).toBeNull()
     expect(user.settings.backupAccount).toBeNull()
     expect(user.settings.buildVersion).toBe('debug')
   })
