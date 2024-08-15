@@ -29,8 +29,6 @@ export default class ErrorHandler {
 
   /**
   * Handles base error
-  * @param err Error to be handled
-  * @param res Express response function
   * @returns Response with generic error
   */
   private static _baseError(err: BaseError, res: Response) {
@@ -46,8 +44,7 @@ export default class ErrorHandler {
   }
 
   /**
-   * @param err Error to be handled
-   * @param res Express response function
+   * Handles authorization errors
    * @returns Response with unauthorized error code and its message
    * @see JsonWebToken {@link https://www.npmjs.com/package/jsonwebtoken}
    * @see Firebase-SDK {@link https://www.npmjs.com/package/firebase-admin}
@@ -58,8 +55,7 @@ export default class ErrorHandler {
   }
 
   /**
-   * @param err Error to be handled
-   * @param res Express response function
+   * Handles syntax errors
    * @returns Response with bad request error code and its message
    */
   private static _syntaxError(err: SyntaxError, res: Response) {
@@ -69,8 +65,6 @@ export default class ErrorHandler {
 
   /**
    * Handles Joi's library validations errors
-   * @param res Express response function
-   * @param err Error to be handled
    * @returns Response with validation error and its details
    * @see Joi {@link https://www.npmjs.com/package/joi}
    */
@@ -80,8 +74,6 @@ export default class ErrorHandler {
 
   /**
    * Handles MongoDB errors
-   * @param err Error to be handled
-   * @param res Express response function
    * @returns Response with the error code and its message
    * @see MongoDB {@link https://www.npmjs.com/package/mongodb}
    */
