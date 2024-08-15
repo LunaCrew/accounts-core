@@ -8,11 +8,11 @@ import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 
-class ErrorHandler {
+export default class ErrorHandler {
   /**
    * Handles errors in HTTP operations
    */
-  public static readonly errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  public static readonly httpErrorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
     switch (true) {
       case err instanceof BaseError: return this._baseError(err, res)
       case err instanceof ValidationError: return this._validationError(res, err)
@@ -106,5 +106,3 @@ class ErrorHandler {
     }
   }
 }
-
-export default ErrorHandler.errorHandler

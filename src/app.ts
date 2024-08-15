@@ -6,7 +6,7 @@ import * as dotenv from 'dotenv'
 import passport from 'passport'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { routes } from './router/routes'
-import errorHandler from './middleware/ErrorHandler'
+import ErrorHandler from './middleware/ErrorHandler'
 import configurePassport from './util/security/Passport'
 
 dotenv.config({ path: '.env' })
@@ -41,7 +41,7 @@ const start = () => {
     app
       .use(cors(corsOptions))
       .use(passport.initialize())
-      .use(errorHandler)
+      .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
       Log.d(`Running at http://localhost:${PORT}`, 'Server')
@@ -68,7 +68,6 @@ const collections = {
 }
 
 export { collections }
-export default app
 
 start()
 connect()
