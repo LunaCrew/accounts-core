@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit'
-import rateLimiter from 'src/middleware/rateLimiter'
+import RateLimiter from 'src/middleware/RateLimiter'
 
 jest.mock('express-rate-limit')
 
@@ -13,6 +13,6 @@ describe('RateLimiter middleware', () => {
   })
 
   it('should fail', () => {
-    expect(rateLimiter).toBeUndefined()
+    expect(RateLimiter.default).toBeUndefined()
   })
 })

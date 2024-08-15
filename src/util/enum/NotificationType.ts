@@ -1,7 +1,7 @@
 enum NotificationType {
-  POPUP = 'popup',
-  BALLOON = 'balloon',
-  SILENT = 'silent'
+  DEFAULT = 'default',
+  SILENT = 'silent',
+  DIALOG = 'dialog',
 }
 
 export default NotificationType
