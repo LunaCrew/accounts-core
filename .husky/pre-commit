@@ -4,5 +4,8 @@
 echo -e '\033[1;34m# Check dependencies\033[0m'
 npm run dependencies:fix
 
+echo -e '\033[1;34m# Check TODOs\033[0m'
+npm run check:todo
+
 echo -e '\033[1;34m# Lint\033[0m'
 npm run lint
