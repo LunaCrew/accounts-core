@@ -80,7 +80,8 @@ export default class UserController {
 
       const user = await collections.users.findOne(query.filter, { projection: { _id: 1, isDisabled: 1 } })
       if (user) {
-        if (!user?.isDisabled) {
+        const isEnabled = !user?.isDisabled
+        if (isEnabled) {
           const result = await collections.users.findOneAndUpdate(
             query.filter,
             query.data,

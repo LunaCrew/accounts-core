@@ -10,7 +10,7 @@ export default class AutoDelete {
   }
   
   private static readonly _job = CronJob.from({
-    cronTime: '00 40 13 * * 0-6', // every day at 01:23
+    cronTime: '13 12 01 * * 0-6', // every day at 01:12:13 GMT-03:00
     onTick: function () {
       AutoDelete.autoDelete()
     },

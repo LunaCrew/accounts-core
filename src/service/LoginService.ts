@@ -19,7 +19,7 @@ export default class LoginService {
 
       return { filter: { $and: [{ _id: params.id }] }, data }
     } catch (error) {
-      Log.e(`${error}`, 'GetUserService')
+      Log.e(`${error}`, 'LoginService')
     }
   }
 
