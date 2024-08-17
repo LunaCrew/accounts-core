@@ -20,17 +20,20 @@ export default class DisableUserService {
 
       return { filter: { $and: [{ _id: params.id }, { isDisabled: false }] }, data }
     } catch (error) {
-      Log.e(`${error}`, 'UpdateUserService')
+      Log.e(`${error}`, 'DisableUserService')
     }
   }
 
   private static _buildData(): { $set: object } | null {
     const data: { $set: object } = { $set: {} }
-    const currentTimestamp = new Date().toISOString()
+    const currentDate = new Date().toISOString()
+    const expirationDate = new Date()
+    expirationDate.setDate(expirationDate.getDate() + 30)
 
     data.$set = {
-      updatedAt: currentTimestamp,
-      disabledAt: currentTimestamp,
+      updatedAt: currentDate,
+      disabledAt: currentDate,
+      expiresIn: expirationDate.toISOString(),
       isDisabled: true
     }
 

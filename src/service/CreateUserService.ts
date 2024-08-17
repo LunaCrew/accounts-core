@@ -30,8 +30,18 @@ export default class CreateUserService {
   }
 
   private static _buildQuery(user: User): object {
+    const currentTime = new Date()
+    const currentTimePlusOneHour = new Date(currentTime.getTime() + 60 * 60 * 1000)
+
     user._id = newUUID()
     user.password = Password.encrypt(user.password)
+    user.createdAt = currentTime.toISOString()
+    user.isDisabled = false
+    user.emailVerification = {
+      verified: false,
+      token: newUUID(),
+      tokenExpiration: currentTimePlusOneHour.toISOString()
+    }
     return user
   }
 }

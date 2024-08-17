@@ -8,6 +8,7 @@ import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { routes } from './router/routes'
 import ErrorHandler from './middleware/ErrorHandler'
 import configurePassport from './util/security/Passport'
+import AutoDelete from './util/tasks/AutoDelete'
 
 dotenv.config({ path: '.env' })
 
@@ -47,6 +48,7 @@ const start = () => {
       Log.d(`Running at http://localhost:${PORT}`, 'Server')
     })
 
+    AutoDelete.startCronJob()
   } catch (error) {
     Log.e(`${error}`, 'Error starting server')
   }
