@@ -1,3 +1,3 @@
-export type UserService = object | null | undefined
+export type GeneralUserQuery = object | null | undefined
 
-export type UpdateUser = { filter: UserService, data: { $set: object } | null } | undefined | null
+export type UpdateUserQuery = { filter: GeneralUserQuery, data: { $set: object } | null } | undefined | null
