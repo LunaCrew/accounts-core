@@ -41,7 +41,7 @@ const routes = (app: Application) => {
     )
 
     .post(
-      '/api/auth/login',
+      '/api/auth/login/:id',
       RateLimiter.default,
       UserController.login,
       userRouter
