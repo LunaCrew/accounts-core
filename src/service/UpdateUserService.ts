@@ -1,13 +1,13 @@
 import { NextFunction, Request } from 'express'
 import Log from '@lunacrew/logger'
-import { UpdateUser } from '../types/Service'
+import { UpdateUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
 import { userUpdate } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
 
 export default class UpdateUserService {
-  static execute(req: Request, next: NextFunction): UpdateUser {
+  static execute(req: Request, next: NextFunction): UpdateUserQuery {
     try {
       let data: { $set: object } | null = { $set: {} }
 

@@ -3,38 +3,35 @@ import Log from '@lunacrew/logger'
 import { UpdateUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
 
-export default class DisableUserService {
+export default class LoginService {
   static execute(req: Request, next: NextFunction): UpdateUserQuery {
     try {
       let data: { $set: object } | null = { $set: {} }
-
       const params = {
         id: req.params.id
       }
 
-      const isValid = ValidateUser(params, next)
+      const validateParams = ValidateUser(params, next)
 
-      if (isValid) {
+      if (validateParams) {
         data = this._buildData()
       }
 
       return { filter: { $and: [{ _id: params.id }] }, data }
     } catch (error) {
-      Log.e(`${error}`, 'DisableUserService')
+      Log.e(`${error}`, 'GetUserService')
     }
   }
 
   private static _buildData(): { $set: object } | null {
     const data: { $set: object } = { $set: {} }
     const currentDate = new Date().toISOString()
-    const expirationDate = new Date()
-    expirationDate.setDate(expirationDate.getDate() + 30)
 
     data.$set = {
       updatedAt: currentDate,
-      disabledAt: currentDate,
-      expiresIn: expirationDate.toISOString(),
-      isDisabled: true
+      disabledAt: null,
+      expiresIn: null,
+      isDisabled: false
     }
 
     return data

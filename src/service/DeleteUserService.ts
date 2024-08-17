@@ -1,10 +1,10 @@
 import { NextFunction, Request } from 'express'
 import Log from '@lunacrew/logger'
-import { UserService } from '../types/Service'
+import { GeneralUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DeleteUserService {
-  static execute(req: Request, next: NextFunction): UserService {
+  static execute(req: Request, next: NextFunction): GeneralUserQuery {
     try {
       interface Filter {
         id: string | undefined
