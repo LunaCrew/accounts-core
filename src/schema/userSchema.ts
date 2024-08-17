@@ -6,15 +6,13 @@ import SpeechType from '../util/enum/SpeechType'
 const userQueryParams = joi.object({
   id: joi.string().guid({ version: 'uuidv4' }),
   email: joi.string().lowercase().email(),
+  forced: joi.boolean().default(false)
 }).or('id', 'email').required()
 
 const userCreate = joi.object({
   name: joi.string().min(2).max(32).required(),
   email: joi.string().lowercase().email().required(),
   password: joi.string().min(8).max(64).required(),
-  isDeleted: joi.boolean().default(false),
-  emailVerified: joi.boolean().default(false),
-  emailVerificationToken: joi.string().default(null),
   settings: joi.object({
     theme: joi.string().valid(...Object.values(Theme)).default(Theme.DARK),
     animations: joi.boolean().default(true),
@@ -28,9 +26,6 @@ const userUpdate = joi.object({
   name: joi.string().min(2).max(32),
   email: joi.string().lowercase().email(),
   password: joi.string().min(8).max(64),
-  isDeleted: joi.boolean(),
-  emailVerified: joi.boolean(),
-  emailVerificationToken: joi.string().allow(null),
   settings: joi.object({
     theme: joi.string().valid(...Object.values(Theme)).required(),
     animations: joi.boolean().required(),
@@ -38,6 +33,6 @@ const userUpdate = joi.object({
     speechType: joi.string().valid(...Object.values(SpeechType)).required(),
     mfa: joi.boolean().required()
   })
-}).or('name', 'email', 'password', 'isDeleted', 'emailVerified', 'emailVerificationToken', 'settings').required()
+}).or('name', 'email', 'password', 'settings').required()
 
 export { userCreate, userUpdate, userQueryParams }

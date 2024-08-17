@@ -7,6 +7,7 @@ import CreateUserService from '../service/CreateUserService'
 import GetUserService from '../service/GetUserService'
 import DeleteUserService from '../service/DeleteUserService'
 import UpdateUserService from '../service/UpdateUserService'
+import DisableUserService from '../service/DisableUserService'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import Password from '../util/security/Password'
@@ -71,11 +72,38 @@ export default class UserController {
     }
   }
 
+  public static readonly disableUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: UpdateUser = DisableUserService.execute(req, next)
+      if (!query?.filter || !query.data) return
+
+      // todo: update if isDisable is false
+      const result = await collections.users.findOneAndUpdate(
+        query.filter,
+        query.data,
+        { returnDocument: 'after', projection: { _id: 1, isDisabled: 1 } }
+      )
+
+      if (result) {
+        res.status(HttpStatus.code.OK).json(result)
+      } else {
+        next(new NotFound(CustomErrorMessage.NOT_FOUND))
+        next()
+      }
+
+      Log.i('UserController :: Calling Endpoint :: DisableUser')
+    } catch (error) {
+      Log.e(`${error}`, 'UserController :: DisableUser')
+    }
+  }
+
   public static readonly login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const query: UserService = GetUserService.execute(req, next)
       if (!query) return
 
+      // TODO: update isDisabled to false
+      // TODO: update disabledAt to null
       const user = await collections.users.findOne(query, { projection: { password: 1, _id: 1 } })
 
       if (!user) {
@@ -86,7 +114,7 @@ export default class UserController {
 
         if (isValid) {
           const token = JWT.generate(user._id.toString())
-          res.status(HttpStatus.code.OK).send({token: token})
+          res.status(HttpStatus.code.OK).send({ token: token })
         } else {
           next(new BadRequest(CustomErrorMessage.LOGIN_FAILED))
           next()
@@ -103,7 +131,11 @@ export default class UserController {
       const query: UpdateUser = UpdateUserService.execute(req, next)
       if (!query?.filter || !query.data) return
 
-      const result = await collections.users.findOneAndUpdate(query.filter, query.data, { returnDocument: 'after', projection: { password: 0 } })
+      const result = await collections.users.findOneAndUpdate(
+        query.filter,
+        query.data,
+        { returnDocument: 'after', projection: { password: 0 } }
+      )
 
       if (result) {
         res.status(HttpStatus.code.OK).json(result)
@@ -115,6 +147,31 @@ export default class UserController {
       Log.i('UserController :: Calling Endpoint :: UpdateUser')
     } catch (error) {
       Log.e(`${error}`, 'UserController :: UpdateUser')
+    }
+  }
+
+  public static readonly validateEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    // todo: implement email validation
+    try {
+      const query: UpdateUser = DisableUserService.execute(req, next) // todo create validation service
+      if (!query?.filter || !query.data) return
+
+      const result = await collections.users.findOneAndUpdate(
+        query.filter,
+        query.data,
+        { returnDocument: 'after', projection: { _id: 1, emailVerification: 1 } }
+      )
+
+      if (result) {
+        res.status(HttpStatus.code.OK).json(result)
+      } else {
+        next(new NotFound(CustomErrorMessage.NOT_FOUND))
+        next()
+      }
+
+      Log.i('UserController :: Calling Endpoint :: ValidateEmail')
+    } catch (error) {
+      Log.e(`${error}`, 'UserController :: ValidateEmail')
     }
   }
 }

@@ -54,6 +54,14 @@ const routes = (app: Application) => {
       UserController.updateUser,
       userRouter
     )
+
+    .post(
+      '/api/user/:id',
+      Auth.jwt,
+      RateLimiter.default,
+      UserController.disableUser,
+      userRouter
+    )
 }
 
 export { routes }
