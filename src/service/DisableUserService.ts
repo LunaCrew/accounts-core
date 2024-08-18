@@ -16,9 +16,8 @@ export default class DisableUserService {
 
       if (isValid) {
         data = this._buildData()
+        return { filter: { $and: [{ _id: params.id }] }, data }
       }
-
-      return { filter: { $and: [{ _id: params.id }] }, data }
     } catch (error) {
       Log.e(`${error}`, 'DisableUserService')
     }
