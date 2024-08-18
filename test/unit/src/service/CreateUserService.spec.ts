@@ -27,9 +27,10 @@ describe(':: Service :: CreateUserService ::', () => {
     expect(user).toHaveProperty('settings.notificationType')
     expect(user).toHaveProperty('settings.speechType')
     expect(user).toHaveProperty('settings.mfa')
-    expect(user).toHaveProperty('isDeleted')
-    expect(user).toHaveProperty('emailVerified')
-    expect(user).toHaveProperty('emailVerificationToken')
+    expect(user).toHaveProperty('emailVerification')
+    expect(user).toHaveProperty('emailVerification.verified')
+    expect(user).toHaveProperty('emailVerification.token')
+    expect(user).toHaveProperty('emailVerification.tokenExpiration')
   })
 
   it('should return a bad request status', () => {
