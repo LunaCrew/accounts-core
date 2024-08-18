@@ -52,7 +52,7 @@ function readFiles(filePath) {
       }
 
       if (line.match(/(fix:|FIX:)/g)) {
-        console.log(`${RED}FIX: ${BLUE}${filePath} ${YELLOW}(Line ${lineNumber + 1}):${BLUE} ${line.trim()}${RESET}`)
+        console.log(`${RED}FIX ${RESET}=> ${BLUE}${filePath} ${YELLOW}(Line ${lineNumber + 1}):${BLUE} ${line.trim()}${RESET}`)
       }
     })
   })

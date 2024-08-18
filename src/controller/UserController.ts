@@ -31,7 +31,8 @@ export default class UserController {
 
       Log.i('UserController :: Calling Endpoint :: CreateUser')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: CreateUser')
+      Log.custom(`${error}`, { tag: 'UserController :: CreateUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 
@@ -50,7 +51,8 @@ export default class UserController {
       }
       Log.i('UserController :: Calling Endpoint :: GetUser')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: GetUser')
+      Log.custom(`${error}`, { tag: 'UserController :: GetUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 
@@ -69,7 +71,8 @@ export default class UserController {
       }
       Log.i('UserController :: Calling Endpoint :: DeleteUser')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: DeleteUser')
+      Log.custom(`${error}`, { tag: 'UserController :: DeleteUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 
@@ -100,7 +103,8 @@ export default class UserController {
       }
       Log.i('UserController :: Calling Endpoint :: DisableUser')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: DisableUser')
+      Log.custom(`${error}`, { tag: 'UserController :: DisableUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 
@@ -137,7 +141,8 @@ export default class UserController {
       }
       Log.i('UserController :: Calling Endpoint :: Login')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: Login')
+      Log.custom(`${error}`, { tag: 'UserController :: Login', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 
@@ -161,7 +166,8 @@ export default class UserController {
 
       Log.i('UserController :: Calling Endpoint :: UpdateUser')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: UpdateUser')
+      Log.custom(`${error}`, { tag: 'UserController :: UpdateUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      next(error)
     }
   }
 }
