@@ -3,7 +3,7 @@
   "info": {
     "title": "Accounts Core API",
     "description": "API documentation for the Accounts Core service.",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "license": {
       "name": "AGPL-3.0",
       "url": "https://www.gnu.org/licenses/agpl-3.0.html"
@@ -94,7 +94,7 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/api/auth/login/:id": {
       "post": {
         "tags": [
           "open"
@@ -102,8 +102,8 @@
         "summary": "Login",
         "parameters": [
           {
-            "name": "email",
-            "in": "query",
+            "name": "id",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -119,7 +119,7 @@
                   "password": {
                     "type": "string",
                     "minLength": 8,
-                    "maxLength": 32
+                    "maxLength": 64
                   }
                 }
               }
@@ -143,36 +143,6 @@
       }
     },
     "/api/user/:id": {
-      "delete": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Delete an user",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
       "patch": {
         "tags": [
           "auth"
@@ -212,6 +182,74 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Disable an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Delete an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   },
@@ -232,64 +270,7 @@
           "password": {
             "type": "string",
             "minLength": 8,
-            "maxLength": 32
-          },
-          "isDeleted": {
-            "type": "boolean",
-            "default": false
-          },
-          "emailVerified": {
-            "type": "boolean",
-            "default": false
-          },
-          "emailVerificationToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "mfa": {
-            "type": "object",
-            "properties": {
-              "mfaToken": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaSecret": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodes": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "nullable": true
-              },
-              "mfaRecoveryCodesGeneratedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesUsedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesRegeneratedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesUsedCount": {
-                "type": "integer",
-                "nullable": true
-              }
-            },
-            "required": [
-              "mfaToken",
-              "mfaSecret",
-              "mfaRecoveryCodes",
-              "mfaRecoveryCodesGeneratedAt",
-              "mfaRecoveryCodesUsedAt",
-              "mfaRecoveryCodesRegeneratedAt",
-              "mfaRecoveryCodesUsedCount"
-            ]
+            "maxLength": 64
           },
           "settings": {
             "type": "object",
@@ -309,9 +290,9 @@
               "notificationType": {
                 "type": "string",
                 "enum": [
-                  "popup",
+                  "default",
                   "silent",
-                  "balloon"
+                  "dialog"
                 ],
                 "default": "popup"
               },
@@ -324,23 +305,9 @@
                 ],
                 "default": "neutral"
               },
-              "publicKey": {
-                "type": "string",
-                "nullable": true
-              },
-              "backupAccount": {
-                "type": "string",
-                "format": "email",
-                "nullable": true
-              },
-              "buildVersion": {
-                "type": "string",
-                "enum": [
-                  "release",
-                  "beta",
-                  "debug"
-                ],
-                "default": "release"
+              "mfa": {
+                "type": "boolean",
+                "default": false
               }
             },
             "required": [
@@ -348,9 +315,7 @@
               "animations",
               "notificationType",
               "speechType",
-              "publicKey",
-              "backupAccount",
-              "buildVersion"
+              "mfa"
             ]
           }
         },
@@ -377,55 +342,7 @@
           "password": {
             "type": "string",
             "minLength": 8,
-            "maxLength": 32
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "emailVerified": {
-            "type": "boolean"
-          },
-          "emailVerificationToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "mfa": {
-            "type": "object",
-            "properties": {
-              "mfaToken": {
-                "type": "string"
-              },
-              "mfaSecret": {
-                "type": "string"
-              },
-              "mfaRecoveryCodes": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "mfaRecoveryCodesGeneratedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesUsedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesRegeneratedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesUsedCount": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "mfaToken",
-              "mfaSecret",
-              "mfaRecoveryCodes",
-              "mfaRecoveryCodesGeneratedAt",
-              "mfaRecoveryCodesUsedAt",
-              "mfaRecoveryCodesRegeneratedAt",
-              "mfaRecoveryCodesUsedCount"
-            ]
+            "maxLength": 64
           },
           "settings": {
             "type": "object",
@@ -443,9 +360,9 @@
               "notificationType": {
                 "type": "string",
                 "enum": [
-                  "popup",
-                  "balloon",
-                  "silent"
+                  "default",
+                  "silent",
+                  "dialog"
                 ]
               },
               "speechType": {
@@ -456,30 +373,16 @@
                   "male"
                 ]
               },
-              "publicKey": {
-                "type": "string"
-              },
-              "backupAccount": {
-                "type": "string",
-                "format": "email"
-              },
-              "buildVersion": {
-                "type": "string",
-                "enum": [
-                  "release",
-                  "beta",
-                  "debug"
-                ]
-              }
+              "mfa": {
+                "type": "boolean"
+              }          
             },
             "required": [
               "theme",
               "animations",
               "notificationType",
               "speechType",
-              "publicKey",
-              "backupAccount",
-              "buildVersion"
+              "mfa"
             ]
           }
         },
