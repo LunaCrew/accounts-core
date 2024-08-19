@@ -1,6 +1,6 @@
 {
   "name": "accounts-core",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Accounts Core API - Luna's User Management",
   "main": "src/app.ts",
   "_moduleAliases": {
@@ -21,6 +21,7 @@
     "clear:coverage": "rm -rf coverage",
     "clear:dependencies": "rm -rf node_modules && rm package-lock.json",
     "prepare": "husky install",
+    "check:todo": "node ./scripts/checkTodo.js",
     "help": "node scripts/help.js"
   },
   "repository": {
@@ -54,8 +55,9 @@
     "typescript": "5.3.3"
   },
   "dependencies": {
-    "@lunacrew/logger": "1.1.0",
+    "@lunacrew/logger": "2.0.0",
     "cors": "2.8.5",
+    "cron": "3.1.7",
     "dotenv": "16.3.1",
     "express": "4.19.2",
     "express-rate-limit": "7.2.0",

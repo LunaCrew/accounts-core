@@ -4,7 +4,14 @@ export type User = {
   name: string
   password: string
   createdAt: string
-  deletedAt: string | null
+  updatedAt: string | null
+  disabledAt: string | null
+  isDisabled: boolean
+  emailVerification: {
+    verified: boolean
+    token: string
+    tokenExpiration: string
+  }
   settings: {
     theme: string
     animations: boolean
@@ -17,4 +24,5 @@ export type User = {
 export type UserParams = {
   id: string
   email: string
+  forced: boolean
 }

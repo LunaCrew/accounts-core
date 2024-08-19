@@ -8,6 +8,7 @@ import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { routes } from './router/routes'
 import ErrorHandler from './middleware/ErrorHandler'
 import configurePassport from './util/security/Passport'
+import AutoDelete from './util/tasks/AutoDelete'
 
 dotenv.config({ path: '.env' })
 
@@ -44,9 +45,10 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.d(`Running at http://localhost:${PORT}`, 'Server')
+      Log.i(`Running at http://localhost:${PORT}`, 'Server')
     })
 
+    AutoDelete.startCronJob()
   } catch (error) {
     Log.e(`${error}`, 'Error starting server')
   }
@@ -56,7 +58,7 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.d('Connected', 'MongoDB')
+    Log.i('Connected', 'MongoDB')
   } catch (error) {
     await client.close()
     Log.e(`${error}`, 'MongoDB Connection')

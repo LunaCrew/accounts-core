@@ -2,6 +2,7 @@ enum CustomErrorMessage {
   BAD_REQUEST = '400 - Bad Request',
   LOGIN_FAILED = '400 - Login Failed - Invalid Credentials',
   AUTH_NOT_PROVIDED = '400 - No token provided',
+  USER_ALREADY_DISABLED = '400 - User already disabled',
   UNAUTHORIZED = '401 - Unauthorized',
   FORBIDDEN = '403 - Forbidden',
   NOT_FOUND = '404 - User Not Found',
