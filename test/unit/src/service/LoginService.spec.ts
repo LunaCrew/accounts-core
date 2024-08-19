@@ -25,7 +25,7 @@ describe('LoginService', () => {
 
     expect(query).toBeDefined()
     expect(query).toEqual({ 
-      filter: { $and: [{ _id: '8fa40850-e31c-448a-9121-815b3cd5582a' }] }, 
+      filter: { $and: [{ _id: '8fa40850-e31d-448f-9120-815b3cd5582a' }] }, 
       data: { 
         $set: { 
           disabledAt: null,
