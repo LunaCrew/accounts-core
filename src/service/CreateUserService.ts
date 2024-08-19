@@ -25,6 +25,7 @@ export default class CreateUserService {
       }
     } catch (error) {
       Log.e(`${error}`, 'CreateUserService')
+      next(error)
       return null
     }
   }

@@ -45,7 +45,7 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.d(`Running at http://localhost:${PORT}`, 'Server')
+      Log.i(`Running at http://localhost:${PORT}`, 'Server')
     })
 
     AutoDelete.startCronJob()
@@ -58,7 +58,7 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.d('Connected', 'MongoDB')
+    Log.i('Connected', 'MongoDB')
   } catch (error) {
     await client.close()
     Log.e(`${error}`, 'MongoDB Connection')

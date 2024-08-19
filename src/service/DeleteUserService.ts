@@ -27,6 +27,7 @@ export default class DeleteUserService {
       }
     } catch (error) {
       Log.e(`${error}`, 'DeleteUserService')
+      next(error)
     }
   }
 

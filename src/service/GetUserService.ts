@@ -14,6 +14,7 @@ export default class GetUserService {
       return ValidateUser(params, next)
     } catch (error) {
       Log.e(`${error}`, 'GetUserService')
+      next(error)
     }
   }
 }

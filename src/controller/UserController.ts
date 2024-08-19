@@ -29,9 +29,9 @@ export default class UserController {
         next()
       }
 
-      Log.i('UserController :: Calling Endpoint :: CreateUser')
+      Log.i('UserController :: Calling Endpoint', 'CreateUser')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: CreateUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: CreateUser')
       next(error)
     }
   }
@@ -49,9 +49,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint :: GetUser')
+      Log.i('UserController :: Calling Endpoint', 'GetUser')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: GetUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: GetUser')
       next(error)
     }
   }
@@ -69,9 +69,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint :: DeleteUser')
+      Log.i('UserController :: Calling Endpoint', 'DeleteUser')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: DeleteUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: DeleteUser')
       next(error)
     }
   }
@@ -101,9 +101,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint :: DisableUser')
+      Log.i('UserController :: Calling Endpoint', 'DisableUser')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: DisableUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: DisableUser')
       next(error)
     }
   }
@@ -139,9 +139,9 @@ export default class UserController {
           next()
         }
       }
-      Log.i('UserController :: Calling Endpoint :: Login')
+      Log.i('UserController :: Calling Endpoint', 'Login')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: Login', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: Login')
       next(error)
     }
   }
@@ -164,9 +164,9 @@ export default class UserController {
         next()
       }
 
-      Log.i('UserController :: Calling Endpoint :: UpdateUser')
+      Log.i('UserController :: Calling Endpoint', 'UpdateUser')
     } catch (error) {
-      Log.custom(`${error}`, { tag: 'UserController :: UpdateUser', tagColor: 'red', tagIcon: 'E', iconColor: 'red' })
+      Log.e(`${error}`, 'UserController :: UpdateUser')
       next(error)
     }
   }

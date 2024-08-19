@@ -20,6 +20,7 @@ export default class DisableUserService {
       }
     } catch (error) {
       Log.e(`${error}`, 'DisableUserService')
+      next(error)
     }
   }
 

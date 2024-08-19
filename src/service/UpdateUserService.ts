@@ -24,6 +24,7 @@ export default class UpdateUserService {
       return { filter, data }
     } catch (error) {
       Log.e(`${error}`, 'UpdateUserService')
+      next(error)
     }
   }
 
