@@ -45,12 +45,12 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.info(`Running at http://localhost:${PORT}`, 'Server')
+      Log.info(`Running at http://localhost:${PORT}`, 'server_start')
     })
 
     AutoDelete.startCronJob()
   } catch (error) {
-    Log.error(`${error}`, 'Error starting server')
+    Log.error(`Error starting server :: ${error}`, 'server_start')
   }
 }
 
@@ -58,10 +58,10 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.info('Connected', 'MongoDB')
+    Log.info('MongoDB :: Connected', 'db_connection')
   } catch (error) {
     await client.close()
-    Log.error(`${error}`, 'MongoDB Connection')
+    Log.error(`MongoDB Connection :: ${error}`, 'db_connection')
   }
 }
 

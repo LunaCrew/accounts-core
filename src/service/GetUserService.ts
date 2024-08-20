@@ -13,7 +13,7 @@ export default class GetUserService {
 
       return ValidateUser(params, next)
     } catch (error) {
-      Log.error(`${error}`, 'GetUserService')
+      Log.error(`GetUserService :: ${error}`, 'service')
       next(error)
     }
   }

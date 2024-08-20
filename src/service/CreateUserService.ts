@@ -5,6 +5,7 @@ import { User } from '../types/User'
 import { userCreate } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
+import VerificationCode from '../util/security/VerificationCode'
 import Log from '../util/log/Log'
 
 export default class CreateUserService {
@@ -24,7 +25,7 @@ export default class CreateUserService {
         return this._buildQuery(value)
       }
     } catch (error) {
-      Log.error(`${error}`, 'CreateUserService')
+      Log.error(`CreateUserService :: ${error}`, 'service')
       next(error)
       return null
     }
@@ -40,7 +41,7 @@ export default class CreateUserService {
     user.isDisabled = false
     user.emailVerification = {
       verified: false,
-      token: newUUID(),
+      token: VerificationCode.generate(8),
       tokenExpiration: currentTimePlusOneHour.toISOString()
     }
     return user

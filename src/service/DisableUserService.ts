@@ -19,7 +19,7 @@ export default class DisableUserService {
         return { filter: { $and: [{ _id: params.id }] }, data }
       }
     } catch (error) {
-      Log.error(`${error}`, 'DisableUserService')
+      Log.error(`DisableUserService :: ${error}`, 'service')
       next(error)
     }
   }
