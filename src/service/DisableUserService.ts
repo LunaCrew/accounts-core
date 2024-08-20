@@ -1,7 +1,7 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { UpdateUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
+import Log from '../util/log/Log'
 
 export default class DisableUserService {
   static execute(req: Request, next: NextFunction): UpdateUserQuery {
@@ -19,7 +19,7 @@ export default class DisableUserService {
         return { filter: { $and: [{ _id: params.id }] }, data }
       }
     } catch (error) {
-      Log.e(`${error}`, 'DisableUserService')
+      Log.error(`${error}`, 'DisableUserService')
       next(error)
     }
   }

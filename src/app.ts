@@ -1,7 +1,6 @@
 import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import cors from 'cors'
-import Log from '@lunacrew/logger'
 import * as dotenv from 'dotenv'
 import passport from 'passport'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
@@ -9,6 +8,7 @@ import { routes } from './router/routes'
 import ErrorHandler from './middleware/ErrorHandler'
 import configurePassport from './util/security/Passport'
 import AutoDelete from './util/tasks/AutoDelete'
+import Log from './util/log/Log'
 
 dotenv.config({ path: '.env' })
 
@@ -45,12 +45,12 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.i(`Running at http://localhost:${PORT}`, 'Server')
+      Log.info(`Running at http://localhost:${PORT}`, 'Server')
     })
 
     AutoDelete.startCronJob()
   } catch (error) {
-    Log.e(`${error}`, 'Error starting server')
+    Log.error(`${error}`, 'Error starting server')
   }
 }
 
@@ -58,10 +58,10 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.i('Connected', 'MongoDB')
+    Log.info('Connected', 'MongoDB')
   } catch (error) {
     await client.close()
-    Log.e(`${error}`, 'MongoDB Connection')
+    Log.error(`${error}`, 'MongoDB Connection')
   }
 }
 

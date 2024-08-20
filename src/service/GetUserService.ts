@@ -1,7 +1,7 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { GeneralUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
+import Log from '../util/log/Log'
 
 export default class GetUserService {
   static execute(req: Request, next: NextFunction): GeneralUserQuery {
@@ -13,7 +13,7 @@ export default class GetUserService {
 
       return ValidateUser(params, next)
     } catch (error) {
-      Log.e(`${error}`, 'GetUserService')
+      Log.error(`${error}`, 'GetUserService')
       next(error)
     }
   }

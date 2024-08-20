@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
 import { JsonWebTokenError } from 'jsonwebtoken'
-import Log from '@lunacrew/logger'
 import BaseError from '../error/BaseError'
 import { ValidationError } from '../error/CustomError'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
+import Log from '../util/log/Log'
 
 export default class ErrorHandler {
   /**

@@ -1,11 +1,11 @@
 import { NextFunction, Request } from 'express'
 import { v4 as newUUID } from 'uuid'
-import Log from '@lunacrew/logger'
 import { GeneralUserQuery } from '../types/Query'
 import { User } from '../types/User'
 import { userCreate } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
+import Log from '../util/log/Log'
 
 export default class CreateUserService {
   static execute(req: Request, next: NextFunction): GeneralUserQuery {
@@ -24,7 +24,7 @@ export default class CreateUserService {
         return this._buildQuery(value)
       }
     } catch (error) {
-      Log.e(`${error}`, 'CreateUserService')
+      Log.error(`${error}`, 'CreateUserService')
       next(error)
       return null
     }

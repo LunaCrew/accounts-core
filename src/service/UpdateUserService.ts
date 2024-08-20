@@ -1,10 +1,10 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { UpdateUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
 import { userUpdate } from '../schema/userSchema'
 import { ValidationError } from '../error/CustomError'
 import Password from '../util/security/Password'
+import Log from '../util/log/Log'
 
 export default class UpdateUserService {
   static execute(req: Request, next: NextFunction): UpdateUserQuery {
@@ -23,7 +23,7 @@ export default class UpdateUserService {
 
       return { filter, data }
     } catch (error) {
-      Log.e(`${error}`, 'UpdateUserService')
+      Log.error(`${error}`, 'UpdateUserService')
       next(error)
     }
   }
