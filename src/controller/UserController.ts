@@ -1,18 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
-import Log from '@lunacrew/logger'
 import { collections } from '../app'
-import { NotFound, BadRequest } from '../error/CustomError'
-import { GeneralUserQuery, UpdateUserQuery } from '../types/Query'
+import { NotFound, BadRequest, InternalServerError } from '../error/CustomError'
+import { GeneralUserQuery, UpdateUserQuery, VerifyEmailQuery } from '../types/Query'
 import CreateUserService from '../service/CreateUserService'
 import GetUserService from '../service/GetUserService'
 import DeleteUserService from '../service/DeleteUserService'
 import UpdateUserService from '../service/UpdateUserService'
 import DisableUserService from '../service/DisableUserService'
 import LoginService from '../service/LoginService'
+import VerifyEmailService from '../service/VerifyEmailService'
+import ResendEmailVerificationService from '../service/ResendEmailVerificationService'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import Password from '../util/security/Password'
 import JWT from '../util/security/JWT'
+import Log from '../util/log/Log'
 
 export default class UserController {
   public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -23,15 +25,17 @@ export default class UserController {
       const result = await collections.users.insertOne(query)
 
       if (result) {
-        res.status(HttpStatus.code.CREATED).send({ id: result.insertedId })
+        const token = JWT.generate(result.insertedId.toString())
+        res.status(HttpStatus.code.CREATED).send({ id: result.insertedId, token: token })
+        // TODO: send email verification
       } else {
         next(new BadRequest(CustomErrorMessage.BAD_REQUEST))
         next()
       }
 
-      Log.i('UserController :: Calling Endpoint', 'CreateUser')
+      Log.info('UserController :: Calling Endpoint :: CreateUser', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: CreateUser')
+      Log.error(`UserController :: CreateUser :: ${error}`, 'controller')
       next(error)
     }
   }
@@ -49,9 +53,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint', 'GetUser')
+      Log.info('UserController :: Calling Endpoint :: GetUser', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: GetUser')
+      Log.error(`UserController :: GetUser :: ${error}`, 'controller')
       next(error)
     }
   }
@@ -69,9 +73,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint', 'DeleteUser')
+      Log.info('UserController :: Calling Endpoint :: DeleteUser', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: DeleteUser')
+      Log.error(`UserController :: DeleteUser :: ${error}`, 'controller')
       next(error)
     }
   }
@@ -92,6 +96,9 @@ export default class UserController {
           )
           if (result) {
             res.status(HttpStatus.code.OK).send(result)
+          } else {
+            next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+            next()
           }
         } else {
           next(new BadRequest(CustomErrorMessage.USER_ALREADY_DISABLED))
@@ -101,9 +108,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.i('UserController :: Calling Endpoint', 'DisableUser')
+      Log.info('UserController :: Calling Endpoint :: DisableUser', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: DisableUser')
+      Log.error(`UserController :: DisableUser :: ${error}`, 'controller')
       next(error)
     }
   }
@@ -119,29 +126,24 @@ export default class UserController {
         next(new BadRequest(CustomErrorMessage.LOGIN_FAILED))
         next()
       } else {
-        const isValid = Password.validate(req.body.password, user.password)
+        const isValidPassword = Password.validate(req.body.password, user.password)
         const isDisabled = user?.isDisabled
 
-        if (isValid) {
+        if (isValidPassword) {
           if (isDisabled) {
-            // re-enable user on login
-            await collections.users.findOneAndUpdate(
-              query.filter,
-              query.data,
-              { returnDocument: 'after', projection: { _id: 1, isDisabled: 1 } }
-            )
+            await this._reEnableUser(user._id.toString(), query.filter, query.data, res, next)
+          } else {
+            const token = JWT.generate(user._id.toString())
+            res.status(HttpStatus.code.OK).send({ token: token })
           }
-
-          const token = JWT.generate(user._id.toString())
-          res.status(HttpStatus.code.OK).send({ token: token })
         } else {
           next(new BadRequest(CustomErrorMessage.LOGIN_FAILED))
           next()
         }
       }
-      Log.i('UserController :: Calling Endpoint', 'Login')
+      Log.info('UserController :: Calling Endpoint :: Login', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: Login')
+      Log.error(`UserController :: Login :: ${error}`, 'controller')
       next(error)
     }
   }
@@ -164,10 +166,116 @@ export default class UserController {
         next()
       }
 
-      Log.i('UserController :: Calling Endpoint', 'UpdateUser')
+      Log.info('UserController :: Calling Endpoint :: UpdateUser', 'controller')
     } catch (error) {
-      Log.e(`${error}`, 'UserController :: UpdateUser')
+      Log.error(`UserController :: UpdateUser :: ${error}`, 'controller')
       next(error)
+    }
+  }
+
+  public static readonly verifyEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: VerifyEmailQuery = VerifyEmailService.execute(req, next)
+      if (!query?.filter || !query?.data) return
+
+      const user = await collections.users.findOne(query.filter, { projection: { _id: 1, emailVerification: 1 } })
+      if (user) {
+        const isVerified = user?.emailVerification?.verified as boolean
+        const verificationToken = user?.emailVerification?.token as string
+        const verificationTokenExpiration = user?.emailVerification?.tokenExpiration as string
+        const currentTime = new Date().toISOString()
+
+        const isInExpirationWindow = new Date(currentTime) < new Date(verificationTokenExpiration)
+        const tokenMatches = verificationToken === query.data.token.toUpperCase()
+
+        const isTokenValid = isInExpirationWindow && tokenMatches
+
+        if (isVerified) {
+          res.status(HttpStatus.code.NO_CONTENT).send(user)
+        } else {
+          await this._setVerifiedEmail(isTokenValid, query.filter, query.data.set, res, next)
+        }
+      } else {
+        next(new NotFound(CustomErrorMessage.NOT_FOUND))
+        next()
+      }
+      Log.info('UserController :: Calling Endpoint :: VerifyEmail', 'controller')
+    } catch (error) {
+      Log.error(`UserController :: VerifyEmail :: ${error}`, 'controller')
+      next(error)
+    }
+  }
+
+  public static readonly resendEmailVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const query: UpdateUserQuery = ResendEmailVerificationService.execute(req, next)
+      if (!query?.filter || !query?.data) return
+
+      const result = await collections.users.findOneAndUpdate(
+        query.filter,
+        query.data,
+        { returnDocument: 'after', projection: { _id: 1, emailVerification: 1, settings: { language: 1 } } }
+      )
+
+      if (result) {
+        res.status(HttpStatus.code.OK).send(result)
+        // TODO: send email verification
+      } else {
+        next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+        next()
+      }
+      Log.info('UserController :: Calling Endpoint :: ResendEmailVerification', 'controller')
+    } catch (error) {
+      Log.error(`UserController :: ResendEmailVerification :: ${error}`, 'controller')
+      next(error)
+    }
+  }
+
+  //* private methods *//
+  private static readonly _setVerifiedEmail = async (
+    isTokenValid: boolean,
+    filter: object,
+    data: object,
+    res: Response,
+    next: NextFunction
+  ) => {
+    if (isTokenValid) {
+      const result = await collections.users.findOneAndUpdate(
+        filter,
+        data,
+        { returnDocument: 'after', projection: { _id: 1, emailVerification: 1 } }
+      )
+      if (result) {
+        res.status(HttpStatus.code.OK).send(result)
+      } else {
+        next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+        next()
+      }
+    } else {
+      next(new BadRequest(CustomErrorMessage.INVALID_TOKEN))
+      next()
+    }
+  }
+
+  private static async _reEnableUser(
+    userId: string,
+    filter: object,
+    data: object,
+    res: Response,
+    next: NextFunction
+  ) {
+    const result = await collections.users.findOneAndUpdate(
+      filter,
+      data,
+      { returnDocument: 'after', projection: { _id: 1, isDisabled: 1 } }
+    )
+
+    if (result) {
+      const token = JWT.generate(userId)
+      res.status(HttpStatus.code.OK).send({ token: token })
+    } else {
+      next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+      next()
     }
   }
 }

@@ -2,11 +2,13 @@ import joi from 'joi'
 import Theme from '../util/enum/Theme'
 import NotificationType from '../util/enum/NotificationType'
 import SpeechType from '../util/enum/SpeechType'
+import Language from '../util/enum/Language'
 
 const userQueryParams = joi.object({
   id: joi.string().guid({ version: 'uuidv4' }),
   email: joi.string().lowercase().email(),
-  forced: joi.boolean().default(false)
+  forced: joi.boolean().default(false),
+  token: joi.string().length(8).alphanum()
 }).or('id', 'email').required()
 
 const userCreate = joi.object({
@@ -18,7 +20,8 @@ const userCreate = joi.object({
     animations: joi.boolean().default(true),
     notificationType: joi.string().valid(...Object.values(NotificationType)).default(NotificationType.DEFAULT),
     speechType: joi.string().valid(...Object.values(SpeechType)).default(SpeechType.NEUTRAL),
-    mfa: joi.boolean().default(false)
+    mfa: joi.boolean().default(false),
+    language: joi.string().valid(...Object.values(Language)).default(Language.EN_US)
   }).required()
 })
 
@@ -31,7 +34,8 @@ const userUpdate = joi.object({
     animations: joi.boolean().required(),
     notificationType: joi.string().valid(...Object.values(NotificationType)).required(),
     speechType: joi.string().valid(...Object.values(SpeechType)).required(),
-    mfa: joi.boolean().required()
+    mfa: joi.boolean().required(),
+    language: joi.string().valid(...Object.values(Language)).required()
   })
 }).or('name', 'email', 'password', 'settings').required()
 

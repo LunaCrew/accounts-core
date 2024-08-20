@@ -62,6 +62,22 @@ const routes = (app: Application) => {
       UserController.disableUser,
       userRouter
     )
+
+    .post(
+      '/api/auth/verify-email/:id/:token',
+      Auth.jwt,
+      RateLimiter.default,
+      UserController.verifyEmail,
+      userRouter
+    )
+
+    .post(
+      '/api/auth/resend-email/:id',
+      Auth.jwt,
+      RateLimiter.default,
+      UserController.resendEmailVerification,
+      userRouter
+    )
 }
 
 export { routes }

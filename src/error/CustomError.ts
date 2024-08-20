@@ -32,3 +32,10 @@ export class BadRequest extends BaseError {
     Object.setPrototypeOf(this, BadRequest.prototype)
   }
 }
+
+export class InternalServerError extends BaseError {
+  constructor(message: string) {
+    super(message, HttpStatus.code.INTERNAL_SERVER_ERROR)
+    Object.setPrototypeOf(this, InternalServerError.prototype)
+  }
+}

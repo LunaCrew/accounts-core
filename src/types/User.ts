@@ -18,6 +18,7 @@ export type User = {
     notificationType: string
     speechType: string
     mfa: boolean
+    language: string
   }
 }
 
