@@ -3,7 +3,7 @@ import { v4 as newUUID } from 'uuid'
 import { GeneralUserQuery } from '../types/Query'
 import { User } from '../types/User'
 import { userCreate } from '../schema/userSchema'
-import { ValidationError } from '../error/CustomError'
+import { BadRequest } from '../error/CustomError'
 import Password from '../util/security/Password'
 import VerificationCode from '../util/security/VerificationCode'
 import Log from '../util/log/Log'
@@ -14,12 +14,8 @@ export default class CreateUserService {
       const { error, value } = userCreate.validate(req.body)
 
       if (error) {
-        next(new ValidationError(error.details.map((detail) => {
-          const key = detail.context?.key ?? ''
-          return {
-            [key]: detail.message
-          }
-        })))
+        const message = error.details[0].message
+        next(new BadRequest(message))
         next()
       } else {
         return this._buildQuery(value)

@@ -13,7 +13,7 @@ export default class DeleteUserService {
 
       const params = {
         id: req.params.id,
-        forced: this._parseBoolean(req.query.forced?.toString())
+        forced: req.query.forced?.valueOf() === 'true'
       } as Filter
 
       const isValid = ValidateUser(params, next)
@@ -29,9 +29,5 @@ export default class DeleteUserService {
       Log.error(`DeleteUserService :: ${error}`, 'service')
       next(error)
     }
-  }
-
-  private static _parseBoolean = (value: string | undefined): boolean => {
-    return value === 'true'
   }
 }

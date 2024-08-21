@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import BaseError from '../error/BaseError'
-import { ValidationError } from '../error/CustomError'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
@@ -15,7 +14,6 @@ export default class ErrorHandler {
   public static readonly httpErrorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
     switch (true) {
       case err instanceof BaseError: return this._baseError(err, res)
-      case err instanceof ValidationError: return this._validationError(res, err)
       case err instanceof MongoServerError: return this._mongoDbError(err, res)
       case err instanceof JsonWebTokenError: return this._unauthorizedError(err, res)
       case err instanceof SyntaxError: return this._syntaxError(err, res)
@@ -61,15 +59,6 @@ export default class ErrorHandler {
   private static _syntaxError(err: SyntaxError, res: Response) {
     Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
     return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.BAD_REQUEST })
-  }
-
-  /**
-   * Handles Joi's library validations errors
-   * @returns Response with validation error and its details
-   * @see Joi {@link https://www.npmjs.com/package/joi}
-   */
-  private static _validationError(res: Response, err: ValidationError) {
-    return res.status(err.status).json({ error: err.message, data: err.errorData })
   }
 
   /**

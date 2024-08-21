@@ -1,16 +1,6 @@
 import BaseError from './BaseError'
-import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import { MongoServerError } from 'mongodb'
-
-export class ValidationError extends BaseError {
-  errorData: Record<string, string>[] = []
-  constructor(data: Record<string,string>[]) {
-    super(CustomErrorMessage.BAD_REQUEST, HttpStatus.code.BAD_REQUEST)
-    this.errorData = data
-    Object.setPrototypeOf(this, ValidationError.prototype)
-  }
-}
 
 export class NotFound extends BaseError {
   constructor(message: string) {

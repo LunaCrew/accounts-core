@@ -2,7 +2,7 @@ import { NextFunction, Request } from 'express'
 import { UpdateUserQuery } from '../types/Query'
 import ValidateUser from '../util/validation/ValidateUser'
 import { userUpdate } from '../schema/userSchema'
-import { ValidationError } from '../error/CustomError'
+import { BadRequest } from '../error/CustomError'
 import Password from '../util/security/Password'
 import Log from '../util/log/Log'
 
@@ -33,12 +33,8 @@ export default class UpdateUserService {
     const data: { $set: object } = { $set: {} }
 
     if (error) {
-      next(new ValidationError(error.details.map((detail) => {
-        const key = detail.context?.key ?? ''
-        return {
-          [key]: detail.message
-        }
-      })))
+      const message = error.details[0].message
+      next(new BadRequest(message))
       next()
       return null
     } else {
