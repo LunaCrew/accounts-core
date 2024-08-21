@@ -22,7 +22,8 @@
     "clear:dependencies": "rm -rf node_modules && rm package-lock.json",
     "prepare": "husky install",
     "check:todo": "node ./scripts/checkTodo.js",
-    "help": "node scripts/help.js"
+    "help": "node scripts/help.js",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "repository": {
     "type": "git",
@@ -64,9 +65,11 @@
     "joi": "17.11.0",
     "jsonwebtoken": "9.0.2",
     "mongodb": "6.3.0",
+    "nodemailer": "^6.9.14",
     "passport": "0.7.0",
     "passport-jwt": "4.0.1",
     "swagger-ui-express": "5.0.0",
+    "typesafe-i18n": "^5.26.2",
     "uuidv4": "6.2.13"
   },
   "nodemonConfig": {
