@@ -65,11 +65,11 @@
     "joi": "17.11.0",
     "jsonwebtoken": "9.0.2",
     "mongodb": "6.3.0",
-    "nodemailer": "^6.9.14",
+    "nodemailer": "6.9.14",
     "passport": "0.7.0",
     "passport-jwt": "4.0.1",
     "swagger-ui-express": "5.0.0",
-    "typesafe-i18n": "^5.26.2",
+    "typesafe-i18n": "5.26.2",
     "uuidv4": "6.2.13"
   },
   "nodemonConfig": {
@@ -78,6 +78,41 @@
     ],
     "ext": ".ts, .js",
     "ignore": []
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "build"
+    ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/app.ts",
+      "src/i18n/*",
+      "src/router/*",
+      "src/controller/*",
+      "src/util/tasks/AutoDelete.ts",
+      "src/util/security/Passport.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/node_modules/**"
+    ],
+    "rootDir": ".",
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "isolatedModules": true
+        }
+      ]
+    }
   },
   "private": true
 }
