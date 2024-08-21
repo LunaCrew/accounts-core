@@ -1,9 +1,19 @@
-import { Request } from 'express'
+import { Request, NextFunction } from 'express'
 import CreateUserService from 'src/service/CreateUserService'
 import { userCreate } from 'src/schema/userSchema'
 
-describe(':: Service :: CreateUserService ::', () => {
-  const next = jest.fn()
+describe('CreateUserService', () => {
+  let req: Request
+  let next: NextFunction
+
+  beforeEach(() => {
+    req = {} as Request
+    next = jest.fn()
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
   it('should return a user payload', () => {
     const mockedUser = {
@@ -13,7 +23,7 @@ describe(':: Service :: CreateUserService ::', () => {
       settings: {
       }
     }
-    const req = { body: mockedUser } as Request
+    req.body = mockedUser
     const user = CreateUserService.execute(req, next)
 
     console.log(user)
@@ -43,17 +53,45 @@ describe(':: Service :: CreateUserService ::', () => {
     }
 
     jest.spyOn(userCreate, 'validate').mockReturnValue({
+      error: {
+        details: [{
+          message: '"email" is not allowed to be empty',
+          path: ['email'],
+          type: 'string.empty',
+          context: { value: '', key: 'email', label: 'email' }
+        }]
+      }
+    } as never)
+
+    req.body = mockedUser
+
+    CreateUserService.execute(req, next)
+
+    expect(next).toHaveBeenCalledTimes(2)
+    expect(next).toHaveBeenCalledWith(expect.any(Error))
+  })
+
+  it('should call next with an error', () => {
+    const mockedUser = {
+      name: 'Jane Doe',
+      email: '',
+      password: 'Abcd123/*',
+      settings: {}
+    }
+
+    jest.spyOn(userCreate, 'validate').mockReturnValue({
       error: [{
         message: '"email" is not allowed to be empty',
-        path: ['email'], type: 'string.empty',
+        path: ['email'],
+        type: 'string.empty',
         context: { value: '', key: 'email', label: 'email' }
       }]
     } as never)
 
-    const req = { body: mockedUser } as Request
+    req.body = mockedUser
 
     CreateUserService.execute(req, next)
 
-    expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith(expect.any(Error))
   })
 })

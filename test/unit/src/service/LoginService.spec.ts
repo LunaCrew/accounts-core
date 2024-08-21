@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import LoginService from 'src/service/LoginService'
+import Log from 'src/util/log/Log'
 
 describe('LoginService', () => {
   let req: Request
@@ -37,13 +38,23 @@ describe('LoginService', () => {
     })
   })
 
-  it('should call next with an error', () => {
+  it('should call next with an error on an invalid GUID', () => {
     req.params = { id: '8fa40850' }
 
     const next = jest.fn()
 
     LoginService.execute(req, next)
 
-    expect(next).toHaveBeenCalledWith(new Error('400 - Bad Request'))
+    expect(next).toHaveBeenCalledWith(new Error('"id" must be a valid GUID'))
+  })
+
+  it('should call next with an error', () => {
+    jest.spyOn(Log, 'error').mockImplementation()
+
+    LoginService.execute(req, next)
+
+    expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith(expect.any(Error))
+    expect(Log.error).toHaveBeenCalledTimes(1)
   })
 })

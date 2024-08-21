@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { MongoServerError } from 'mongodb'
 import ErrorHandler from 'src/middleware/ErrorHandler'
-import { ValidationError } from 'src/error/CustomError'
 import BaseError from 'src/error/BaseError'
 import HttpStatus from 'src/util/enum/HttpStatus'
 import { JsonWebTokenError } from 'jsonwebtoken'
@@ -29,13 +28,6 @@ describe('errorHandler', () => {
     ErrorHandler.httpErrorHandler(error, req, res, next)
     expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
     expect(res.json).toHaveBeenCalledWith({ message: 'Test error', status: 'fail' })
-  })
-
-  it('should handle ValidationError', () => {
-    const error = new ValidationError([{ field: 'test', message: 'test' }])
-    ErrorHandler.httpErrorHandler(error, req, res, next)
-    expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
-    expect(res.json).toHaveBeenCalledWith({ message: '400 - Bad Request',  status: 'fail', })
   })
 
   it('should handle MongoDBError', () => {

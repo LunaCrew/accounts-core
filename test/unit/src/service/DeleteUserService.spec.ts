@@ -48,7 +48,7 @@ describe('DeleteUserService', () => {
 
   it('should throw an error', () => {
     req.params = { id: '8fa40850-e31c-448a-9121-815b3cd5582a' }
-  
+
     DeleteUserService.execute(req, next)
 
     expect(next).toHaveBeenCalledTimes(1)

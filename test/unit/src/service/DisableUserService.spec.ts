@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import DisableUserService from 'src/service/DisableUserService'
+import Log from 'src/util/log/Log'
 
 describe('DisableUserService', () => {
   let req: Request
@@ -38,10 +39,12 @@ describe('DisableUserService', () => {
   })
 
   it('should call next with an error', () => {
-    req.params = { id: '8fa40850' }
+    jest.spyOn(Log, 'error').mockImplementation()
 
     DisableUserService.execute(req, next)
   
-    expect(next).toHaveBeenCalledTimes(2)
+    expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith(expect.any(Error))
+    expect(Log.error).toHaveBeenCalledTimes(1)
   })
 })
