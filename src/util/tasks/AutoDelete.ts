@@ -24,10 +24,10 @@ export default class AutoDelete {
       const query = { $and: [{ isDisabled: true }, { expiresIn: { $lt: currentTime } }] }
       const result = await collections.users.deleteMany(query)
   
-      Log.info(`Deleted accounts: ${result.deletedCount}`, 'Tasks :: AutoDelete')
-      Log.info(`Next request: ${this._job.nextDate().toISO()}`, 'Tasks :: AutoDelete')      
+      Log.info(`Tasks :: AutoDelete :: Deleted accounts: ${result.deletedCount}`, 'task')
+      Log.info(`Tasks :: AutoDelete :: Next request: ${this._job.nextDate().toISO()}`, 'task')      
     } catch (error) {
-      Log.error(`${error}`, 'Tasks :: AutoDelete')
+      Log.error(`Tasks :: AutoDelete :: ${error}`, 'task')
     }
   }
 }
