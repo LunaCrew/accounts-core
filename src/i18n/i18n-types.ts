@@ -3,11 +3,11 @@
 import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredParams } from 'typesafe-i18n'
 
 export type BaseTranslation = BaseTranslationType
-export type BaseLocale = 'pt_br'
+export type BaseLocale = 'en-us'
 
 export type Locales =
-	| 'en_us'
-	| 'pt_br'
+	| 'en-us'
+	| 'pt-br'
 
 export type Translation = RootTranslation
 
@@ -15,17 +15,98 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * O​l​á​ ​{​n​a​m​e​}​!
-	 * @param {unknown} name
+	 * H​i​ ​{​n​a​m​e​}​!
+	 * @param {string} name
 	 */
-	HI: RequiredParams<'name'>
+	hi_name: RequiredParams<'name'>
+	/**
+	 * {​n​a​m​e​}​,​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
+	 * @param {string} name
+	 */
+	confirm_your_email: RequiredParams<'name'>
+	/**
+	 * P​l​e​a​s​e​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
+	 */
+	please_confirm_your_email: string
+	/**
+	 * C​l​i​c​k​ ​t​h​e​ ​b​u​t​t​o​n​ ​b​e​l​o​w​ ​t​o​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
+	 */
+	click_the_button_below_to_confirm_your_email: string
+	/**
+	 * C​o​n​f​i​r​m​ ​e​m​a​i​l
+	 */
+	confirm_email: string
+	/**
+	 * D​o​ ​n​o​t​ ​s​h​a​r​e​ ​t​h​i​s​ ​c​o​d​e​ ​w​i​t​h​ ​a​n​y​o​n​e​.
+	 */
+	do_not_share_this_code_with_anyone: string
+	/**
+	 * I​f​ ​t​h​e​ ​l​i​n​k​ ​d​o​e​s​ ​n​o​t​ ​w​o​r​k​,​ ​p​l​e​a​s​e​ ​c​o​p​y​ ​t​h​i​s​ ​c​o​d​e​ ​a​n​d​ ​p​a​s​t​e​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p
+	 */
+	if_the_button_does_not_work_please_paste_this_code_in_the_app: string
+	/**
+	 * I​f​ ​y​o​u​ ​d​i​d​ ​n​o​t​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​,​ ​p​l​e​a​s​e​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​e​m​a​i​l​.
+	 */
+	if_you_did_not_request_this_email_ignore_it: string
+	/**
+	 * I​f​ ​y​o​u​ ​h​a​v​e​ ​a​n​y​ ​q​u​e​s​t​i​o​n​s​,
+	 */
+	if_you_have_any_questions: string
+	/**
+	 * c​o​n​t​a​c​t​ ​u​s​.
+	 */
+	contact_us: string
+	/**
+	 * L​u​n​a​ ​L​o​g​o
+	 */
+	logo_alt_text: string
 }
 
 export type TranslationFunctions = {
 	/**
-	 * Olá {name}!
+	 * Hi {name}!
 	 */
-	HI: (arg: { name: unknown }) => LocalizedString
+	hi_name: (arg: { name: string }) => LocalizedString
+	/**
+	 * {name}, confirm your email
+	 */
+	confirm_your_email: (arg: { name: string }) => LocalizedString
+	/**
+	 * Please confirm your email
+	 */
+	please_confirm_your_email: () => LocalizedString
+	/**
+	 * Click the button below to confirm your email
+	 */
+	click_the_button_below_to_confirm_your_email: () => LocalizedString
+	/**
+	 * Confirm email
+	 */
+	confirm_email: () => LocalizedString
+	/**
+	 * Do not share this code with anyone.
+	 */
+	do_not_share_this_code_with_anyone: () => LocalizedString
+	/**
+	 * If the link does not work, please copy this code and paste it in the app
+	 */
+	if_the_button_does_not_work_please_paste_this_code_in_the_app: () => LocalizedString
+	/**
+	 * If you did not create an account, please ignore this email.
+	 */
+	if_you_did_not_request_this_email_ignore_it: () => LocalizedString
+	/**
+	 * If you have any questions,
+	 */
+	if_you_have_any_questions: () => LocalizedString
+	/**
+	 * contact us.
+	 */
+	contact_us: () => LocalizedString
+	/**
+	 * Luna Logo
+	 */
+	logo_alt_text: () => LocalizedString
 }
 
 export type Formatters = {}

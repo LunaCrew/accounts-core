@@ -8,11 +8,11 @@ import { detectLocale as detectLocaleFn } from 'typesafe-i18n/detectors'
 import { initExtendDictionary } from 'typesafe-i18n/utils'
 import type { Formatters, Locales, Translations, TranslationFunctions } from './i18n-types'
 
-export const baseLocale: Locales = 'pt_br'
+export const baseLocale: Locales = 'en-us'
 
 export const locales: Locales[] = [
-	'en_us',
-	'pt_br'
+	'en-us',
+	'pt-br'
 ]
 
 export const isLocale = (locale: string): locale is Locales => locales.includes(locale as Locales)
