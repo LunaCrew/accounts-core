@@ -1,5 +1,6 @@
 import express, { Application, Router, Request, Response } from 'express'
 import UserController from '../controller/UserController'
+import EmailController from '../controller/EmailController'
 import RateLimiter from '../middleware/RateLimiter'
 import Auth from '../middleware/Auth'
 import swaggerUi from 'swagger-ui-express'
@@ -19,63 +20,71 @@ const routes = (app: Application) => {
 
     .post(
       '/api/user',
-      RateLimiter.default,
+      Auth.appCheck,
+      RateLimiter.unauthenticated,
       UserController.createUser,
       userRouter
     )
 
     .get(
       '/api/user',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.getUser,
       userRouter
     )
 
     .delete(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.deleteUser,
       userRouter
     )
 
     .post(
-      '/api/auth/login/:id',
+      '/api/auth/login/:email',
+      Auth.appCheck,
       RateLimiter.default,
-      UserController.login,
+      UserController.userLogin,
       userRouter
     )
 
     .patch(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.updateUser,
       userRouter
     )
 
     .post(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.disableUser,
       userRouter
     )
 
     .post(
-      '/api/auth/verify-email/:id/:token',
+      '/api/auth/email/validate/:id/:token',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
-      UserController.verifyEmail,
+      RateLimiter.authenticated,
+      EmailController.sendEmailValidation,
       userRouter
     )
 
     .post(
-      '/api/auth/resend-email/:id',
+      '/api/auth/email/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
-      UserController.resendEmailVerification,
+      RateLimiter.authenticated,
+      EmailController.sendVerificationCode,
       userRouter
     )
 }
