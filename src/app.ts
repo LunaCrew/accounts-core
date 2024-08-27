@@ -45,12 +45,12 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.info('application', `Running at http://localhost:${PORT}`)
+      Log.info('application', `Running on port ${PORT}`)
     })
 
     AutoDelete.startCronJob()
   } catch (error) {
-    Log.error('application', `Error starting server :: ${error}`)
+    Log.error('application', `Error starting application :: ${error}`)
   }
 }
 
