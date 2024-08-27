@@ -21,7 +21,7 @@ export default class CreateUserService {
         return this._buildQuery(value)
       }
     } catch (error) {
-      Log.error(`CreateUserService :: ${error}`, 'service')
+      Log.error('service', `CreateUserService :: ${error}`)
       next(error)
       return null
     }

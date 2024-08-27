@@ -27,7 +27,7 @@ export default class ValidateEmailService {
         return { filter: { $and: [{ _id: params.id }] }, data, token: params.token }
       }
     } catch (error) {
-      Log.error(`VerifyEmailService :: ${error}`, 'service')
+      Log.error('service', `VerifyEmailService :: ${error}`)
       next(error)
     }
   }

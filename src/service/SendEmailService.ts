@@ -22,7 +22,7 @@ export default class SendEmailService {
         return { filter: { $and: [{ _id: params.id }] }, data, token: this._token }
       }
     } catch (error) {
-      Log.error(`SendEmailService :: ${error}`, 'service')
+      Log.error('service', `SendEmailService :: ${error}`)
       next(error)
     }
   }

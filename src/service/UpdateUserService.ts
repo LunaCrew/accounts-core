@@ -23,7 +23,7 @@ export default class UpdateUserService {
 
       return { filter, data }
     } catch (error) {
-      Log.error(`UpdateUserService :: ${error}`, 'service')
+      Log.error('service', `UpdateUserService :: ${error}`)
       next(error)
     }
   }

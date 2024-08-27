@@ -47,9 +47,9 @@ export default class UserController {
         next()
       }
 
-      Log.info('UserController :: Calling Endpoint :: CreateUser', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: CreateUser')
     } catch (error) {
-      Log.error(`UserController :: CreateUser :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: CreateUser :: ${error}`)
       next(error)
     }
   }
@@ -67,9 +67,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.info('UserController :: Calling Endpoint :: GetUser', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: GetUser')
     } catch (error) {
-      Log.error(`UserController :: GetUser :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: GetUser :: ${error}`)
       next(error)
     }
   }
@@ -87,9 +87,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.info('UserController :: Calling Endpoint :: DeleteUser', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: DeleteUser')
     } catch (error) {
-      Log.error(`UserController :: DeleteUser :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: DeleteUser :: ${error}`)
       next(error)
     }
   }
@@ -123,9 +123,9 @@ export default class UserController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.info('UserController :: Calling Endpoint :: DisableUser', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: DisableUser')
     } catch (error) {
-      Log.error(`UserController :: DisableUser :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: DisableUser :: ${error}`)
       next(error)
     }
   }
@@ -156,9 +156,9 @@ export default class UserController {
           next()
         }
       }
-      Log.info('UserController :: Calling Endpoint :: Login', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: Login')
     } catch (error) {
-      Log.error(`UserController :: Login :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: Login :: ${error}`)
       next(error)
     }
   }
@@ -181,9 +181,9 @@ export default class UserController {
         next()
       }
 
-      Log.info('UserController :: Calling Endpoint :: UpdateUser', 'controller')
+      Log.info('controller', 'UserController :: Calling Endpoint :: UpdateUser')
     } catch (error) {
-      Log.error(`UserController :: UpdateUser :: ${error}`, 'controller')
+      Log.error('controller', `UserController :: UpdateUser :: ${error}`)
       next(error)
     }
   }

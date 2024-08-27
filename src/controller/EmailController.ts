@@ -38,9 +38,9 @@ export default class EmailController {
         next(new NotFound(CustomErrorMessage.NOT_FOUND))
         next()
       }
-      Log.info('EmailController :: Calling Endpoint :: VerifyEmail', 'controller')
+      Log.info('controller', 'EmailController :: Calling Endpoint :: VerifyEmail')
     } catch (error) {
-      Log.error(`EmailController :: VerifyEmail :: ${error}`, 'controller')
+      Log.error('controller', `EmailController :: VerifyEmail :: ${error}`)
       next(error)
     }
   }
@@ -63,9 +63,9 @@ export default class EmailController {
         next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
         next()
       }
-      Log.info('EmailController :: Calling Endpoint :: SendVerificationCode', 'controller')
+      Log.info('controller', 'EmailController :: Calling Endpoint :: SendVerificationCode')
     } catch (error) {
-      Log.error(`EmailController :: SendVerificationCode :: ${error}`, 'controller')
+      Log.error('controller', `EmailController :: SendVerificationCode :: ${error}`)
       next(error)
     }
   }

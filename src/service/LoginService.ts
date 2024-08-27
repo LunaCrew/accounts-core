@@ -26,7 +26,7 @@ export default class LoginService {
       }
 
     } catch (error) {
-      Log.error(`LoginService :: ${error}`, 'service')
+      Log.error('service', `LoginService :: ${error}`)
       next(error)
     }
   }
