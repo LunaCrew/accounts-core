@@ -7,7 +7,7 @@ import Password from '../util/security/Password'
 import Log from '../util/log/Log'
 
 export default class UpdateUserService {
-  static execute(req: Request, next: NextFunction): UpdateUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
     try {
       let data: { $set: object } | null = { $set: {} }
 
@@ -28,7 +28,7 @@ export default class UpdateUserService {
     }
   }
 
-  private static _buildData(req: Request, next: NextFunction): { $set: object } | null {
+  private static readonly _buildData = (req: Request, next: NextFunction): { $set: object } => {
     const { error, value } = userUpdate.validate(req.body)
     const data: { $set: object } = { $set: {} }
 
@@ -36,7 +36,6 @@ export default class UpdateUserService {
       const message = error.details[0].message
       next(new BadRequest(message))
       next()
-      return null
     } else {
       value.updatedAt = new Date().toISOString()
       if (value.password) value.password = Password.encrypt(value.password)

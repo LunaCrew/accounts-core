@@ -4,7 +4,7 @@ import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
 
 export default class DeleteUserService {
-  static execute(req: Request, next: NextFunction): GeneralUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
     try {
       interface Filter {
         id: string | undefined

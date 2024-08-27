@@ -4,7 +4,7 @@ import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
 
 export default class DisableUserService {
-  static execute(req: Request, next: NextFunction): UpdateUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
     try {
       let data: { $set: object } | null = { $set: {} }
 
@@ -24,7 +24,7 @@ export default class DisableUserService {
     }
   }
 
-  private static _buildData(): { $set: object } | null {
+  private static readonly _buildData = (): { $set: object } => {
     const data: { $set: object } = { $set: {} }
     const currentDate = new Date().toISOString()
     const expirationDate = new Date()
