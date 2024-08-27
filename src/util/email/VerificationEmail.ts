@@ -241,7 +241,7 @@ export default class VerificationEmail {
         </tr><!-- end tr -->
         <tr>
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
-            <img src="assets/luna.png" alt="${L[locale].logo_alt_text()}"
+            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png" alt="${L[locale].logo_alt_text()}"
               style="width: 80px; max-width: 100px; height: auto; margin: auto; display: block; border-radius: 5px;">
           </td>
         </tr><!-- end tr -->
