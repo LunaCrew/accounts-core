@@ -7,9 +7,14 @@ export type User = {
   updatedAt: string | null
   disabledAt: string | null
   isDisabled: boolean
-  emailVerification: {
-    verified: boolean
+  emailStatus: {
+    validated: boolean
+    validatedAt?: string
     token: string
+    tokenExpiration: string
+  }
+  verificationData: {
+    token: string,
     tokenExpiration: string
   }
   settings: {
@@ -26,4 +31,5 @@ export type UserParams = {
   id: string
   email: string
   forced: boolean
+  isEmailValidation: boolean
 }
