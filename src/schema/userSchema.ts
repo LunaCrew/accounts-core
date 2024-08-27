@@ -8,7 +8,8 @@ const userQueryParams = joi.object({
   id: joi.string().guid({ version: 'uuidv4' }),
   email: joi.string().lowercase().email(),
   forced: joi.boolean().default(false),
-  token: joi.string().length(8).alphanum()
+  token: joi.string().length(8).alphanum(),
+  isEmailValidation: joi.boolean().default(false)
 }).or('id', 'email').required()
 
 const userCreate = joi.object({
