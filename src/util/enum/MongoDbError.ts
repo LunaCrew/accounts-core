@@ -1,5 +1,5 @@
 export default class MongoDBError {
-  static readonly code = {
+  public static readonly code = {
     DUPLICATE_KEY: 11000,
     INTERNAL_ERROR: 1
   }

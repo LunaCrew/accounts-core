@@ -19,7 +19,7 @@ export default class ErrorHandler {
       case err instanceof SyntaxError: return this._syntaxError(err, res)
       case Object.getPrototypeOf(err).constructor.name.includes('Firebase'): return this._unauthorizedError(err, res)
       default: {
-        Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+        Log.error(`${err.stack}`, 'error_handler')
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: err.message })
       }
     }
@@ -29,14 +29,14 @@ export default class ErrorHandler {
   * Handles base error
   * @returns Response with generic error
   */
-  private static _baseError(err: BaseError, res: Response) {
+  private static readonly _baseError = (err: BaseError, res: Response) => {
     if (err.isOperational) {
       return res.status(err.status).json({
         status: err.status < HttpStatus.code.INTERNAL_SERVER_ERROR && err.status >= HttpStatus.code.BAD_REQUEST ? 'fail' : 'error',
         message: err.message
       })
     } else {
-      Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+      Log.error(`${err.stack}`, 'error_handler')
       return res.status(err.status).json({ message: CustomErrorMessage.GENERIC })
     }
   }
@@ -47,8 +47,8 @@ export default class ErrorHandler {
    * @see JsonWebToken {@link https://www.npmjs.com/package/jsonwebtoken}
    * @see Firebase-SDK {@link https://www.npmjs.com/package/firebase-admin}
    */
-  private static _unauthorizedError(err: Error, res: Response) {
-    Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+  private static readonly _unauthorizedError = (err: Error, res: Response) => {
+    Log.error(`${err.stack}`, 'error_handler')
     return res.status(HttpStatus.code.UNAUTHORIZED).json({ error: err.message })
   }
 
@@ -56,8 +56,8 @@ export default class ErrorHandler {
    * Handles syntax errors
    * @returns Response with bad request error code and its message
    */
-  private static _syntaxError(err: SyntaxError, res: Response) {
-    Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+  private static readonly _syntaxError = (err: SyntaxError, res: Response) => {
+    Log.error(`${err.stack}`, 'error_handler')
     return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.BAD_REQUEST })
   }
 
@@ -66,9 +66,9 @@ export default class ErrorHandler {
    * @returns Response with the error code and its message
    * @see MongoDB {@link https://www.npmjs.com/package/mongodb}
    */
-  private static _mongoDbError(err: MongoServerError, res: Response) {
+  private static readonly _mongoDbError = (err: MongoServerError, res: Response) => {
     if (err.code === MongoDBError.code.DUPLICATE_KEY) {
-      Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+      Log.error(`${err.stack}`, 'error_handler')
 
       switch (true) {
         case err.message.includes('email'): {
@@ -82,7 +82,7 @@ export default class ErrorHandler {
         }
       }
     } else {
-      Log.custom(`${err.stack}`, { tag: 'ErrorHandler', tagColor: 'red' })
+      Log.error(`${err.stack}`, 'error_handler')
       return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: CustomErrorMessage.INTERNAL_SERVER_ERROR })
     }
   }
