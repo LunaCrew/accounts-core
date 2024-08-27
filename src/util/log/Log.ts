@@ -1,4 +1,4 @@
-import { Tag } from '../../types/Log'
+import { Tag, Details } from '../../types/Log'
 import formatTimestamp from './timestamp'
 
 export default class Log {
@@ -9,7 +9,7 @@ export default class Log {
 
   public static readonly debug = (tag: Tag, message: string): void => {
     const log = `${this._cyan}[ ${this._formattedTimestamp} ] ${this._base}=> ${message}\n`
-    const details = {
+    const details: Details = {
       level: 'debug',
       message: message,
       tag: tag,
@@ -21,7 +21,7 @@ export default class Log {
 
   public static readonly info = (tag: Tag, message: string): void => {
     const log = `${this._cyan}[ ${this._formattedTimestamp} ] ${this._base}=> ${message}\n`
-    const details = {
+    const details: Details = {
       level: 'info',
       message: message,
       tag: tag,
@@ -33,7 +33,7 @@ export default class Log {
 
   public static readonly warn = (tag: Tag, message: string): void => {
     const log = `${this._cyan}[ ${this._formattedTimestamp} ] ${this._base}=> ${message}\n`
-    const details = {
+    const details: Details = {
       level: 'warn',
       message: message,
       tag: tag,
@@ -45,7 +45,7 @@ export default class Log {
 
   public static readonly error = (tag: Tag, message: string): void => {
     const log = `${this._cyan}[ ${this._formattedTimestamp} ] ${this._base}=> ${message}\n`
-    const details = {
+    const details: Details = {
       level: 'error',
       message: message,
       tag: tag,
@@ -57,7 +57,7 @@ export default class Log {
 
   public static readonly verbose = (tag: Tag, message: string): void => {
     const log = `${this._cyan}[ ${this._formattedTimestamp} ] ${this._base}=> ${message}\n`
-    const details = {
+    const details: Details = {
       level: 'verbose',
       message: message,
       tag: tag,
