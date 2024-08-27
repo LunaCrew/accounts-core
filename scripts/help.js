@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
-
 const BLUE = '\x1b[1;34m'
 const YELLOW = '\x1b[1;33m'
 const GREEN = '\x1b[1;32m'
