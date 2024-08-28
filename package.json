@@ -15,15 +15,13 @@
     "test:coverage": "jest --verbose ./test/unit/ --coverage",
     "build": "tsc",
     "lint": "npx eslint . --fix",
-    "dependencies:reset": "rm -rf node_modules && rm package-lock.json && npm install",
-    "dependencies:fix": "node scripts/fixDependencies.js",
+    "deps:reset": "rm -rf node_modules && rm package-lock.json && npm install",
+    "deps:fix": "node scripts/fixDependencies.js",
     "clear:build": "rm -rf build",
     "clear:coverage": "rm -rf coverage",
-    "clear:dependencies": "rm -rf node_modules && rm package-lock.json",
+    "clear:deps": "rm -rf node_modules && rm package-lock.json",
     "prepare": "husky install",
-    "check:todo": "node ./scripts/checkTodo.js",
-    "help": "node scripts/help.js",
-    "typesafe-i18n": "typesafe-i18n"
+    "i18n": "typesafe-i18n"
   },
   "repository": {
     "type": "git",

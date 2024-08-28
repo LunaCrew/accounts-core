@@ -28,7 +28,13 @@ export default [
     }
   },
   {
-    ignores: ['node_module/*', 'build/*', '**/tsconfig.json', 'scripts/*'],
+    ignores: [
+      'node_module/*',
+      'build/*',
+      '**/tsconfig.json',
+      'scripts/*',
+      'src/i18n/i18n-*',
+    ],
   },
   {
     plugins: {
