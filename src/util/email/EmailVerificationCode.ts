@@ -1,7 +1,7 @@
 import L from '../../i18n/i18n-node'
 import { EmailInfo } from '../../types/Email'
 
-export default class VerificationEmail {
+export default class EmailVerificationCode {
   public static readonly render = (emailInfo: EmailInfo): string => {
     const locale = emailInfo.language as keyof typeof L
     const html = `<!DOCTYPE html>
@@ -13,7 +13,8 @@ export default class VerificationEmail {
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting"> <!-- Disable auto-scale in iOS 10 Mail entirely -->
-  <title>${L[locale].confirm_your_email({ name: emailInfo.receiverName })}</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+  <title>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName })}</title>
+  <!-- The title tag shows in email notifications, like Android 4.4. -->
 
   <link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:300,400,700" rel="stylesheet">
 
@@ -137,7 +138,7 @@ export default class VerificationEmail {
       padding: 10px 15px;
       display: inline-block;
       border-radius: 5px;
-      width: 40%;
+      width: 50%;
       background: #F9EDE7;
       color: #181818;
       font-weight: bold;
@@ -241,7 +242,8 @@ export default class VerificationEmail {
         </tr><!-- end tr -->
         <tr>
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
-            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png" alt="${L[locale].logo_alt_text()}"
+            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png"
+              alt="${L[locale].logo_alt_text()}"
               style="width: 80px; max-width: 100px; height: auto; margin: auto; display: block; border-radius: 5px;">
           </td>
         </tr><!-- end tr -->
@@ -249,37 +251,32 @@ export default class VerificationEmail {
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
             <table>
               <tr>
-                <td>
-                  <div class="text" style="padding: 0 1em; text-align: center;">
-                    <h3>${L[locale].please_confirm_your_email()}</h3>
-                    <h4>${L[locale].click_the_button_below_to_confirm_your_email()}</h4>
-
-                    <p><a href="luna://confirm/${emailInfo.token}" class="btn btn-primary">${L[locale].confirm_email()}</a></p>
-                  </div>
+                <td class="text" style="padding: 0 1em; text-align: center;">
+                  <h3>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName })}</h3>
+                  <h4>${L[locale].please_insert_it_in_the_app()} </h4>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <div class="text" style="padding: 0 1em; text-align: center;">
-                    <p class="bg_light">${L[locale].if_the_button_does_not_work_please_paste_this_code_in_the_app()}</p>
-                    <p class="bg_box">${emailInfo.token.substring(0, 4)}-${emailInfo.token.substring(4, 8)}</p>
-                    <p style="color: #808080">${L[locale].do_not_share_this_code_with_anyone()}</p>
-                  </div>
-              </tr>
-            </table>
-          </td>
-        </tr><!-- end tr -->
-        <!-- 1 Column Text + Button : END -->
-      </table>
-      <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-        style="margin: auto;">
-        <tr>
-          <td class="bg_light" style="text-align: center;">
-            <p>${L[locale].if_you_did_not_request_this_email_ignore_it()}</p>
-            <p>${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">${L[locale].contact_us()}</a></p>
-          </td>
+              < tr>
+                <td class="text" style="padding: 0 1em; text-align: center;">
+                  <p class="bg_box"> ${emailInfo.token.substring(0, 4)} -${emailInfo.token.substring(4, 8)} </p>
+                  < p style="color: #808080"> ${L[locale].do_not_share_this_code_with_anyone()} </p>
         </tr>
       </table>
+      </td>
+      </tr><!-- end tr -->
+      < !--1 Column Text + Button : END-->
+        </table>
+        < table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+          style="margin: auto;">
+          <tr>
+            <td class="bg_light" style="text-align: center;">
+              <p>${L[locale].if_you_did_not_request_this_email_ignore_it()} </p>
+              < p> ${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">
+                  ${L[locale].contact_us()} </a>
+                </p>
+            </td>
+          </tr>
+          </table>
 
     </div>
   </center>
