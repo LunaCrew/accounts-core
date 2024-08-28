@@ -13,8 +13,7 @@ export default class EmailVerificationCode {
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting"> <!-- Disable auto-scale in iOS 10 Mail entirely -->
-  <title>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName })}</title>
-  <!-- The title tag shows in email notifications, like Android 4.4. -->
+  <title>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName })}</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
 
   <link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:300,400,700" rel="stylesheet">
 
@@ -242,8 +241,7 @@ export default class EmailVerificationCode {
         </tr><!-- end tr -->
         <tr>
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
-            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png"
-              alt="${L[locale].logo_alt_text()}"
+            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png" alt="${L[locale].logo_alt_text()}"
               style="width: 80px; max-width: 100px; height: auto; margin: auto; display: block; border-radius: 5px;">
           </td>
         </tr><!-- end tr -->
@@ -251,32 +249,34 @@ export default class EmailVerificationCode {
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
             <table>
               <tr>
-                <td class="text" style="padding: 0 1em; text-align: center;">
-                  <h3>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName })}</h3>
-                  <h4>${L[locale].please_insert_it_in_the_app()} </h4>
+                <td>
+                  <div class="text" style="padding: 0 1em; text-align: center;">
+                    <h3>${L[locale].hi_name({ name: emailInfo.receiverName })}</h3>
+                    <h4>${L[locale].this_is_your_verification_code()}</h4>
+                  </div>
                 </td>
               </tr>
-              < tr>
-                <td class="text" style="padding: 0 1em; text-align: center;">
-                  <p class="bg_box"> ${emailInfo.token.substring(0, 4)} -${emailInfo.token.substring(4, 8)} </p>
-                  < p style="color: #808080"> ${L[locale].do_not_share_this_code_with_anyone()} </p>
+              <tr>
+                <td>
+                  <div class="text" style="padding: 0 1em; text-align: center;">
+                    <p class="bg_box">${emailInfo.token.substring(0, 4)}-${emailInfo.token.substring(4, 8)}</p>
+                    <p style="color: #808080">${L[locale].do_not_share_this_code_with_anyone()}</p>
+                  </div>
+              </tr>
+            </table>
+          </td>
+        </tr><!-- end tr -->
+        <!-- 1 Column Text + Button : END -->
+      </table>
+      <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+        style="margin: auto;">
+        <tr>
+          <td class="bg_light" style="text-align: center;">
+            <p>${L[locale].if_you_did_not_request_this_email_ignore_it()}</p>
+            <p>${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">${L[locale].contact_us()}</a></p>
+          </td>
         </tr>
       </table>
-      </td>
-      </tr><!-- end tr -->
-      < !--1 Column Text + Button : END-->
-        </table>
-        < table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
-          style="margin: auto;">
-          <tr>
-            <td class="bg_light" style="text-align: center;">
-              <p>${L[locale].if_you_did_not_request_this_email_ignore_it()} </p>
-              < p> ${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">
-                  ${L[locale].contact_us()} </a>
-                </p>
-            </td>
-          </tr>
-          </table>
 
     </div>
   </center>

@@ -19,6 +19,11 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
+	 * H​i​ ​{​n​a​m​e​}​!
+	 * @param {unknown} name
+	 */
+	hi_name: RequiredParams<'name'>
+	/**
 	 * I​f​ ​y​o​u​ ​d​i​d​ ​n​o​t​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​,​ ​p​l​e​a​s​e​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​e​m​a​i​l​.
 	 */
 	if_you_did_not_request_this_email_ignore_it: string
@@ -31,14 +36,14 @@ type RootTranslation = {
 	 */
 	contact_us: string
 	/**
+	 * T​h​i​s​ ​i​s​ ​y​o​u​r​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​c​o​d​e​,​ ​i​n​s​e​r​t​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p​.
+	 */
+	this_is_your_verification_code: string
+	/**
 	 * H​i​ ​{​n​a​m​e​}​,​ ​h​e​r​e​ ​i​s​ ​y​o​u​r​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​c​o​d​e​.
 	 * @param {string} name
 	 */
 	hi_name_here_is_your_verification_code: RequiredParams<'name'>
-	/**
-	 * P​l​e​a​s​e​ ​i​n​s​e​r​t​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p​.
-	 */
-	please_insert_it_in_the_app: string
 	/**
 	 * D​o​ ​n​o​t​ ​s​h​a​r​e​ ​t​h​i​s​ ​c​o​d​e​ ​w​i​t​h​ ​a​n​y​o​n​e​.
 	 */
@@ -50,6 +55,10 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
+	/**
+	 * Hi {name}!
+	 */
+	hi_name: (arg: { name: unknown }) => LocalizedString
 	/**
 	 * If you did not create an account, please ignore this email.
 	 */
@@ -63,13 +72,13 @@ export type TranslationFunctions = {
 	 */
 	contact_us: () => LocalizedString
 	/**
+	 * This is your verification code, insert it in the app.
+	 */
+	this_is_your_verification_code: () => LocalizedString
+	/**
 	 * Hi {name}, here is your verification code.
 	 */
 	hi_name_here_is_your_verification_code: (arg: { name: string }) => LocalizedString
-	/**
-	 * Please insert it in the app.
-	 */
-	please_insert_it_in_the_app: () => LocalizedString
 	/**
 	 * Do not share this code with anyone.
 	 */
