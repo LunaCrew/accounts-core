@@ -6,44 +6,18 @@ export type BaseTranslation = BaseTranslationType
 export type BaseLocale = 'en-us'
 
 export type Locales =
+	| 'de'
 	| 'en-us'
+	| 'es'
+	| 'fr'
 	| 'pt-br'
+	| 'ru'
 
 export type Translation = RootTranslation
 
 export type Translations = RootTranslation
 
 type RootTranslation = {
-	/**
-	 * H​i​ ​{​n​a​m​e​}​!
-	 * @param {string} name
-	 */
-	hi_name: RequiredParams<'name'>
-	/**
-	 * {​n​a​m​e​}​,​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
-	 * @param {string} name
-	 */
-	confirm_your_email: RequiredParams<'name'>
-	/**
-	 * P​l​e​a​s​e​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
-	 */
-	please_confirm_your_email: string
-	/**
-	 * C​l​i​c​k​ ​t​h​e​ ​b​u​t​t​o​n​ ​b​e​l​o​w​ ​t​o​ ​c​o​n​f​i​r​m​ ​y​o​u​r​ ​e​m​a​i​l
-	 */
-	click_the_button_below_to_confirm_your_email: string
-	/**
-	 * C​o​n​f​i​r​m​ ​e​m​a​i​l
-	 */
-	confirm_email: string
-	/**
-	 * D​o​ ​n​o​t​ ​s​h​a​r​e​ ​t​h​i​s​ ​c​o​d​e​ ​w​i​t​h​ ​a​n​y​o​n​e​.
-	 */
-	do_not_share_this_code_with_anyone: string
-	/**
-	 * I​f​ ​t​h​e​ ​l​i​n​k​ ​d​o​e​s​ ​n​o​t​ ​w​o​r​k​,​ ​p​l​e​a​s​e​ ​c​o​p​y​ ​t​h​i​s​ ​c​o​d​e​ ​a​n​d​ ​p​a​s​t​e​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p
-	 */
-	if_the_button_does_not_work_please_paste_this_code_in_the_app: string
 	/**
 	 * I​f​ ​y​o​u​ ​d​i​d​ ​n​o​t​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​,​ ​p​l​e​a​s​e​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​e​m​a​i​l​.
 	 */
@@ -57,40 +31,25 @@ type RootTranslation = {
 	 */
 	contact_us: string
 	/**
+	 * H​i​ ​{​n​a​m​e​}​,​ ​h​e​r​e​ ​i​s​ ​y​o​u​r​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​c​o​d​e​.
+	 * @param {string} name
+	 */
+	hi_name_here_is_your_verification_code: RequiredParams<'name'>
+	/**
+	 * P​l​e​a​s​e​ ​i​n​s​e​r​t​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p​.
+	 */
+	please_insert_it_in_the_app: string
+	/**
+	 * D​o​ ​n​o​t​ ​s​h​a​r​e​ ​t​h​i​s​ ​c​o​d​e​ ​w​i​t​h​ ​a​n​y​o​n​e​.
+	 */
+	do_not_share_this_code_with_anyone: string
+	/**
 	 * L​u​n​a​ ​L​o​g​o
 	 */
 	logo_alt_text: string
 }
 
 export type TranslationFunctions = {
-	/**
-	 * Hi {name}!
-	 */
-	hi_name: (arg: { name: string }) => LocalizedString
-	/**
-	 * {name}, confirm your email
-	 */
-	confirm_your_email: (arg: { name: string }) => LocalizedString
-	/**
-	 * Please confirm your email
-	 */
-	please_confirm_your_email: () => LocalizedString
-	/**
-	 * Click the button below to confirm your email
-	 */
-	click_the_button_below_to_confirm_your_email: () => LocalizedString
-	/**
-	 * Confirm email
-	 */
-	confirm_email: () => LocalizedString
-	/**
-	 * Do not share this code with anyone.
-	 */
-	do_not_share_this_code_with_anyone: () => LocalizedString
-	/**
-	 * If the link does not work, please copy this code and paste it in the app
-	 */
-	if_the_button_does_not_work_please_paste_this_code_in_the_app: () => LocalizedString
 	/**
 	 * If you did not create an account, please ignore this email.
 	 */
@@ -103,6 +62,18 @@ export type TranslationFunctions = {
 	 * contact us.
 	 */
 	contact_us: () => LocalizedString
+	/**
+	 * Hi {name}, here is your verification code.
+	 */
+	hi_name_here_is_your_verification_code: (arg: { name: string }) => LocalizedString
+	/**
+	 * Please insert it in the app.
+	 */
+	please_insert_it_in_the_app: () => LocalizedString
+	/**
+	 * Do not share this code with anyone.
+	 */
+	do_not_share_this_code_with_anyone: () => LocalizedString
 	/**
 	 * Luna Logo
 	 */

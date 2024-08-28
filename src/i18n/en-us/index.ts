@@ -1,23 +1,17 @@
 import type { BaseTranslation } from '../i18n-types'
 
 const en_us = {
-  // salutations
-  hi_name: 'Hi {name:string}!',
-
-  // confirmation email
-  confirm_your_email: '{name:string}, confirm your email',
-  please_confirm_your_email: 'Please confirm your email',
-  
-  click_the_button_below_to_confirm_your_email: 'Click the button below to confirm your email.',
-  confirm_email: 'Confirm email',
-  do_not_share_this_code_with_anyone: 'Do not share this code with anyone.',
-  
-  if_the_button_does_not_work_please_paste_this_code_in_the_app: 'If the link does not work, please copy this code and paste it in the app.',
+  //* emails general *//
   if_you_did_not_request_this_email_ignore_it: 'If you did not create an account, please ignore this email.',
   if_you_have_any_questions: 'If you have any questions,',
   contact_us: 'contact us.',
+  
+  //* verification code email *//
+  hi_name_here_is_your_verification_code: 'Hi {name:string}, here is your verification code.',
+  please_insert_it_in_the_app: 'Please insert it in the app.',
+  do_not_share_this_code_with_anyone: 'Do not share this code with anyone.',
 
-  // alt text
+  //* alt text *//
   logo_alt_text: 'Luna Logo',
 } satisfies BaseTranslation
 
