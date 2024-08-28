@@ -80,7 +80,7 @@ const routes = (app: Application) => {
     )
 
     .post(
-      '/api/auth/email/:id',
+      '/api/auth/email/verify/:id',
       Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,

@@ -34,14 +34,14 @@ export default class UserController {
           language: user.settings.language
         }
 
-        const sendEmailValidation = await Mailer.sendVerificationCode(emailInfo)
         const token = JWT.generate(result.insertedId.toString())
 
         res.status(HttpStatus.code.CREATED).send({
           id: result.insertedId,
-          token: token,
-          emailDelivered: sendEmailValidation
+          token: token
         })
+
+        await Mailer.sendVerificationCode(emailInfo)
       } else {
         next(new BadRequest(CustomErrorMessage.BAD_REQUEST))
         next()

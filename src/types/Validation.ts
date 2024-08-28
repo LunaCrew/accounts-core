@@ -1,6 +1,12 @@
 export type Validation = {
   updatedAt: string
-  token: string
-  tokenExpiration: string
-  validated?: boolean
+  emailStatus?: {
+    validated: boolean
+    token: string
+    tokenExpiration: string
+  }
+  verificationData?: {
+    token: string
+    tokenExpiration: string
+  }
 }

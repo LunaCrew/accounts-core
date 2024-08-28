@@ -3,8 +3,10 @@ import { collections } from '../app'
 import { BadRequest, InternalServerError, NotFound } from '../error/CustomError'
 import SendEmailService from '../service/SendEmailService'
 import ValidateEmailService from '../service/ValidateEmailService'
-import { SendEmailQuery, UpdateUserQuery } from '../types/Query'
+import { EmailInfo } from '../types/Email'
+import { SendEmailQuery } from '../types/Query'
 import { User } from '../types/User'
+import Mailer from '../util/tasks/Mailer'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import Log from '../util/log/Log'
@@ -47,18 +49,35 @@ export default class EmailController {
 
   public static readonly sendVerificationCode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const query: UpdateUserQuery = SendEmailService.execute(req, next)
+      const query: SendEmailQuery = SendEmailService.execute(req, next)
       if (!query?.filter || !query?.data) return
 
-      // TODO: send email then update user
       const result = await collections.users.findOneAndUpdate(
         query.filter,
         query.data,
-        { returnDocument: 'after', projection: { _id: 1, emailVerification: 1, settings: { language: 1 } } }
+        {
+          returnDocument: 'after', projection: {
+            _id: 1,
+            name: 1,
+            emailStatus: 1,
+            verificationData: 1,
+            settings: { language: 1 }
+          }
+        }
       )
 
       if (result) {
         res.status(HttpStatus.code.OK).send(result)
+
+        const user = result as unknown as User
+        const emailInfo: EmailInfo = {
+          receiverName: user.name,
+          receiverEmail: user.email,
+          token: query.token,
+          language: user.settings.language
+        }
+
+        await Mailer.sendVerificationCode(emailInfo)
       } else {
         next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
         next()
@@ -70,7 +89,6 @@ export default class EmailController {
     }
   }
 
-  //* private methods *//
   private static readonly _setVerifiedEmail = async (
     isTokenValid: boolean,
     filter: object,

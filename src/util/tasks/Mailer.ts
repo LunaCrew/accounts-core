@@ -20,11 +20,11 @@ export default class Mailer {
       }
 
       const send = await this._transporter.sendMail(email)
-      Log.info('task', `Tasks :: Mailer :: Sent :: ${send.messageId}`)
+      Log.info('task_mailer', `Tasks :: Mailer :: Sent :: ${send.messageId}`)
 
       return send.accepted.length > 0
     } catch (error) {
-      Log.error('task', `Tasks :: Mailer :: ${error}`)
+      Log.error('task_mailer', `Tasks :: Mailer :: ${error}`)
       return false
     }
   }

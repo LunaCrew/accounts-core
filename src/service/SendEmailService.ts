@@ -31,16 +31,31 @@ export default class SendEmailService {
     const currentDate = new Date()
     const currentTimePlusOneHour = new Date(currentDate.getTime() + 60 * 60 * 1000)
 
-    const data: { $set: Validation } = {
+    const updateEmailStatus: { $set: Validation } = {
       $set: {
-        token: VerificationCode.generate(8),
-        tokenExpiration: currentTimePlusOneHour.toISOString(),
+        emailStatus: {
+          validated: false,
+          token: this._token,
+          tokenExpiration: currentTimePlusOneHour.toISOString()
+        },
         updatedAt: currentDate.toISOString()
       }
     }
 
-    if (isEmailValidation) data.$set.validated = false
+    const updateVerificationData: { $set: Validation } = {
+      $set: {
+        verificationData: {
+          token: this._token,
+          tokenExpiration: currentTimePlusOneHour.toISOString()
+        },
+        updatedAt: currentDate.toISOString()
+      }
+    }
 
-    return data
+    if (isEmailValidation) {
+      return updateEmailStatus
+    } else {
+      return updateVerificationData
+    }
   }
 }
