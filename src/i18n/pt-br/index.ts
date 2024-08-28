@@ -2,7 +2,7 @@ import type { Translation } from '../i18n-types'
 
 const pt_br = {
   //* geral *//
-  hi_name: 'Ola {name}!',
+  hi_name: 'Olá {name}!',
 
   //* emails geral *//
   if_you_did_not_request_this_email_ignore_it: 'Se você não solicitou este e-mail, por favor, ignore-o.',
