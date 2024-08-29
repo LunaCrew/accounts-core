@@ -32,7 +32,7 @@ export default class Mailer {
   private static readonly _transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
-    secure: false,
+    secure: true,
     auth: {
       user: process.env.MAILER_USER,
       pass: process.env.MAILER_PASS
