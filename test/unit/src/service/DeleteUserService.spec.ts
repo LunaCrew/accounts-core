@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import DeleteUserService from 'src/service/DeleteUserService'
+import Log from 'src/util/log/Log'
 
 describe('DeleteUserService', () => {
   let req: Request
@@ -38,7 +39,7 @@ describe('DeleteUserService', () => {
 
   it('should return undefined if the user is not valid', () => {
     req.params = { id: '8fa40850' }
-    req.query = { forced: 'aaaa' }
+    req.query = {}
 
     const query = DeleteUserService.execute(req, next)
 
@@ -49,9 +50,13 @@ describe('DeleteUserService', () => {
   it('should throw an error', () => {
     req.params = { id: '8fa40850-e31c-448a-9121-815b3cd5582a' }
 
+    jest.spyOn(Log, 'error').mockImplementation()
+
     DeleteUserService.execute(req, next)
 
     expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith(expect.any(Error))
+    expect(Log.error).toHaveBeenCalledTimes(1)
   })
 })
 

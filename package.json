@@ -1,6 +1,6 @@
 {
   "name": "accounts-core",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Accounts Core API - Luna's User Management",
   "main": "src/app.ts",
   "_moduleAliases": {
@@ -96,7 +96,8 @@
       "src/i18n/*",
       "src/router/*",
       "src/controller/*",
-      "src/util/tasks/AutoDelete.ts",
+      "src/util/tasks/*",
+      "src/util/email/*",
       "src/util/security/Passport.ts"
     ],
     "collectCoverageFrom": [

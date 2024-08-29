@@ -36,11 +36,12 @@ describe('CreateUserService', () => {
     expect(user).toHaveProperty('settings.animations')
     expect(user).toHaveProperty('settings.notificationType')
     expect(user).toHaveProperty('settings.speechType')
+    expect(user).toHaveProperty('settings.language')
     expect(user).toHaveProperty('settings.mfa')
-    expect(user).toHaveProperty('emailVerification')
-    expect(user).toHaveProperty('emailVerification.verified')
-    expect(user).toHaveProperty('emailVerification.token')
-    expect(user).toHaveProperty('emailVerification.tokenExpiration')
+    expect(user).toHaveProperty('emailStatus')
+    expect(user).toHaveProperty('emailStatus.validated')
+    expect(user).toHaveProperty('emailStatus.token')
+    expect(user).toHaveProperty('emailStatus.tokenExpiration')
   })
 
   it('should return a bad request status', () => {

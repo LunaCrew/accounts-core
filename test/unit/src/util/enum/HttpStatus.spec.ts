@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import HttpStatus from 'src/util/enum/HttpStatus'
 
 describe(':: Util :: Enum :: HttpStatus ::', () => {

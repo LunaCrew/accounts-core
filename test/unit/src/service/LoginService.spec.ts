@@ -18,23 +18,23 @@ describe('LoginService', () => {
   })
 
   it('should return a query', () => {
-    req.params = { id: '8fa40850-e31d-448f-9120-815b3cd5582a' }
+    req.params = { email: 'test@example.com' }
     const mockedDate = new Date('2024-08-17T01:47:46.320Z').toISOString()
     jest.spyOn(Date.prototype, 'toISOString').mockReturnValue(mockedDate)
 
     const query = LoginService.execute(req, next)
 
     expect(query).toBeDefined()
-    expect(query).toEqual({ 
-      filter: { $and: [{ _id: '8fa40850-e31d-448f-9120-815b3cd5582a' }] }, 
-      data: { 
-        $set: { 
+    expect(query).toEqual({
+      filter: { $and: [{ email: 'test@example.com' }] },
+      data: {
+        $set: {
           disabledAt: null,
           expiresIn: null,
           isDisabled: false,
           updatedAt: mockedDate
         }
-      } 
+      }
     })
   })
 
@@ -45,7 +45,7 @@ describe('LoginService', () => {
 
     LoginService.execute(req, next)
 
-    expect(next).toHaveBeenCalledWith(new Error('"id" must be a valid GUID'))
+    expect(next).toHaveBeenCalledWith(new Error('"value" must contain at least one of [id, email]'))
   })
 
   it('should call next with an error', () => {

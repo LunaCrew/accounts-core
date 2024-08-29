@@ -6,20 +6,25 @@ import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
 
 export default class SendEmailService {
-  private static readonly _token = VerificationCode.generate(8)
 
   public static readonly execute = (req: Request, next: NextFunction): SendEmailQuery => {
     try {
+      interface Filter {
+        id: string | undefined
+        isEmailValidation: boolean
+      }
+
       const params = {
         id: req.params.id,
         isEmailValidation: req.query.isEmailValidation?.valueOf() === 'true',
-      }
+      } as Filter
 
       const isValid = ValidateUser(params, next)
 
+      const token = VerificationCode.generate(8)
       if (isValid) {
-        const data = this._buildData(params.isEmailValidation)
-        return { filter: { $and: [{ _id: params.id }] }, data, token: this._token }
+        const data = this._buildData(params.isEmailValidation, token)
+        return { filter: { $and: [{ _id: params.id }] }, data, token: token }
       }
     } catch (error) {
       Log.error('service', `SendEmailService :: ${error}`)
@@ -27,7 +32,7 @@ export default class SendEmailService {
     }
   }
 
-  private static readonly _buildData = (isEmailValidation: boolean) => {
+  private static readonly _buildData = (isEmailValidation: boolean, token: string) => {
     const currentDate = new Date()
     const currentTimePlusOneHour = new Date(currentDate.getTime() + 60 * 60 * 1000)
 
@@ -35,7 +40,7 @@ export default class SendEmailService {
       $set: {
         emailStatus: {
           validated: false,
-          token: this._token,
+          token: token,
           tokenExpiration: currentTimePlusOneHour.toISOString()
         },
         updatedAt: currentDate.toISOString()
@@ -45,7 +50,7 @@ export default class SendEmailService {
     const updateVerificationData: { $set: Validation } = {
       $set: {
         verificationData: {
-          token: this._token,
+          token: token,
           tokenExpiration: currentTimePlusOneHour.toISOString()
         },
         updatedAt: currentDate.toISOString()
