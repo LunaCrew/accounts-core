@@ -1,7 +1,7 @@
 import { NextFunction, Request } from 'express'
 import { UpdateUserQuery } from '../types/Query'
-import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
+import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DisableUserService {
   public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
@@ -19,7 +19,7 @@ export default class DisableUserService {
         return { filter: { $and: [{ _id: params.id }] }, data }
       }
     } catch (error) {
-      Log.error('service', `DisableUserService :: ${error}`)
+      Log.error('service', 'DisableUserService', error)
       next(error)
     }
   }

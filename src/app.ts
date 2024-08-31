@@ -50,7 +50,7 @@ const start = () => {
 
     AutoDelete.startCronJob()
   } catch (error) {
-    Log.error('application', `Error starting application :: ${error}`)
+    Log.error('application', 'Error starting application', error)
   }
 }
 
@@ -58,10 +58,10 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.info('database', 'MongoDB :: Connected')
+    Log.info('database', 'MongoDB Connected')
   } catch (error) {
     await client.close()
-    Log.error('database', `MongoDB Connection :: ${error}`)
+    Log.error('database', 'MongoDB Connection', error)
   }
 }
 

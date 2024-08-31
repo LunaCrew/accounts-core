@@ -136,7 +136,7 @@ export default class AutoDelete {
       Log.info('task_auto_delete', `Tasks :: AutoDelete :: Next request: ${this._job.nextDate().toISO()}`)
       Log.info('task_auto_delete', `AutoDelete :: Details: ${details}`)
     } catch (error) {
-      Log.error('task', `Tasks :: AutoDelete :: ${error}`)
+      Log.error('task_auto_delete', 'Tasks :: AutoDelete', error)
     }
   }
 }

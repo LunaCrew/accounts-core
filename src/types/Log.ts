@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Tag =
   'controller'
   | 'service'
@@ -8,10 +9,12 @@ export type Tag =
   | 'error_handler'
   | 'task'
   | 'task_mailer'
+  | 'task_auto_delete'
 
-export type Details = {
-  level: 'debug' | 'info' | 'warn' | 'error' | 'verbose'
+export type LogInfo = {
   message: string
   tag: Tag
   timestamp: string
+  level: 'debug' | 'info' | 'warn' | 'error' | 'verbose'
+  stacktrace?: any
 }

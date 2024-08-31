@@ -22,11 +22,11 @@ export default class Mailer {
       }
 
       const send = await this._transporter.sendMail(email)
-      Log.info('task_mailer', `Tasks :: Mailer :: VerificationCode :: Sent :: ${send.messageId}`)
+      Log.info('task_mailer', `Tasks :: Mailer :: SendVerificationCode :: Sent :: ${send.messageId}`)
 
       return send.accepted.length > 0
     } catch (error) {
-      Log.error('task_mailer', `Tasks :: Mailer :: VerificationCode :: ${error}`)
+      Log.error('task_mailer', 'Tasks :: Mailer :: SendVerificationCode', error)
       return false
     }
   }
@@ -44,11 +44,11 @@ export default class Mailer {
       }
 
       const send = await this._transporter.sendMail(email)
-      Log.info('task_mailer', `Tasks :: Mailer :: AccountDisabled :: Sent :: ${send.messageId}`)
+      Log.info('task_mailer', `Tasks :: Mailer :: SendAccountDisabled :: Sent :: ${send.messageId}`)
 
       return send.accepted.length > 0
     } catch (error) {
-      Log.error('task_mailer', `Tasks :: Mailer :: AccountDisabled :: ${error}`)
+      Log.error('task_mailer', 'Tasks :: Mailer :: SendAccountDisabled', error)
       return false
     }
   }
@@ -66,7 +66,7 @@ export default class Mailer {
       }
 
       const send = await this._transporter.sendMail(email)
-      Log.info('task_mailer', `Tasks :: Mailer :: AccountDeleted :: Sent :: ${send.messageId}`)
+      Log.info('task_mailer', `Tasks :: Mailer :: SendAccountDeleted :: Sent :: ${send.messageId}`)
 
       const status: EmailSituation = {
         accepted: send.accepted.length,
@@ -75,7 +75,7 @@ export default class Mailer {
 
       return status
     } catch (error) {
-      Log.error('task_mailer', `Tasks :: Mailer :: AccountDeleted :: ${error}`)
+      Log.error('task_mailer', 'Tasks :: Mailer :: SendAccountDeleted', error)
       return { accepted: 0, rejected: 0 }
     }
   }

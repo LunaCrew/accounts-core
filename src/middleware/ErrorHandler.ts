@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express'
-import { MongoServerError } from 'mongodb'
+import { NextFunction, Request, Response } from 'express'
 import { JsonWebTokenError } from 'jsonwebtoken'
+import { MongoServerError } from 'mongodb'
 import BaseError from '../error/BaseError'
+import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'
-import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import Log from '../util/log/Log'
 
 export default class ErrorHandler {
@@ -19,7 +19,7 @@ export default class ErrorHandler {
       case err instanceof SyntaxError: return this._syntaxError(err, res)
       case Object.getPrototypeOf(err).constructor.name.includes('Firebase'): return this._unauthorizedError(err, res)
       default: {
-        Log.error('error_handler', `${err.stack}`)
+        Log.error('error_handler', `${err.message}`, err)
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: err.message })
       }
     }
@@ -36,7 +36,7 @@ export default class ErrorHandler {
         message: err.message
       })
     } else {
-      Log.error('error_handler', `${err.stack}`)
+      Log.error('error_handler', `${err.message}`, err)
       return res.status(err.status).json({ message: CustomErrorMessage.GENERIC })
     }
   }
@@ -48,7 +48,7 @@ export default class ErrorHandler {
    * @see Firebase-SDK {@link https://www.npmjs.com/package/firebase-admin}
    */
   private static readonly _unauthorizedError = (err: Error, res: Response) => {
-    Log.error('error_handler', `${err.stack}`)
+    Log.error('error_handler', `${err.message}`, err)
     return res.status(HttpStatus.code.UNAUTHORIZED).json({ error: err.message })
   }
 
@@ -57,7 +57,7 @@ export default class ErrorHandler {
    * @returns Response with bad request error code and its message
    */
   private static readonly _syntaxError = (err: SyntaxError, res: Response) => {
-    Log.error('error_handler', `${err.stack}`)
+    Log.error('error_handler', `${err.message}`, err)
     return res.status(HttpStatus.code.BAD_REQUEST).json({ error: CustomErrorMessage.BAD_REQUEST })
   }
 
@@ -68,7 +68,7 @@ export default class ErrorHandler {
    */
   private static readonly _mongoDbError = (err: MongoServerError, res: Response) => {
     if (err.code === MongoDBError.code.DUPLICATE_KEY) {
-      Log.error('error_handler', `${err.stack}`)
+      Log.error('error_handler', `${err.message}`, err)
 
       switch (true) {
         case err.message.includes('email'): {
@@ -82,7 +82,7 @@ export default class ErrorHandler {
         }
       }
     } else {
-      Log.error('error_handler', `${err.stack}`)
+      Log.error('error_handler', `${err.message}`, err)
       return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: CustomErrorMessage.INTERNAL_SERVER_ERROR })
     }
   }

@@ -1,10 +1,10 @@
-import express, { Application, Router, Request, Response } from 'express'
-import UserController from '../controller/UserController'
-import EmailController from '../controller/EmailController'
-import RateLimiter from '../middleware/RateLimiter'
-import Auth from '../middleware/Auth'
+import express, { Application, Request, Response, Router } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerFile from '../../docs/swagger.json'
+import EmailController from '../controller/EmailController'
+import UserController from '../controller/UserController'
+import Auth from '../middleware/Auth'
+import RateLimiter from '../middleware/RateLimiter'
 
 const userRouter: Router = Router()
 

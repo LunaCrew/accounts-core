@@ -43,7 +43,7 @@ describe('errorHandler', () => {
       expect(res.status).toHaveBeenCalledWith(HttpStatus.code.INTERNAL_SERVER_ERROR)
       expect(res.json).toHaveBeenCalledWith({ message: 'Something went wrong' })
       expect(Log.error).toHaveBeenCalledTimes(1)
-      expect(Log.error).toHaveBeenCalledWith('error_handler', error.stack)
+      expect(Log.error).toHaveBeenCalledWith('error_handler', error.message, error)
     })
   })
 

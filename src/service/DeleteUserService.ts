@@ -1,7 +1,7 @@
 import { NextFunction, Request } from 'express'
 import { GeneralUserQuery } from '../types/Query'
-import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
+import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DeleteUserService {
   public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
@@ -26,7 +26,7 @@ export default class DeleteUserService {
         }
       }
     } catch (error) {
-      Log.error('service', `DeleteUserService :: ${error}`)
+      Log.error('service', 'DeleteUserService', error)
       next(error)
     }
   }

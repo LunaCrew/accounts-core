@@ -30,6 +30,6 @@ export type User = {
 export type UserParams = {
   id: string
   email: string
-  forced: boolean
-  isEmailValidation: boolean
+  forced?: boolean
+  isEmailValidation?: boolean
 }

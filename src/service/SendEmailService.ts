@@ -1,9 +1,9 @@
 import { NextFunction, Request } from 'express'
 import { SendEmailQuery } from '../types/Query'
 import { Validation } from '../types/Validation'
+import Log from '../util/log/Log'
 import VerificationCode from '../util/security/VerificationCode'
 import ValidateUser from '../util/validation/ValidateUser'
-import Log from '../util/log/Log'
 
 export default class SendEmailService {
 
@@ -27,7 +27,7 @@ export default class SendEmailService {
         return { filter: { $and: [{ _id: params.id }] }, data, token: token }
       }
     } catch (error) {
-      Log.error('service', `SendEmailService :: ${error}`)
+      Log.error('service', 'SendEmailService', error)
       next(error)
     }
   }

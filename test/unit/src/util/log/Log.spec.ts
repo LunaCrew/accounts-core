@@ -35,7 +35,7 @@ describe('Log', () => {
     it('should log an error message with tag', () => {
       const error = new Error('Error message')
 
-      Log.error('task', `${error}`)
+      Log.error('task', `${error.message}`, error)
 
       expect(Log.error).toBeDefined()
     })

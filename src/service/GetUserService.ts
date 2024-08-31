@@ -1,7 +1,7 @@
 import { NextFunction, Request } from 'express'
 import { GeneralUserQuery } from '../types/Query'
-import ValidateUser from '../util/validation/ValidateUser'
 import Log from '../util/log/Log'
+import ValidateUser from '../util/validation/ValidateUser'
 
 export default class GetUserService {
   public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
@@ -13,7 +13,7 @@ export default class GetUserService {
 
       return ValidateUser(params, next)
     } catch (error) {
-      Log.error('service', `GetUserService :: ${error}`)
+      Log.error('service', 'GetUserService', error)
       next(error)
     }
   }
