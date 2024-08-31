@@ -1,14 +1,18 @@
-import express, { Application } from 'express'
-import { MongoClient, ServerApiVersion } from 'mongodb'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
-import passport from 'passport'
+import express, { Application } from 'express'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
-import { routes } from './router/routes'
+import { MongoClient, ServerApiVersion } from 'mongodb'
+import passport from 'passport'
+import { collectDefaultMetrics, Registry } from 'prom-client'
 import ErrorHandler from './middleware/ErrorHandler'
+import { routes } from './router/routes'
+import Log from './util/log/Log'
 import configurePassport from './util/security/Passport'
 import AutoDelete from './util/tasks/AutoDelete'
-import Log from './util/log/Log'
+
+const register = new Registry()
+collectDefaultMetrics({ register })
 
 dotenv.config({ path: '.env' })
 
@@ -69,7 +73,7 @@ const collections = {
   users: client.db().collection('users')
 }
 
-export { collections }
+export { collections, register }
 
 start()
 connect()
