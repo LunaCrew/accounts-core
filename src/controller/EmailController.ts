@@ -6,10 +6,10 @@ import ValidateEmailService from '../service/ValidateEmailService'
 import { EmailInfo } from '../types/Email'
 import { SendEmailQuery } from '../types/Query'
 import { User } from '../types/User'
-import Mailer from '../util/tasks/Mailer'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import Log from '../util/log/Log'
+import Mailer from '../util/tasks/Mailer'
 
 export default class EmailController {
   public static readonly sendEmailValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -42,7 +42,7 @@ export default class EmailController {
       }
       Log.info('controller', 'EmailController :: Calling Endpoint :: VerifyEmail')
     } catch (error) {
-      Log.error('controller', `EmailController :: VerifyEmail :: ${error}`)
+      Log.error('controller', 'EmailController :: Calling Endpoint :: VerifyEmail', error)
       next(error)
     }
   }
@@ -72,7 +72,7 @@ export default class EmailController {
         const user = result as unknown as User
         const emailInfo: EmailInfo = {
           receiverName: user.name,
-          receiverEmail: user.email,
+          receiversEmail: user.email,
           token: query.token,
           language: user.settings.language
         }
@@ -84,7 +84,7 @@ export default class EmailController {
       }
       Log.info('controller', 'EmailController :: Calling Endpoint :: SendVerificationCode')
     } catch (error) {
-      Log.error('controller', `EmailController :: SendVerificationCode :: ${error}`)
+      Log.error('controller', 'EmailController :: Calling Endpoint :: SendVerificationCode', error)
       next(error)
     }
   }

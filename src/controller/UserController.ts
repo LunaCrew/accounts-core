@@ -7,15 +7,15 @@ import DisableUserService from '../service/DisableUserService'
 import GetUserService from '../service/GetUserService'
 import LoginService from '../service/LoginService'
 import UpdateUserService from '../service/UpdateUserService'
+import { EmailInfo } from '../types/Email'
 import { GeneralUserQuery, UpdateUserQuery } from '../types/Query'
 import { User } from '../types/User'
-import { EmailInfo } from '../types/Email'
-import Mailer from '../util/tasks/Mailer'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
+import Log from '../util/log/Log'
 import JWT from '../util/security/JWT'
 import Password from '../util/security/Password'
-import Log from '../util/log/Log'
+import Mailer from '../util/tasks/Mailer'
 
 export default class UserController {
   public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -29,7 +29,7 @@ export default class UserController {
         const user = query as User
         const emailInfo: EmailInfo = {
           receiverName: user.name,
-          receiverEmail: user.email,
+          receiversEmail: user.email,
           token: user.emailStatus.token,
           language: user.settings.language
         }
@@ -49,7 +49,7 @@ export default class UserController {
 
       Log.info('controller', 'UserController :: Calling Endpoint :: CreateUser')
     } catch (error) {
-      Log.error('controller', `UserController :: CreateUser :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: CreateUser', error)
       next(error)
     }
   }
@@ -69,7 +69,7 @@ export default class UserController {
       }
       Log.info('controller', 'UserController :: Calling Endpoint :: GetUser')
     } catch (error) {
-      Log.error('controller', `UserController :: GetUser :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: GetUser', error)
       next(error)
     }
   }
@@ -89,7 +89,7 @@ export default class UserController {
       }
       Log.info('controller', 'UserController :: Calling Endpoint :: DeleteUser')
     } catch (error) {
-      Log.error('controller', `UserController :: DeleteUser :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: DeleteUser', error)
       next(error)
     }
   }
@@ -106,11 +106,18 @@ export default class UserController {
           const result = await collections.users.findOneAndUpdate(
             query.filter,
             query.data,
-            { returnDocument: 'after', projection: { _id: 1, isDisabled: 1 } }
+            { returnDocument: 'after', projection: { _id: 1, isDisabled: 1, email: 1, settings: { language: 1 } } }
           )
           if (result) {
-            // TODO: send deactivation email
+            const userInfo = result as unknown as User
+            const emailInfo: EmailInfo = {
+              receiversEmail: userInfo.email,
+              language: userInfo.settings.language
+            }
+
             res.status(HttpStatus.code.OK).send(result)
+
+            await Mailer.sendAccountDisabledEmail(emailInfo)
           } else {
             next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
             next()
@@ -125,7 +132,7 @@ export default class UserController {
       }
       Log.info('controller', 'UserController :: Calling Endpoint :: DisableUser')
     } catch (error) {
-      Log.error('controller', `UserController :: DisableUser :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: DisableUser', error)
       next(error)
     }
   }
@@ -158,7 +165,7 @@ export default class UserController {
       }
       Log.info('controller', 'UserController :: Calling Endpoint :: Login')
     } catch (error) {
-      Log.error('controller', `UserController :: Login :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: Login', error)
       next(error)
     }
   }
@@ -183,7 +190,7 @@ export default class UserController {
 
       Log.info('controller', 'UserController :: Calling Endpoint :: UpdateUser')
     } catch (error) {
-      Log.error('controller', `UserController :: UpdateUser :: ${error}`)
+      Log.error('controller', 'UserController :: Calling Endpoint :: UpdateUser', error)
       next(error)
     }
   }

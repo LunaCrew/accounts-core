@@ -1,11 +1,11 @@
 import L from '../../i18n/i18n-node'
 import { EmailInfo } from '../../types/Email'
 
-export default class EmailVerificationCode {
+export default class EmailAccountDeleted {
   public static readonly render = (emailInfo: EmailInfo): string => {
     const locale = emailInfo.language as keyof typeof L
     const html = `<!DOCTYPE html>
-<html lang="${locale}" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+<html lang="${locale}"" xmlns=" http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
 <head>
@@ -13,7 +13,8 @@ export default class EmailVerificationCode {
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting"> <!-- Disable auto-scale in iOS 10 Mail entirely -->
-  <title>${L[locale].hi_name_here_is_your_verification_code({ name: emailInfo.receiverName ?? '' })}</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+  <title>${L[locale].your_account_has_been_deleted()}</title>
+  <!-- The title tag shows in email notifications, like Android 4.4. -->
 
   <link href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:300,400,700" rel="stylesheet">
 
@@ -241,7 +242,8 @@ export default class EmailVerificationCode {
         </tr><!-- end tr -->
         <tr>
           <td valign="middle" class="hero bg_white" style="padding: 1em 0 2em 0;">
-            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png" alt="${L[locale].logo_alt_text()}"
+            <img src="https://raw.githubusercontent.com/LunaCrew/lunacrew.github.io/main/docs/assets/luna.png"
+              alt="${L[locale].logo_alt_text()}"
               style="width: 80px; max-width: 100px; height: auto; margin: auto; display: block; border-radius: 5px;">
           </td>
         </tr><!-- end tr -->
@@ -251,17 +253,12 @@ export default class EmailVerificationCode {
               <tr>
                 <td>
                   <div class="text" style="padding: 0 1em; text-align: center;">
-                    <h3>${L[locale].hi_name({ name: emailInfo.receiverName })}</h3>
-                    <h4>${L[locale].this_is_your_verification_code()}</h4>
+                    <h4>${L[locale].hi_name({ name: emailInfo.receiverName ?? '' })}</h4>
+                    <h3>${L[locale].your_account_has_been_deleted()}</h3>
+
+                    <h3>${L[locale].from_this_point_on_you_will_no_longer_be_able_to_log_in()}</h3>
                   </div>
                 </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="text" style="padding: 0 1em; text-align: center;">
-                    <p class="bg_box">${emailInfo?.token?.substring(0, 4)}-${emailInfo?.token?.substring(4, 8)}</p>
-                    <p style="color: #808080">${L[locale].do_not_share_this_code_with_anyone()}</p>
-                  </div>
               </tr>
             </table>
           </td>
@@ -272,8 +269,9 @@ export default class EmailVerificationCode {
         style="margin: auto;">
         <tr>
           <td class="bg_light" style="text-align: center;">
-            <p>${L[locale].if_you_did_not_request_this_email_ignore_it()}</p>
-            <p>${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">${L[locale].contact_us()}</a></p>
+            <p>${L[locale].we_hope_that_you_come_back_soon()}</p>
+            <p>${L[locale].if_you_have_any_questions()} <a href="#" style="color: #070718">${L[locale].contact_us()}</a>
+            </p>
           </td>
         </tr>
       </table>
