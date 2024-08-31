@@ -1,7 +1,5 @@
-# Luna App
+# Luna | Accounts-Core
 
-> [!note]
-> This project is in development and is not ready for production use.
+Backend application that provides account management for **[Luna](https://github.com/LunaCrew/luna)**.
 
-![CodeQL](https://img.shields.io/github/actions/workflow/status/LunaCrew/luna-app-backend/codeql.yml?logo=github&label=CodeQL&labelColor=%23181717)
-![Tests](https://img.shields.io/github/actions/workflow/status/LunaCrew/luna-app-backend/coverage.yml?logo=jest&label=Tests&labelColor=%23181717)
+Documentation is available at [lunacrew.github.io/accounts-core](https://lunacrew.github.io/accounts-core).
