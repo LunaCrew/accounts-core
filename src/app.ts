@@ -1,14 +1,18 @@
-import express, { Application } from 'express'
-import { MongoClient, ServerApiVersion } from 'mongodb'
 import cors from 'cors'
-import Log from '@lunacrew/logger'
 import * as dotenv from 'dotenv'
-import passport from 'passport'
+import express, { Application } from 'express'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
-import { routes } from './router/routes'
+import { MongoClient, ServerApiVersion } from 'mongodb'
+import passport from 'passport'
+import { collectDefaultMetrics, Registry } from 'prom-client'
 import ErrorHandler from './middleware/ErrorHandler'
+import { routes } from './router/routes'
+import Log from './util/log/Log'
 import configurePassport from './util/security/Passport'
 import AutoDelete from './util/tasks/AutoDelete'
+
+const register = new Registry()
+collectDefaultMetrics({ register })
 
 dotenv.config({ path: '.env' })
 
@@ -45,12 +49,12 @@ const start = () => {
       .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.i(`Running at http://localhost:${PORT}`, 'Server')
+      Log.info('application', `Running on port ${PORT}`)
     })
 
     AutoDelete.startCronJob()
   } catch (error) {
-    Log.e(`${error}`, 'Error starting server')
+    Log.error('application', 'Error starting application', error)
   }
 }
 
@@ -58,10 +62,10 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.i('Connected', 'MongoDB')
+    Log.info('database', 'MongoDB Connected')
   } catch (error) {
     await client.close()
-    Log.e(`${error}`, 'MongoDB Connection')
+    Log.error('database', 'MongoDB Connection', error)
   }
 }
 
@@ -69,7 +73,7 @@ const collections = {
   users: client.db().collection('users')
 }
 
-export { collections }
+export { collections, register }
 
 start()
 connect()

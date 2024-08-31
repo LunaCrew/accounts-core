@@ -1,9 +1,11 @@
-import express, { Application, Router, Request, Response } from 'express'
-import UserController from '../controller/UserController'
-import RateLimiter from '../middleware/RateLimiter'
-import Auth from '../middleware/Auth'
+import express, { Application, Request, Response, Router } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerFile from '../../docs/swagger.json'
+import EmailController from '../controller/EmailController'
+import UserController from '../controller/UserController'
+import Auth from '../middleware/Auth'
+import RateLimiter from '../middleware/RateLimiter'
+import { register } from '../app'
 
 const userRouter: Router = Router()
 
@@ -17,49 +19,79 @@ const routes = (app: Application) => {
       res.send({ status: 'API is OK!', docs: '/api/docs' })
     })
 
+    .get('/metrics', async (_req: Request, res: Response) => {
+      res.set('Content-Type', register.contentType)
+      const metrics = await register.metrics()
+      res.send(metrics)
+    })
+
     .post(
       '/api/user',
-      RateLimiter.default,
+      Auth.appCheck,
+      RateLimiter.unauthenticated,
       UserController.createUser,
       userRouter
     )
 
     .get(
       '/api/user',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.getUser,
       userRouter
     )
 
     .delete(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.deleteUser,
       userRouter
     )
 
     .post(
-      '/api/auth/login/:id',
+      '/api/auth/login/:email',
+      Auth.appCheck,
       RateLimiter.default,
-      UserController.login,
+      UserController.userLogin,
       userRouter
     )
 
     .patch(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.updateUser,
       userRouter
     )
 
     .post(
       '/api/user/:id',
+      Auth.appCheck,
       Auth.jwt,
-      RateLimiter.default,
+      RateLimiter.authenticated,
       UserController.disableUser,
+      userRouter
+    )
+
+    .post(
+      '/api/auth/email/validate/:id/:token',
+      Auth.appCheck,
+      Auth.jwt,
+      RateLimiter.authenticated,
+      EmailController.sendEmailValidation,
+      userRouter
+    )
+
+    .post(
+      '/api/auth/email/verify/:id',
+      Auth.appCheck,
+      Auth.jwt,
+      RateLimiter.authenticated,
+      EmailController.sendVerificationCode,
       userRouter
     )
 }

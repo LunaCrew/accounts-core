@@ -7,9 +7,14 @@ export type User = {
   updatedAt: string | null
   disabledAt: string | null
   isDisabled: boolean
-  emailVerification: {
-    verified: boolean
+  emailStatus: {
+    validated: boolean
+    validatedAt?: string
     token: string
+    tokenExpiration: string
+  }
+  verificationData: {
+    token: string,
     tokenExpiration: string
   }
   settings: {
@@ -18,11 +23,13 @@ export type User = {
     notificationType: string
     speechType: string
     mfa: boolean
+    language: string
   }
 }
 
 export type UserParams = {
   id: string
   email: string
-  forced: boolean
+  forced?: boolean
+  isEmailValidation?: boolean
 }

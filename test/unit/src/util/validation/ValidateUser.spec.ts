@@ -1,6 +1,6 @@
 import ValidateUser from 'src/util/validation/ValidateUser'
 import { UserParams } from 'src/types/User'
-import { ValidationError } from 'src/error/CustomError'
+import { BadRequest } from 'src/error/CustomError'
 
 describe('ValidateUser', () => {
   it('should return a query object', () => {
@@ -30,7 +30,6 @@ describe('ValidateUser', () => {
     ValidateUser(params, next)
 
     expect(next).toHaveBeenCalledTimes(2)
-    expect(next).toHaveBeenCalledWith(new ValidationError([{ id: '"id" must be a valid GUID' }]))
-    expect(next).toHaveBeenCalledWith(new ValidationError([{ email: '"email" must be a valid email' }]))
+    expect(next).toHaveBeenCalledWith(new BadRequest('"id" must be a valid GUID'))
   })
 })

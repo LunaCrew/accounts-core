@@ -1,36 +1,33 @@
 import { NextFunction, Request } from 'express'
 import { v4 as newUUID } from 'uuid'
-import Log from '@lunacrew/logger'
+import { BadRequest } from '../error/CustomError'
+import { userCreate } from '../schema/userSchema'
 import { GeneralUserQuery } from '../types/Query'
 import { User } from '../types/User'
-import { userCreate } from '../schema/userSchema'
-import { ValidationError } from '../error/CustomError'
+import Log from '../util/log/Log'
 import Password from '../util/security/Password'
+import VerificationCode from '../util/security/VerificationCode'
 
 export default class CreateUserService {
-  static execute(req: Request, next: NextFunction): GeneralUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
     try {
       const { error, value } = userCreate.validate(req.body)
 
       if (error) {
-        next(new ValidationError(error.details.map((detail) => {
-          const key = detail.context?.key ?? ''
-          return {
-            [key]: detail.message
-          }
-        })))
+        const message = error.details[0].message
+        next(new BadRequest(message))
         next()
       } else {
         return this._buildQuery(value)
       }
     } catch (error) {
-      Log.e(`${error}`, 'CreateUserService')
+      Log.error('service', 'CreateUserService', error)
       next(error)
       return null
     }
   }
 
-  private static _buildQuery(user: User): object {
+  private static readonly _buildQuery = (user: User): object => {
     const currentTime = new Date()
     const currentTimePlusOneHour = new Date(currentTime.getTime() + 60 * 60 * 1000)
 
@@ -38,9 +35,9 @@ export default class CreateUserService {
     user.password = Password.encrypt(user.password)
     user.createdAt = currentTime.toISOString()
     user.isDisabled = false
-    user.emailVerification = {
-      verified: false,
-      token: newUUID(),
+    user.emailStatus = {
+      validated: false,
+      token: VerificationCode.generate(8),
       tokenExpiration: currentTimePlusOneHour.toISOString()
     }
     return user

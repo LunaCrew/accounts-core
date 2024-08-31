@@ -1,10 +1,10 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { UpdateUserQuery } from '../types/Query'
+import Log from '../util/log/Log'
 import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DisableUserService {
-  static execute(req: Request, next: NextFunction): UpdateUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
     try {
       let data: { $set: object } | null = { $set: {} }
 
@@ -19,12 +19,12 @@ export default class DisableUserService {
         return { filter: { $and: [{ _id: params.id }] }, data }
       }
     } catch (error) {
-      Log.e(`${error}`, 'DisableUserService')
+      Log.error('service', 'DisableUserService', error)
       next(error)
     }
   }
 
-  private static _buildData(): { $set: object } | null {
+  private static readonly _buildData = (): { $set: object } => {
     const data: { $set: object } = { $set: {} }
     const currentDate = new Date().toISOString()
     const expirationDate = new Date()

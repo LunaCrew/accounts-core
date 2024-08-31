@@ -1,10 +1,10 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { GeneralUserQuery } from '../types/Query'
+import Log from '../util/log/Log'
 import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DeleteUserService {
-  static execute(req: Request, next: NextFunction): GeneralUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
     try {
       interface Filter {
         id: string | undefined
@@ -13,7 +13,7 @@ export default class DeleteUserService {
 
       const params = {
         id: req.params.id,
-        forced: this._parseBoolean(req.query.forced?.toString())
+        forced: req.query.forced?.valueOf() === 'true'
       } as Filter
 
       const isValid = ValidateUser(params, next)
@@ -26,12 +26,8 @@ export default class DeleteUserService {
         }
       }
     } catch (error) {
-      Log.e(`${error}`, 'DeleteUserService')
+      Log.error('service', 'DeleteUserService', error)
       next(error)
     }
-  }
-
-  private static _parseBoolean = (value: string | undefined): boolean => {
-    return value === 'true'
   }
 }

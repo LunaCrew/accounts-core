@@ -1,40 +1,33 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
 import { UpdateUserQuery } from '../types/Query'
+import Log from '../util/log/Log'
 import ValidateUser from '../util/validation/ValidateUser'
 
 export default class LoginService {
-  static execute(req: Request, next: NextFunction): UpdateUserQuery {
+  public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
     try {
-      let data: { $set: object } | null = { $set: {} }
+      const currentDate = new Date().toISOString()
       const params = {
-        id: req.params.id
+        email: req.params.email
       }
 
       const validateParams = ValidateUser(params, next)
 
       if (validateParams) {
-        data = this._buildData()
+        const data = {
+          $set: {
+            updatedAt: currentDate,
+            disabledAt: null,
+            expiresIn: null,
+            isDisabled: false
+          }
+        }
+        return { filter: { $and: [{ email: params.email }] }, data }
       }
 
-      return { filter: { $and: [{ _id: params.id }] }, data }
     } catch (error) {
-      Log.e(`${error}`, 'LoginService')
+      Log.error('service', 'LoginService', error)
       next(error)
     }
-  }
-
-  private static _buildData(): { $set: object } | null {
-    const data: { $set: object } = { $set: {} }
-    const currentDate = new Date().toISOString()
-
-    data.$set = {
-      updatedAt: currentDate,
-      disabledAt: null,
-      expiresIn: null,
-      isDisabled: false
-    }
-
-    return data
   }
 }
