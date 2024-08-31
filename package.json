@@ -1,6 +1,6 @@
 {
   "name": "accounts-core",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Accounts Core API - Luna's User Management",
   "main": "src/app.ts",
   "_moduleAliases": {
@@ -28,7 +28,7 @@
     "url": "https://github.com/LunaCrew/accounts-core.git"
   },
   "author": "Ash Trindade",
-  "license": "All rights reserved",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/LunaCrew/accounts-core/issues"
   },
