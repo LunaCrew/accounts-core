@@ -24,6 +24,10 @@ type RootTranslation = {
 	 */
 	hi_name: RequiredParams<'name'>
 	/**
+	 * o​r
+	 */
+	or: string
+	/**
 	 * I​f​ ​y​o​u​ ​d​i​d​ ​n​o​t​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​,​ ​p​l​e​a​s​e​ ​i​g​n​o​r​e​ ​t​h​i​s​ ​e​m​a​i​l​.
 	 */
 	if_you_did_not_request_this_email_ignore_it: string
@@ -32,9 +36,17 @@ type RootTranslation = {
 	 */
 	if_you_have_any_questions: string
 	/**
-	 * c​o​n​t​a​c​t​ ​u​s​.
+	 * p​l​e​a​s​e​,​ ​c​o​n​t​a​c​t​ ​u​s​.
 	 */
 	contact_us: string
+	/**
+	 * c​h​a​n​g​e​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​.
+	 */
+	change_your_password: string
+	/**
+	 * F​o​r​ ​s​e​c​u​r​i​t​y​ ​r​e​a​s​o​n​s​,
+	 */
+	for_security_reasons: string
 	/**
 	 * T​h​i​s​ ​i​s​ ​y​o​u​r​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​c​o​d​e​,​ ​i​n​s​e​r​t​ ​i​t​ ​i​n​ ​t​h​e​ ​a​p​p​.
 	 */
@@ -49,6 +61,42 @@ type RootTranslation = {
 	 */
 	do_not_share_this_code_with_anyone: string
 	/**
+	 * Y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​d​i​s​a​b​l​e​d​.
+	 */
+	your_account_has_been_disabled: string
+	/**
+	 * W​e​ ​a​r​e​ ​s​o​r​r​y​ ​t​h​a​t​ ​y​o​u​ ​d​e​c​i​d​e​d​ ​t​o​ ​l​e​a​v​e​.
+	 */
+	we_are_sorry_that_you_decided_to_leave: string
+	/**
+	 * W​e​ ​h​o​p​e​ ​t​h​a​t​ ​y​o​u​ ​c​o​m​e​ ​b​a​c​k​ ​s​o​o​n​.
+	 */
+	we_hope_that_you_come_back_soon: string
+	/**
+	 * A​s​ ​r​e​q​u​e​s​t​e​d​,​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​d​i​s​a​b​l​e​d​ ​a​n​d​ ​w​i​l​l​ ​b​e​ ​d​e​l​e​t​e​d​ ​i​n​ ​3​0​ ​d​a​y​s​.
+	 */
+	as_requested_your_account_has_been_disabled_and_will_be_deleted_in_30_days: string
+	/**
+	 * I​f​ ​y​o​u​ ​w​i​s​h​ ​t​o​ ​r​e​a​c​t​i​v​a​t​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t​,​ ​j​u​s​t​ ​l​o​g​ ​i​n​ ​a​g​a​i​n​.
+	 */
+	if_you_wish_to_reactivate_your_account_just_log_in_again: string
+	/**
+	 * I​f​ ​y​o​u​ ​w​i​s​h​ ​t​o​ ​p​e​r​m​a​n​e​n​t​l​y​ ​d​e​l​e​t​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​n​o​w​,
+	 */
+	if_you_wish_to_permanently_delete_your_account_now: string
+	/**
+	 * i​f​ ​y​o​u​ ​d​i​d​ ​n​o​t​ ​d​i​s​a​b​l​e​ ​y​o​u​r​ ​a​c​c​o​u​n​t​,​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​m​a​y​ ​b​e​ ​i​n​ ​r​i​s​k​.
+	 */
+	if_you_did_not_disabled_your_account_your_account_may_be_in_risk: string
+	/**
+	 * Y​o​u​r​ ​a​c​c​o​u​n​t​ ​h​a​s​ ​b​e​e​n​ ​d​e​l​e​t​e​d​.
+	 */
+	your_account_has_been_deleted: string
+	/**
+	 * F​r​o​m​ ​t​h​i​s​ ​p​o​i​n​t​ ​o​n​,​ ​y​o​u​ ​w​i​l​l​ ​n​o​ ​l​o​n​g​e​r​ ​b​e​ ​a​b​l​e​ ​t​o​ ​l​o​g​ ​i​n​.
+	 */
+	from_this_point_on_you_will_no_longer_be_able_to_log_in: string
+	/**
 	 * L​u​n​a​ ​L​o​g​o
 	 */
 	logo_alt_text: string
@@ -60,6 +108,10 @@ export type TranslationFunctions = {
 	 */
 	hi_name: (arg: { name: unknown }) => LocalizedString
 	/**
+	 * or
+	 */
+	or: () => LocalizedString
+	/**
 	 * If you did not create an account, please ignore this email.
 	 */
 	if_you_did_not_request_this_email_ignore_it: () => LocalizedString
@@ -68,9 +120,17 @@ export type TranslationFunctions = {
 	 */
 	if_you_have_any_questions: () => LocalizedString
 	/**
-	 * contact us.
+	 * please, contact us.
 	 */
 	contact_us: () => LocalizedString
+	/**
+	 * change your password.
+	 */
+	change_your_password: () => LocalizedString
+	/**
+	 * For security reasons,
+	 */
+	for_security_reasons: () => LocalizedString
 	/**
 	 * This is your verification code, insert it in the app.
 	 */
@@ -83,6 +143,42 @@ export type TranslationFunctions = {
 	 * Do not share this code with anyone.
 	 */
 	do_not_share_this_code_with_anyone: () => LocalizedString
+	/**
+	 * Your account has been disabled.
+	 */
+	your_account_has_been_disabled: () => LocalizedString
+	/**
+	 * We are sorry that you decided to leave.
+	 */
+	we_are_sorry_that_you_decided_to_leave: () => LocalizedString
+	/**
+	 * We hope that you come back soon.
+	 */
+	we_hope_that_you_come_back_soon: () => LocalizedString
+	/**
+	 * As requested, your account has been disabled and will be deleted in 30 days.
+	 */
+	as_requested_your_account_has_been_disabled_and_will_be_deleted_in_30_days: () => LocalizedString
+	/**
+	 * If you wish to reactivate your account, just log in again.
+	 */
+	if_you_wish_to_reactivate_your_account_just_log_in_again: () => LocalizedString
+	/**
+	 * If you wish to permanently delete your account now,
+	 */
+	if_you_wish_to_permanently_delete_your_account_now: () => LocalizedString
+	/**
+	 * if you did not disable your account, your account may be in risk.
+	 */
+	if_you_did_not_disabled_your_account_your_account_may_be_in_risk: () => LocalizedString
+	/**
+	 * Your account has been deleted.
+	 */
+	your_account_has_been_deleted: () => LocalizedString
+	/**
+	 * From this point on, you will no longer be able to log in.
+	 */
+	from_this_point_on_you_will_no_longer_be_able_to_log_in: () => LocalizedString
 	/**
 	 * Luna Logo
 	 */
