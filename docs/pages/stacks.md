@@ -21,6 +21,7 @@
 * Documentation: [Swagger](https://swagger.io/)
 * Containerization: [Docker](https://www.docker.com/)
 * CI/CD: [GitHub Actions](https://docs.github.com/en/actions)
+* Self-host using: [Coolify](https://coolify.io/)
 
 ## Design Patterns
 

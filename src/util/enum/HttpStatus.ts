@@ -1,5 +1,5 @@
 export default class HttpStatus {
-  static readonly code = {
+  public static readonly code = {
     OK: 200,
     CREATED: 201,
     NO_CONTENT: 204,
@@ -14,7 +14,7 @@ export default class HttpStatus {
     CONNECTION_TIMED_OUT: 522
   }
 
-  static readonly message = {
+  public static readonly message = {
     200: 'OK',
     201: 'Created',
     204: 'No Content',

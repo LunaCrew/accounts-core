@@ -13,6 +13,6 @@ describe('RateLimiter middleware', () => {
   })
 
   it('should fail', () => {
-    expect(RateLimiter.default).toBeUndefined()
+    expect(RateLimiter.authenticated).toBeUndefined()
   })
 })
