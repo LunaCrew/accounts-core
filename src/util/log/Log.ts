@@ -2,7 +2,7 @@ import { LogInfo, Tag } from '../../types/Log'
 
 export default class Log {
   private static readonly _timestamp = new Date().toISOString()
-  private static readonly _separator = '\n----------------------------------------------------------------'
+  private static readonly _separator = '\n----------------------------------------------------------------\n'
 
   public static readonly debug = (tag: Tag, message: string): void => {
     const log: LogInfo = {
@@ -12,7 +12,7 @@ export default class Log {
       level: 'debug',
     }
 
-    console.log(log, this._separator)
+    console.debug(this._separator, 'debug:', log)
   }
 
   public static readonly info = (tag: Tag, message: string): void => {
@@ -23,7 +23,7 @@ export default class Log {
       level: 'info',
     }
 
-    console.log(log, this._separator)
+    console.info(this._separator, 'info:', log)
   }
 
   public static readonly warn = (tag: Tag, message: string): void => {
@@ -34,7 +34,7 @@ export default class Log {
       level: 'warn',
     }
 
-    console.log(log, this._separator)
+    console.warn(this._separator, 'warn:', log)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +47,7 @@ export default class Log {
       stacktrace: error,
     }
 
-    console.log(log, this._separator)
+    console.error(this._separator, 'error:', log)
   }
 
   public static readonly verbose = (tag: Tag, message: string): void => {
@@ -58,6 +58,6 @@ export default class Log {
       level: 'verbose',
     }
 
-    console.log(log, this._separator)
+    console.log(this._separator, 'verbose:', log)
   }
 }

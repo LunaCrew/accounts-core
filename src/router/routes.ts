@@ -5,7 +5,6 @@ import EmailController from '../controller/EmailController'
 import UserController from '../controller/UserController'
 import Auth from '../middleware/Auth'
 import RateLimiter from '../middleware/RateLimiter'
-import { register } from '../app'
 
 const userRouter: Router = Router()
 
@@ -17,12 +16,6 @@ const routes = (app: Application) => {
   app
     .get('/', (_req: Request, res: Response) => {
       res.send({ status: 'API is OK!', docs: '/api/docs' })
-    })
-
-    .get('/metrics', async (_req: Request, res: Response) => {
-      res.set('Content-Type', register.contentType)
-      const metrics = await register.metrics()
-      res.send(metrics)
     })
 
     .post(
