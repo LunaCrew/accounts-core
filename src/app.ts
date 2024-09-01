@@ -1,18 +1,16 @@
+import './util/log/Sentry'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
+import * as Sentry from '@sentry/node'
 import express, { Application } from 'express'
 import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import passport from 'passport'
-import { collectDefaultMetrics, Registry } from 'prom-client'
 import ErrorHandler from './middleware/ErrorHandler'
 import { routes } from './router/routes'
 import Log from './util/log/Log'
 import configurePassport from './util/security/Passport'
 import AutoDelete from './util/tasks/AutoDelete'
-
-const register = new Registry()
-collectDefaultMetrics({ register })
 
 dotenv.config({ path: '.env' })
 
@@ -31,6 +29,7 @@ export const client = new MongoClient(process.env.DB_URI as string, {
 
 const start = () => {
   try {
+    Sentry.setupExpressErrorHandler(app)
     configurePassport(passport)
     initializeApp({
       credential: applicationDefault(),
@@ -73,7 +72,7 @@ const collections = {
   users: client.db().collection('users')
 }
 
-export { collections, register }
+export { collections }
 
 start()
 connect()
