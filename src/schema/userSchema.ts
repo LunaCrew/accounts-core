@@ -22,7 +22,9 @@ const userCreate = joi.object({
     notificationType: joi.string().valid(...Object.values(NotificationType)).default(NotificationType.DEFAULT),
     speechType: joi.string().valid(...Object.values(SpeechType)).default(SpeechType.NEUTRAL),
     mfa: joi.boolean().default(false),
-    language: joi.string().valid(...Object.values(Language)).default(Language.EN_US)
+    language: joi.string().pattern(/^[a-z]{2}(-[a-z]{2})?$/)
+      .message('Language must be in ISO 639-1 format. e.g. en-us')
+      .default(Language.EN_US)
   }).required()
 })
 
@@ -36,7 +38,8 @@ const userUpdate = joi.object({
     notificationType: joi.string().valid(...Object.values(NotificationType)).required(),
     speechType: joi.string().valid(...Object.values(SpeechType)).required(),
     mfa: joi.boolean().required(),
-    language: joi.string().valid(...Object.values(Language)).required()
+    language: joi.string().pattern(/^[a-z]{2}(-[a-z]{2})?$/)
+      .message('Language must be in ISO 639-1 format. e.g. en-us').required()
   })
 }).or('name', 'email', 'password', 'settings').required()
 

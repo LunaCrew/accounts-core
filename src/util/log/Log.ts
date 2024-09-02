@@ -4,24 +4,26 @@ export default class Log {
   private static readonly _timestamp = new Date().toISOString()
   private static readonly _separator = '\n----------------------------------------------------------------\n'
 
-  public static readonly debug = (tag: Tag, message: string): void => {
+  public static readonly debug = (tag: Tag, message: string, details?: object): void => {
     const log: LogInfo = {
       message: message,
       tag: tag,
       timestamp: this._timestamp,
       level: 'debug',
     }
+    if (details) log.details = details
 
     console.debug(this._separator, 'debug:', log)
   }
 
-  public static readonly info = (tag: Tag, message: string): void => {
+  public static readonly info = (tag: Tag, message: string, details?: object): void => {
     const log: LogInfo = {
       message: message,
       tag: tag,
       timestamp: this._timestamp,
       level: 'info',
     }
+    if (details) log.details = details
 
     console.info(this._separator, 'info:', log)
   }

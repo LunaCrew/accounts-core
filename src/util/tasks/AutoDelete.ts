@@ -30,7 +30,7 @@ export default class AutoDelete {
 
       // delete all accounts
       const deleteAccounts = await collections.users.deleteMany(query)
-      
+
       /**
        * Create lists of emails based on the language.
        * 
@@ -44,7 +44,7 @@ export default class AutoDelete {
       const listOfEmailsInRu: string[] = []
       const listOfEmailsInFr: string[] = []
       const listOfEmailsInDe: string[] = []
-      
+
       accounts.forEach((account) => {
         switch (account.settings.language) {
           case Language.PT_BR: {
@@ -133,8 +133,8 @@ export default class AutoDelete {
         sentEmails
       }
 
-      Log.info('task_auto_delete', `Tasks :: AutoDelete :: Next request: ${this._job.nextDate().toISO()}`)
-      Log.info('task_auto_delete', `AutoDelete :: Details: ${details}`)
+      Log.info('task_auto_delete', `AutoDelete :: Next request: ${this._job.nextDate().toISO()}`)
+      Log.info('task_auto_delete', 'AutoDelete :: Executed', details)
     } catch (error) {
       Log.error('task_auto_delete', 'Tasks :: AutoDelete', error)
     }

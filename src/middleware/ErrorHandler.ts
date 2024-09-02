@@ -17,7 +17,6 @@ export default class ErrorHandler {
       case err instanceof MongoServerError: return this._mongoDbError(err, res)
       case err instanceof JsonWebTokenError: return this._unauthorizedError(err, res)
       case err instanceof SyntaxError: return this._syntaxError(err, res)
-      case Object.getPrototypeOf(err).constructor.name.includes('Firebase'): return this._unauthorizedError(err, res)
       default: {
         Log.error('error_handler', `${err.message}`, err)
         return res.status(HttpStatus.code.INTERNAL_SERVER_ERROR).json({ error: err.message })
@@ -32,7 +31,7 @@ export default class ErrorHandler {
   private static readonly _baseError = (err: BaseError, res: Response) => {
     if (err.isOperational) {
       return res.status(err.status).json({
-        status: err.status < HttpStatus.code.INTERNAL_SERVER_ERROR && err.status >= HttpStatus.code.BAD_REQUEST ? 'fail' : 'error',
+        status: 'error',
         message: err.message
       })
     } else {
