@@ -6,7 +6,7 @@ import UserController from '../controller/UserController'
 import Auth from '../middleware/Auth'
 import RateLimiter from '../middleware/RateLimiter'
 
-const userRouter: Router = Router()
+const apiRouter: Router = Router()
 
 const routes = (app: Application) => {
   app
@@ -20,72 +20,64 @@ const routes = (app: Application) => {
 
     .post(
       '/api/user',
-      Auth.appCheck,
       RateLimiter.unauthenticated,
       UserController.createUser,
-      userRouter
+      apiRouter
     )
 
     .get(
       '/api/user',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       UserController.getUser,
-      userRouter
+      apiRouter
     )
 
     .delete(
       '/api/user/:id',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       UserController.deleteUser,
-      userRouter
+      apiRouter
     )
 
     .post(
       '/api/auth/login/:email',
-      Auth.appCheck,
-      RateLimiter.default,
+      RateLimiter.unauthenticated,
       UserController.userLogin,
-      userRouter
+      apiRouter
     )
 
     .patch(
       '/api/user/:id',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       UserController.updateUser,
-      userRouter
+      apiRouter
     )
 
     .post(
       '/api/user/:id',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       UserController.disableUser,
-      userRouter
+      apiRouter
     )
 
     .post(
       '/api/auth/email/validate/:id/:token',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       EmailController.sendEmailValidation,
-      userRouter
+      apiRouter
     )
 
     .post(
       '/api/auth/email/verify/:id',
-      Auth.appCheck,
       Auth.jwt,
       RateLimiter.authenticated,
       EmailController.sendVerificationCode,
-      userRouter
+      apiRouter
     )
 }
 

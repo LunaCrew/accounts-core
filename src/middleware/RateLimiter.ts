@@ -1,5 +1,11 @@
 import rateLimit from 'express-rate-limit'
 
+/**
+ * @description IP rate-limiting middleware.
+ * @method authenticated (100 requests in 15 min)
+ * @method unauthenticated (10 requests in 1 hour)
+ * @method default (5 requests in 10 min)
+ */
 export default class RateLimiter {
   private static readonly _message = 'Too many requests, please try again later.'
   private static readonly _minute = 60 * 1000

@@ -1,9 +1,8 @@
 import './util/log/Sentry'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
-import * as Sentry from '@sentry/node'
+import * as sentry from '@sentry/node'
 import express, { Application } from 'express'
-import { applicationDefault, initializeApp } from 'firebase-admin/app'
 import { MongoClient, ServerApiVersion } from 'mongodb'
 import passport from 'passport'
 import ErrorHandler from './middleware/ErrorHandler'
@@ -29,12 +28,8 @@ export const client = new MongoClient(process.env.DB_URI as string, {
 
 const start = () => {
   try {
-    Sentry.setupExpressErrorHandler(app)
+    sentry.setupExpressErrorHandler(app)
     configurePassport(passport)
-    initializeApp({
-      credential: applicationDefault(),
-      projectId: process.env.FIREBASE_PROJECT_ID
-    })
 
     const corsOptions = {
       origin: '',

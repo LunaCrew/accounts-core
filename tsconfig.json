@@ -17,5 +17,5 @@
       },
       "sourceMap": true
   },
-  "exclude": ["node_modules", "coverage", "docs"]
+  "exclude": ["node_modules", "coverage", "docs", "cypress.config.ts", "test/e2e/**"]
 }

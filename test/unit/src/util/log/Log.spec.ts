@@ -1,53 +1,61 @@
 import Log from 'src/util/log/Log'
 
 describe('Log', () => {
-  describe('debug', () => {
-    it('should log a debug message with tag', () => {
-      const message = 'Debug message'
+  it('should log a debug log', () => {
+    const message = 'Debug message'
 
-      Log.debug('task', message)
+    Log.debug('task', message)
 
-      expect(Log.debug).toBeDefined()
-    })
+    expect(Log.debug).toBeDefined()
   })
 
-  describe('info', () => {
-    it('should log an info message with tag', () => {
-      const message = 'Info message'
+  it('should log a debug message with details', () => {
+    const message = 'Debug message'
+    const details = { test: 'test' }
 
-      Log.info('task', message)
+    Log.debug('task', message, details)
 
-      expect(Log.info).toBeDefined()
-    })
+    expect(Log.debug).toBeDefined()
   })
 
-  describe('warn', () => {
-    it('should log a warning message with tag', () => {
-      const message = 'Warn message'
+  it('should log an info log', () => {
+    const message = 'Info message'
 
-      Log.warn('task', message)
+    Log.info('task', message)
 
-      expect(Log.warn).toBeDefined()
-    })
+    expect(Log.info).toBeDefined()
   })
 
-  describe('error', () => {
-    it('should log an error message with tag', () => {
-      const error = new Error('Error message')
+  it('should log an info message with details', () => {
+    const message = 'Info message'
+    const details = { test: 'test' }
 
-      Log.error('task', `${error.message}`, error)
+    Log.info('task', message, details)
 
-      expect(Log.error).toBeDefined()
-    })
+    expect(Log.info).toBeDefined()
   })
 
-  describe('verbose', () => {
-    it('should log a verbose message with tag', () => {
-      const message = 'Verbose message'
+  it('should log a warning log', () => {
+    const message = 'Warn message'
 
-      Log.verbose('task', message)
+    Log.warn('task', message)
 
-      expect(Log.verbose).toBeDefined()
-    })
+    expect(Log.warn).toBeDefined()
+  })
+
+  it('should log an error log', () => {
+    const error = new Error('Error message')
+
+    Log.error('task', `${error.message}`, error)
+
+    expect(Log.error).toBeDefined()
+  })
+
+  it('should log a verbose log', () => {
+    const message = 'Verbose message'
+
+    Log.verbose('task', message)
+
+    expect(Log.verbose).toBeDefined()
   })
 })

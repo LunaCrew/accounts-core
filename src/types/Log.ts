@@ -16,5 +16,6 @@ export type LogInfo = {
   tag: Tag
   timestamp: string
   level: 'debug' | 'info' | 'warn' | 'error' | 'verbose'
+  details?: object
   stacktrace?: any
 }
