@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
 
 const name = 'John'
-const email = process.env.TEST_USER_EMAIL ?? 'ashtrindade5@gmail.com'
+const email = process.env.TEST_USER_EMAIL ?? ''
 const password = 'AAaa**12354'
 
 let userId: string
