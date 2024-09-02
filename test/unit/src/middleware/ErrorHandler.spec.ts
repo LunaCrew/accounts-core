@@ -31,7 +31,7 @@ describe('errorHandler', () => {
       ErrorHandler.httpErrorHandler(error, req, res, next)
   
       expect(res.status).toHaveBeenCalledWith(HttpStatus.code.BAD_REQUEST)
-      expect(res.json).toHaveBeenCalledWith({ message: 'Test error', status: 'fail' })
+      expect(res.json).toHaveBeenCalledWith({ message: 'Test error', status: 'error' })
     })
   
     it('should handle an non operational error', () => {
