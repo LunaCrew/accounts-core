@@ -1,6 +1,6 @@
 {
   "name": "accounts-core",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "description": "Accounts Core API - Luna's User Management",
   "main": "src/app.ts",
   "_moduleAliases": {
@@ -13,58 +13,71 @@
     "test": "npm run test:coverage",
     "test:unit": "jest --verbose ./test/unit/",
     "test:coverage": "jest --verbose ./test/unit/ --coverage",
+    "cypress:run": "cypress run --e2e",
+    "cypress": "cypress open --e2e --browser chrome",
     "build": "tsc",
     "lint": "npx eslint . --fix",
-    "dependencies:reset": "rm -rf node_modules && rm package-lock.json && npm install",
-    "dependencies:fix": "node scripts/fixDependencies.js",
+    "deps:reset": "rm -rf node_modules && rm package-lock.json && npm install",
+    "deps:fix": "node scripts/fixDependencies.js",
     "clear:build": "rm -rf build",
     "clear:coverage": "rm -rf coverage",
-    "clear:dependencies": "rm -rf node_modules && rm package-lock.json",
+    "clear:deps": "rm -rf node_modules && rm package-lock.json",
     "prepare": "husky install",
-    "help": "node scripts/help.js"
+    "i18n": "typesafe-i18n"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/LunaCrew/accounts-core.git"
   },
   "author": "Ash Trindade",
-  "license": "All rights reserved",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/LunaCrew/accounts-core/issues"
   },
   "homepage": "https://github.com/LunaCrew/accounts-core#readme",
   "devDependencies": {
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.9.1",
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
-    "@types/jest": "29.5.11",
+    "@types/jest": "29.5.12",
     "@types/jsonwebtoken": "9.0.6",
     "@types/module-alias": "2.0.4",
     "@types/node": "20.10.4",
+    "@types/nodemailer": "6.4.15",
     "@types/passport-jwt": "4.0.1",
     "@types/swagger-ui-express": "4.1.6",
-    "@typescript-eslint/eslint-plugin": "6.13.2",
-    "@typescript-eslint/parser": "6.13.2",
-    "eslint": "8.55.0",
+    "@typescript-eslint/eslint-plugin": "8.3.0",
+    "@typescript-eslint/parser": "8.3.0",
+    "chai": "5.1.1",
+    "cypress": "13.14.1",
+    "eslint": "9.9.1",
+    "globals": "15.9.0",
     "husky": "8.0.3",
     "jest": "29.7.0",
     "nodemon": "3.0.2",
-    "ts-jest": "29.1.1",
+    "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.3.3"
+    "typescript": "5.5.4"
   },
   "dependencies": {
-    "@lunacrew/logger": "1.1.0",
+    "@sentry/node": "8.27.0",
+    "@sentry/profiling-node": "8.27.0",
     "cors": "2.8.5",
+    "cron": "3.1.7",
     "dotenv": "16.3.1",
     "express": "4.19.2",
     "express-rate-limit": "7.2.0",
+    "firebase-admin": "12.3.0",
     "joi": "17.11.0",
     "jsonwebtoken": "9.0.2",
     "mongodb": "6.3.0",
+    "nodemailer": "6.9.14",
     "passport": "0.7.0",
     "passport-jwt": "4.0.1",
     "swagger-ui-express": "5.0.0",
+    "typesafe-i18n": "5.26.2",
     "uuidv4": "6.2.13"
   },
   "nodemonConfig": {
@@ -73,6 +86,44 @@
     ],
     "ext": ".ts, .js",
     "ignore": []
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "build",
+      "test/e2e/*"
+    ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/app.ts",
+      "src/i18n/*",
+      "src/router/*",
+      "src/controller/*",
+      "src/util/log/Sentry.ts",
+      "src/util/tasks/*",
+      "src/util/email/*",
+      "src/util/security/Passport.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/node_modules/**"
+    ],
+    "rootDir": ".",
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "isolatedModules": true
+        }
+      ]
+    }
   },
   "private": true
 }

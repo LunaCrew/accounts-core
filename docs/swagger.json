@@ -3,7 +3,7 @@
   "info": {
     "title": "Accounts Core API",
     "description": "API documentation for the Accounts Core service.",
-    "version": "0.5.0",
+    "version": "0.8.0",
     "license": {
       "name": "AGPL-3.0",
       "url": "https://www.gnu.org/licenses/agpl-3.0.html"
@@ -11,23 +11,23 @@
   },
   "externalDocs": {
     "description": "GitHub repository",
-    "url": "https://lunacrew.github.io/accounts-core/"
+    "url": "https://github.com/LunaCrew/accounts-core"
   },
   "tags": [
     {
-      "name": "open",
-      "description": "🔓 can be performed without authentication, but has limited requests"
+      "name": "user",
+      "description": "User management"
     },
     {
-      "name": "auth",
-      "description": "🔒 requires authentication and have no request limit"
+      "name": "email",
+      "description": "Email management"
     }
   ],
   "paths": {
     "/api/user": {
       "post": {
         "tags": [
-          "open"
+          "user"
         ],
         "summary": "Create an user",
         "requestBody": {
@@ -54,7 +54,7 @@
       },
       "get": {
         "tags": [
-          "auth"
+          "user"
         ],
         "summary": "Retrieve user data",
         "parameters": [
@@ -94,16 +94,16 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/api/auth/login/:email": {
       "post": {
         "tags": [
-          "open"
+          "user"
         ],
         "summary": "Login",
         "parameters": [
           {
             "name": "email",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string"
@@ -119,7 +119,7 @@
                   "password": {
                     "type": "string",
                     "minLength": 8,
-                    "maxLength": 32
+                    "maxLength": 64
                   }
                 }
               }
@@ -143,39 +143,9 @@
       }
     },
     "/api/user/:id": {
-      "delete": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Delete an user",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
       "patch": {
         "tags": [
-          "auth"
+          "user"
         ],
         "summary": "Update an user",
         "parameters": [
@@ -212,6 +182,146 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Disable an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete an user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/email/validate/:id/:token": {
+      "post": {
+        "tags": [
+          "email"
+        ],
+        "summary": "Validate an email address",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/email/verify/:id": {
+      "post": {
+        "tags": [
+          "email"
+        ],
+        "summary": "Send a verification code to user's email address",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   },
@@ -232,64 +342,7 @@
           "password": {
             "type": "string",
             "minLength": 8,
-            "maxLength": 32
-          },
-          "isDeleted": {
-            "type": "boolean",
-            "default": false
-          },
-          "emailVerified": {
-            "type": "boolean",
-            "default": false
-          },
-          "emailVerificationToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "mfa": {
-            "type": "object",
-            "properties": {
-              "mfaToken": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaSecret": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodes": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "nullable": true
-              },
-              "mfaRecoveryCodesGeneratedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesUsedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesRegeneratedAt": {
-                "type": "string",
-                "nullable": true
-              },
-              "mfaRecoveryCodesUsedCount": {
-                "type": "integer",
-                "nullable": true
-              }
-            },
-            "required": [
-              "mfaToken",
-              "mfaSecret",
-              "mfaRecoveryCodes",
-              "mfaRecoveryCodesGeneratedAt",
-              "mfaRecoveryCodesUsedAt",
-              "mfaRecoveryCodesRegeneratedAt",
-              "mfaRecoveryCodesUsedCount"
-            ]
+            "maxLength": 64
           },
           "settings": {
             "type": "object",
@@ -309,9 +362,9 @@
               "notificationType": {
                 "type": "string",
                 "enum": [
-                  "popup",
+                  "default",
                   "silent",
-                  "balloon"
+                  "dialog"
                 ],
                 "default": "popup"
               },
@@ -324,23 +377,18 @@
                 ],
                 "default": "neutral"
               },
-              "publicKey": {
-                "type": "string",
-                "nullable": true
+              "mfa": {
+                "type": "boolean",
+                "default": false
               },
-              "backupAccount": {
+              "language": {
                 "type": "string",
-                "format": "email",
-                "nullable": true
-              },
-              "buildVersion": {
-                "type": "string",
-                "enum": [
-                  "release",
-                  "beta",
-                  "debug"
-                ],
-                "default": "release"
+                "pattern": "^[a-z]{2}(-[a-z]{2})?$",
+                "description": "Language must be in ISO 639-1 format. e.g. en-us",
+                "default": "en-us",
+                "externalDocs": {
+                  "url": "https://www.iso.org/iso-639-language-code"
+                }
               }
             },
             "required": [
@@ -348,9 +396,7 @@
               "animations",
               "notificationType",
               "speechType",
-              "publicKey",
-              "backupAccount",
-              "buildVersion"
+              "mfa"
             ]
           }
         },
@@ -377,55 +423,7 @@
           "password": {
             "type": "string",
             "minLength": 8,
-            "maxLength": 32
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "emailVerified": {
-            "type": "boolean"
-          },
-          "emailVerificationToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "mfa": {
-            "type": "object",
-            "properties": {
-              "mfaToken": {
-                "type": "string"
-              },
-              "mfaSecret": {
-                "type": "string"
-              },
-              "mfaRecoveryCodes": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "mfaRecoveryCodesGeneratedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesUsedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesRegeneratedAt": {
-                "type": "string"
-              },
-              "mfaRecoveryCodesUsedCount": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "mfaToken",
-              "mfaSecret",
-              "mfaRecoveryCodes",
-              "mfaRecoveryCodesGeneratedAt",
-              "mfaRecoveryCodesUsedAt",
-              "mfaRecoveryCodesRegeneratedAt",
-              "mfaRecoveryCodesUsedCount"
-            ]
+            "maxLength": 64
           },
           "settings": {
             "type": "object",
@@ -443,9 +441,9 @@
               "notificationType": {
                 "type": "string",
                 "enum": [
-                  "popup",
-                  "balloon",
-                  "silent"
+                  "default",
+                  "silent",
+                  "dialog"
                 ]
               },
               "speechType": {
@@ -456,20 +454,16 @@
                   "male"
                 ]
               },
-              "publicKey": {
-                "type": "string"
+              "mfa": {
+                "type": "boolean"
               },
-              "backupAccount": {
+              "language": {
                 "type": "string",
-                "format": "email"
-              },
-              "buildVersion": {
-                "type": "string",
-                "enum": [
-                  "release",
-                  "beta",
-                  "debug"
-                ]
+                "pattern": "^[a-z]{2}(-[a-z]{2})?$",
+                "description": "Language must be in ISO 639-1 format. e.g. en-us",
+                "externalDocs": {
+                  "url": "https://www.iso.org/iso-639-language-code"
+                }
               }
             },
             "required": [
@@ -477,9 +471,8 @@
               "animations",
               "notificationType",
               "speechType",
-              "publicKey",
-              "backupAccount",
-              "buildVersion"
+              "mfa",
+              "language"
             ]
           }
         },

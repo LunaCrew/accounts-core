@@ -4,28 +4,32 @@ export type User = {
   name: string
   password: string
   createdAt: string
-  deletedAt: string | null
+  updatedAt: string | null
+  disabledAt: string | null
+  isDisabled: boolean
+  emailStatus: {
+    validated: boolean
+    validatedAt?: string
+    token: string
+    tokenExpiration: string
+  }
+  verificationData: {
+    token: string,
+    tokenExpiration: string
+  }
   settings: {
     theme: string
     animations: boolean
     notificationType: string
     speechType: string
-    publicKey: string | null
-    mfa: {
-      mfaToken: string | null
-      mfaSecret: string | null
-      mfaRecoveryCodes: string[] | null
-      mfaRecoveryCodesGeneratedAt: string | null
-      mfaRecoveryCodesUsedAt: string | null
-      mfaRecoveryCodesRegeneratedAt: string | null
-      mfaRecoveryCodesUsedCount: number | null
-    }
-    backupAccount: string | null
-    buildVersion: string
+    mfa: boolean
+    language: string
   }
 }
 
 export type UserParams = {
   id: string
   email: string
+  forced?: boolean
+  isEmailValidation?: boolean
 }

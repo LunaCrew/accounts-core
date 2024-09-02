@@ -1,18 +1,33 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
-import { UserService } from '../types/Service'
+import { GeneralUserQuery } from '../types/Query'
+import Log from '../util/log/Log'
 import ValidateUser from '../util/validation/ValidateUser'
 
 export default class DeleteUserService {
-  static execute(req: Request, next: NextFunction): UserService {
+  public static readonly execute = (req: Request, next: NextFunction): GeneralUserQuery => {
     try {
-      const params = {
-        id: req.params.id
+      interface Filter {
+        id: string | undefined
+        forced: boolean
       }
 
-      return ValidateUser(params, next)
+      const params = {
+        id: req.params.id,
+        forced: req.query.forced?.valueOf() === 'true'
+      } as Filter
+
+      const isValid = ValidateUser(params, next)
+
+      if (isValid) {
+        if (params.forced) {
+          return { $and: [{ _id: params.id }] }
+        } else {
+          return { $and: [{ _id: params.id }, { isDisabled: true }] }
+        }
+      }
     } catch (error) {
-      Log.e(`${error}`, 'DeleteUserService')
+      Log.error('service', 'DeleteUserService', error)
+      next(error)
     }
   }
 }

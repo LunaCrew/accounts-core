@@ -1,10 +1,10 @@
 enum CustomErrorMessage {
-  PASSWORD = '"password" must have uppercase and lowercase letters, numbers and special characters',
-  DATE_TIME_TIMEZONE = '"dateTime" must be in ISO format <YYYY-MM-DD>T<HH:mm:ss>-<HH:mm>',
   BAD_REQUEST = '400 - Bad Request',
   LOGIN_FAILED = '400 - Login Failed - Invalid Credentials',
   AUTH_NOT_PROVIDED = '400 - No token provided',
-  AUTH_FAILED = '400 - Authentication Failed',
+  USER_ALREADY_DISABLED = '400 - User already disabled',
+  USER_ALREADY_VERIFIED = '400 - User already verified',
+  INVALID_TOKEN = '400 - Invalid Token',
   UNAUTHORIZED = '401 - Unauthorized',
   FORBIDDEN = '403 - Forbidden',
   NOT_FOUND = '404 - User Not Found',

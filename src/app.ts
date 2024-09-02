@@ -1,12 +1,15 @@
+import './util/log/Sentry'
+import cors from 'cors'
+import * as dotenv from 'dotenv'
+import * as sentry from '@sentry/node'
 import express, { Application } from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
-import cors from 'cors'
-import Log from '@lunacrew/logger'
-import * as dotenv from 'dotenv'
 import passport from 'passport'
+import ErrorHandler from './middleware/ErrorHandler'
 import { routes } from './router/routes'
-import { errorHandler } from './middleware/errorHandler'
+import Log from './util/log/Log'
 import configurePassport from './util/security/Passport'
+import AutoDelete from './util/tasks/AutoDelete'
 
 dotenv.config({ path: '.env' })
 
@@ -25,6 +28,7 @@ export const client = new MongoClient(process.env.DB_URI as string, {
 
 const start = () => {
   try {
+    sentry.setupExpressErrorHandler(app)
     configurePassport(passport)
 
     const corsOptions = {
@@ -36,14 +40,15 @@ const start = () => {
     app
       .use(cors(corsOptions))
       .use(passport.initialize())
-      .use(errorHandler)
+      .use(ErrorHandler.httpErrorHandler)
 
     app.listen(PORT, () => {
-      Log.d(`Running at http://localhost:${PORT}`, 'Server')
+      Log.info('application', `Running on port ${PORT}`)
     })
 
+    AutoDelete.startCronJob()
   } catch (error) {
-    Log.e(`${error}`, 'Error starting server')
+    Log.error('application', 'Error starting application', error)
   }
 }
 
@@ -51,10 +56,10 @@ const connect = async () => {
   try {
     await client.connect()
     await client.db().command({ ping: 1 })
-    Log.d('Connected', 'MongoDB')
+    Log.info('database', 'MongoDB Connected')
   } catch (error) {
     await client.close()
-    Log.e(`${error}`, 'MongoDB Connection')
+    Log.error('database', 'MongoDB Connection', error)
   }
 }
 
@@ -63,7 +68,6 @@ const collections = {
 }
 
 export { collections }
-export default app
 
 start()
 connect()

@@ -2,7 +2,7 @@ import { NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
 export default class JWT {
-  static readonly generate = (userId: string): string => {
+  public static readonly generate = (userId: string): string => {
     const payload = {
       userId: userId,
       iat: Date.now() / 1000,
@@ -14,7 +14,7 @@ export default class JWT {
     return signedToken
   }
 
-  static readonly verify = (token: string, next: NextFunction): jwt.JwtPayload | boolean => {
+  public static readonly verify = (token: string, next: NextFunction): jwt.JwtPayload | boolean => {
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET as string) as jwt.JwtPayload
       return payload

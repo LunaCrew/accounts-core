@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
+// eslint-disable-next-line no-undef
 const { readFileSync, writeFileSync } = require('node:fs')
 
 const data = readFileSync('./package.json', 'utf8')

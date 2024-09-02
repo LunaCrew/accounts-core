@@ -1,13 +1,13 @@
 import { NextFunction, Request } from 'express'
-import Log from '@lunacrew/logger'
-import { UpdateUser } from '../types/Service'
-import ValidateUser from '../util/validation/ValidateUser'
+import { BadRequest } from '../error/CustomError'
 import { userUpdate } from '../schema/userSchema'
-import { ValidationError } from '../error/CustomError'
+import { UpdateUserQuery } from '../types/Query'
+import Log from '../util/log/Log'
 import Password from '../util/security/Password'
+import ValidateUser from '../util/validation/ValidateUser'
 
 export default class UpdateUserService {
-  static execute(req: Request, next: NextFunction): UpdateUser {
+  public static readonly execute = (req: Request, next: NextFunction): UpdateUserQuery => {
     try {
       let data: { $set: object } | null = { $set: {} }
 
@@ -23,23 +23,19 @@ export default class UpdateUserService {
 
       return { filter, data }
     } catch (error) {
-      Log.e(`${error}`, 'UpdateUserService')
+      Log.error('service', 'UpdateUserService', error)
+      next(error)
     }
   }
 
-  private static _buildData(req: Request, next: NextFunction): { $set: object } | null {
+  private static readonly _buildData = (req: Request, next: NextFunction): { $set: object } => {
     const { error, value } = userUpdate.validate(req.body)
     const data: { $set: object } = { $set: {} }
 
     if (error) {
-      next(new ValidationError(error.details.map((detail) => {
-        const key = detail.context?.key ?? ''
-        return {
-          [key]: detail.message
-        }
-      })))
+      const message = error.details[0].message
+      next(new BadRequest(message))
       next()
-      return null
     } else {
       value.updatedAt = new Date().toISOString()
       if (value.password) value.password = Password.encrypt(value.password)
