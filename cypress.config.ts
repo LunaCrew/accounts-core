@@ -6,6 +6,7 @@ export default defineConfig({
     specPattern: 'test/e2e/cypress/e2e/*cy.ts',
     baseUrl: 'http://localhost:3000',
     fixturesFolder: false,
-    testIsolation: true
+    testIsolation: true,
+    screenshotOnRunFailure: false,
   }
 })

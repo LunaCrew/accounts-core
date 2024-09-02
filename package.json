@@ -13,8 +13,8 @@
     "test": "npm run test:coverage",
     "test:unit": "jest --verbose ./test/unit/",
     "test:coverage": "jest --verbose ./test/unit/ --coverage",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open",
+    "cypress:run": "cypress run --e2e",
+    "cypress": "cypress open --e2e --browser chrome",
     "build": "tsc",
     "lint": "npx eslint . --fix",
     "deps:reset": "rm -rf node_modules && rm package-lock.json && npm install",
@@ -49,6 +49,7 @@
     "@types/swagger-ui-express": "4.1.6",
     "@typescript-eslint/eslint-plugin": "8.3.0",
     "@typescript-eslint/parser": "8.3.0",
+    "chai": "5.1.1",
     "cypress": "13.14.1",
     "eslint": "9.9.1",
     "globals": "15.9.0",
@@ -90,7 +91,8 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
-      "build"
+      "build",
+      "test/e2e/*"
     ],
     "coverageReporters": [
       "text",
