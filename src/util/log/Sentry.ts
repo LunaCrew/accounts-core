@@ -4,9 +4,10 @@ import * as dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
 
 const env = process.env.ENVIRONMENT ?? 'local'
+const isEnabled = env !== 'local'
 
 sentry.init({
-  enabled: env !== 'local',
+  enabled: isEnabled,
   dsn: process.env.SENTRY_DSN,
   integrations: [
     nodeProfilingIntegration(),
@@ -15,6 +16,6 @@ sentry.init({
   profilesSampleRate: 1.0,
   environment: env,
   ignoreErrors: [
-    /E11000\\s+duplicate\\s+key\\s+error\\s+collection/, // MongoDB unique index conflict, already handled by express middleware
+    /^E11000 duplicate key error collection/, // MongoDB unique index conflict, already handled by express middleware
   ]
 })
