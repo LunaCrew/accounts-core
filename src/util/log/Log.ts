@@ -51,15 +51,4 @@ export default class Log {
 
     console.error(this._separator, 'error:', log)
   }
-
-  public static readonly verbose = (tag: Tag, message: string): void => {
-    const log: LogInfo = {
-      message: message,
-      tag: tag,
-      timestamp: this._timestamp,
-      level: 'verbose',
-    }
-
-    console.log(this._separator, 'verbose:', log)
-  }
 }

@@ -129,11 +129,11 @@ export default class AutoDelete {
       })
 
       const details = {
+        nextRequest: this._job.nextDate().toISO(),
         deletedAccounts: deleteAccounts.deletedCount,
         sentEmails
       }
 
-      Log.info('task_auto_delete', `AutoDelete :: Next request: ${this._job.nextDate().toISO()}`)
       Log.info('task_auto_delete', 'AutoDelete :: Executed', details)
     } catch (error) {
       Log.error('task_auto_delete', 'Tasks :: AutoDelete', error)
