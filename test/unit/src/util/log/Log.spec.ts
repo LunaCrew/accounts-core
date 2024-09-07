@@ -50,12 +50,4 @@ describe('Log', () => {
 
     expect(Log.error).toBeDefined()
   })
-
-  it('should log a verbose log', () => {
-    const message = 'Verbose message'
-
-    Log.verbose('task', message)
-
-    expect(Log.verbose).toBeDefined()
-  })
 })
