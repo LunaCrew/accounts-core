@@ -18,6 +18,12 @@ const routes = (app: Application) => {
       res.send({ status: 'API is OK!', docs: '/api/docs' })
     })
 
+    .set('trust proxy', 1)
+
+    .get('/ip', (req: Request, res: Response) => {
+      res.send(req.ip)
+    })
+
     .post(
       '/api/user',
       RateLimiter.unauthenticated,

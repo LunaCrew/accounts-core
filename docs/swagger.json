@@ -3,7 +3,7 @@
   "info": {
     "title": "Accounts Core API",
     "description": "API documentation for the Accounts Core service.",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "license": {
       "name": "AGPL-3.0",
       "url": "https://www.gnu.org/licenses/agpl-3.0.html"
@@ -33,7 +33,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application_json": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/create_user"
               }
@@ -112,7 +112,7 @@
         ],
         "requestBody": {
           "content": {
-            "application_json": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -161,7 +161,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application_json": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/update_user"
               }

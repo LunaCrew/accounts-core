@@ -1,0 +1,53 @@
+## Details per file setting:
+#   text    These files should be normalized (i.e. convert CRLF to LF).
+#   binary  These files are binary and should be left untouched.
+#
+# Note that binary is a macro for -text -diff.
+######################################################################
+
+# Auto detect
+##   Handle line endings automatically for files detected as
+##   text and leave all files detected as binary untouched.
+##   This will handle all files NOT defined below.
+*                 text=auto
+
+# Source code
+*.js              text
+*.ts              text
+*.json            text
+*.sh              text eol=lf
+.husky/*          text eol=lf
+
+# Docker
+Dockerfile        text
+
+# Documentation
+*.md              text diff=markdown
+
+# Configs
+*.config          text
+.editorconfig     text
+.env              text
+.gitattributes    text
+.gitconfig        text
+package.json      text eol=lf
+package-lock.json text eol=lf -diff
+*.toml            text
+*.yaml            text
+*.yml             text
+
+# Fixes syntax highlighting on GitHub to allow comments
+tsconfig.json     linguist-language=JSON-with-Comments
+
+# Graphics
+*.png             binary
+*.svg             text
+
+# RC files (like .babelrc or .eslintrc)
+*.*rc             text
+
+# Ignore files (like .npmignore or .gitignore)
+*.*ignore         text
+
+# Prevents massive diffs from built files
+dist/*            binary
