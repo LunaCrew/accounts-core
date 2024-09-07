@@ -12,17 +12,13 @@ const routes = (app: Application) => {
   app
     .use(express.json())
     .use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+    .set('trust proxy', 1)
 
   app
     .get('/', (_req: Request, res: Response) => {
       res.send({ status: 'API is OK!', docs: '/api/docs' })
     })
 
-    .set('trust proxy', 1)
-
-    .get('/ip', (req: Request, res: Response) => {
-      res.send(req.ip)
-    })
 
     .post(
       '/api/user',
