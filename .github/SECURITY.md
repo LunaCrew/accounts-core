@@ -11,7 +11,7 @@ This project is currently in beta stage and only the latest version is supported
 
 ## Reporting a Vulnerability
 
-If you find a security vulnerability in this project, please do not create a public issue or pull request. Instead, send an email to ashtrindade5@gmail.com with the following information:
+If you find a security vulnerability in this project, please do not create a public issue or pull request. Instead, send an email to <contact@lunateam.org> with the following information:
 
 - A brief description of the vulnerability
 - The steps to reproduce the issue or a proof-of-concept code
