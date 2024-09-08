@@ -1,4 +1,4 @@
-site_name: LunaCrew | Accounts-core 
+site_name: LunaCrew | Accounts-core
 site_description: Accounts Core API - Luna's User Management
 site_author: LunaCrew
 site_url: https://lunacrew.github.io/accounts-core
@@ -33,7 +33,7 @@ theme:
         icon: material/weather-night
         name: Switch to dark mode
       primary: brown
-      accent: blue
+      accent: indigo
 
     # Palette toggle for dark mode
     - scheme: slate
@@ -41,12 +41,11 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
       primary: brown
-      accent: blue
+      accent: indigo
 
   features:
     - navigation.footer
     - navigation.top
-    # - toc.integrate
 
 extra:
   social:
