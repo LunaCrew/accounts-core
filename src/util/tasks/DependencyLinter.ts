@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-undef
-const { readFileSync, writeFileSync } = require('node:fs')
+import { readFileSync, writeFileSync } from 'node:fs'
 
 const data = readFileSync('./package.json', 'utf8')
 const file = JSON.parse(data)

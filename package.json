@@ -18,7 +18,7 @@
     "build": "tsc",
     "lint": "npx eslint . --fix",
     "deps:reset": "rm -rf node_modules && rm package-lock.json && npm install",
-    "deps:fix": "node scripts/fixDependencies.js",
+    "deps:fix": "ts-node src/util/tasks/DependencyLinter.ts",
     "clear:build": "rm -rf build",
     "clear:coverage": "rm -rf coverage",
     "clear:deps": "rm -rf node_modules && rm package-lock.json",
