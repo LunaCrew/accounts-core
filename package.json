@@ -6,6 +6,9 @@
   "_moduleAliases": {
     "src": "./build/src/"
   },
+  "engines": {
+    "node": "20"
+  },
   "scripts": {
     "debug": "npm run build && npm run dev",
     "dev": "nodemon -r tsconfig-paths/register src/app.ts",
