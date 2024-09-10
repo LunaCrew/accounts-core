@@ -46,7 +46,7 @@
     "@types/jest": "29.5.12",
     "@types/jsonwebtoken": "9.0.6",
     "@types/module-alias": "2.0.4",
-    "@types/node": "20.10.4",
+    "@types/node": "22.5.4",
     "@types/nodemailer": "6.4.15",
     "@types/passport-jwt": "4.0.1",
     "@types/swagger-ui-express": "4.1.6",
