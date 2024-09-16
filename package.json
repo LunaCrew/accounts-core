@@ -79,7 +79,7 @@
     "nodemailer": "6.9.14",
     "passport": "0.7.0",
     "passport-jwt": "4.0.1",
-    "swagger-ui-express": "5.0.0",
+    "swagger-ui-express": "5.0.1",
     "typesafe-i18n": "5.26.2",
     "uuidv4": "6.2.13"
   },
