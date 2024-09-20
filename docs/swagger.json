@@ -3,14 +3,15 @@
   "info": {
     "title": "Accounts Core API",
     "description": "API documentation for the Accounts Core service.",
-    "version": "0.8.2",
+    "version": "0.9.0",
     "license": {
       "name": "AGPL-3.0",
       "url": "https://www.gnu.org/licenses/agpl-3.0.html"
     },
     "contact": {
-      "name": "Contact-us",
-      "email": "contat@lunateam.org"
+      "name": "Luna",
+      "email": "contat@lunateam.org",
+      "url": "https://lunateam.org"
     }
   },
   "externalDocs": {
@@ -99,7 +100,7 @@
         }
       }
     },
-    "/api/auth/login/:email": {
+    "/api/auth/login": {
       "post": {
         "tags": [
           "user"
@@ -108,7 +109,7 @@
         "parameters": [
           {
             "name": "email",
-            "in": "path",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
@@ -148,7 +149,7 @@
         }
       }
     },
-    "/api/user/:id": {
+    "/api/user/{id}": {
       "patch": {
         "tags": [
           "user"
@@ -258,7 +259,7 @@
         }
       }
     },
-    "/api/auth/email/validate/:id/:token": {
+    "/api/auth/email/validate/{id}/{token}": {
       "post": {
         "tags": [
           "email"
@@ -298,7 +299,7 @@
         }
       }
     },
-    "/api/auth/email/verify/:id": {
+    "/api/auth/email/verify/{id}": {
       "post": {
         "tags": [
           "email"
