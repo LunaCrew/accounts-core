@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { BadRequest, Unauthorized } from '../error/CustomError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import JWT from '../util/security/JWT'
-import Cipher from 'src/util/security/Cipher'
+import Cipher from '../util/security/Cipher'
 
 export default class Auth {
   public static readonly jwt = (req: Request, _res: Response, next: NextFunction) => {
