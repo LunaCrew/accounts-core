@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { MongoServerError } from 'mongodb'
-import BaseError from '../error/BaseError'
+import { BaseError } from '../error/CustomError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import HttpStatus from '../util/enum/HttpStatus'
 import MongoDBError from '../util/enum/MongoDbError'

@@ -44,7 +44,7 @@ const routes = (app: Application) => {
     )
 
     .post(
-      '/api/auth/login/:email',
+      '/api/auth/login',
       RateLimiter.unauthenticated,
       UserController.userLogin,
       apiRouter
@@ -63,6 +63,14 @@ const routes = (app: Application) => {
       Auth.jwt,
       RateLimiter.authenticated,
       UserController.disableUser,
+      apiRouter
+    )
+
+    .post(
+      '/api/auth/scheduled/delete',
+      Auth.cron,
+      RateLimiter.default,
+      UserController.scheduledDelete,
       apiRouter
     )
 

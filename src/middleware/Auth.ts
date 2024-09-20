@@ -1,20 +1,40 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import { BadRequest, Unauthorized } from '../error/CustomError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
-import HttpStatus from '../util/enum/HttpStatus'
 import JWT from '../util/security/JWT'
 
 export default class Auth {
-  public static readonly jwt = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ')[1]
-  
-    if (!token) {
-      return res.status(HttpStatus.code.BAD_REQUEST).send({ error: CustomErrorMessage.AUTH_NOT_PROVIDED })
-    }
-  
+  public static readonly jwt = (req: Request, _res: Response, next: NextFunction) => {
     try {
-      JWT.verify(token, next)
-  
-      next()
+      const token = req.headers.authorization?.split(' ')[1]
+
+      if (!token) {
+        next(new BadRequest(CustomErrorMessage.AUTH_NOT_PROVIDED))
+        next()
+      } else {
+        JWT.verify(token, next)
+        next()
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public static readonly cron = (req: Request, _res: Response, next: NextFunction) => {
+    try {
+      const token = req.header('cron-token')
+
+      if (!token) {
+        next(new BadRequest(CustomErrorMessage.AUTH_NOT_PROVIDED))
+        next()
+      }
+
+      if (token === process.env.CRON_TOKEN) {
+        next()
+      } else {
+        next(new Unauthorized(CustomErrorMessage.UNAUTHORIZED))
+        next()
+      }
     } catch (error) {
       next(error)
     }

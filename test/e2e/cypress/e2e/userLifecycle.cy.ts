@@ -44,7 +44,7 @@ describe(':: User :: Lifecycle ::', () => {
 
     cy.request({
       method: 'POST',
-      url: `/api/auth/login/${email}`,
+      url: `/api/auth/login?email:${email}`,
       body: payload
     }).then((response) => {
       expect(response.status).to.eq(200)

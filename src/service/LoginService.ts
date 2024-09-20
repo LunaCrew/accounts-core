@@ -8,7 +8,7 @@ export default class LoginService {
     try {
       const currentDate = new Date().toISOString()
       const params = {
-        email: req.params.email
+        email: req.query.email
       }
 
       const validateParams = ValidateUser(params, next)
