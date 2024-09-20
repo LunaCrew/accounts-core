@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { BadRequest, Unauthorized } from '../error/CustomError'
 import CustomErrorMessage from '../util/enum/CustomErrorMessage'
 import JWT from '../util/security/JWT'
+import Cipher from 'src/util/security/Cipher'
 
 export default class Auth {
   public static readonly jwt = (req: Request, _res: Response, next: NextFunction) => {
@@ -27,13 +28,15 @@ export default class Auth {
       if (!token) {
         next(new BadRequest(CustomErrorMessage.AUTH_NOT_PROVIDED))
         next()
-      }
-
-      if (token === process.env.CRON_TOKEN) {
-        next()
       } else {
-        next(new Unauthorized(CustomErrorMessage.UNAUTHORIZED))
-        next()
+        const decodedToken = Cipher.decode(token, next)
+
+        if (decodedToken === process.env.CRON_TOKEN) {
+          next()
+        } else {
+          next(new Unauthorized(CustomErrorMessage.UNAUTHORIZED))
+          next()
+        }
       }
     } catch (error) {
       next(error)

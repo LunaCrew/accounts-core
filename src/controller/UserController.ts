@@ -197,23 +197,27 @@ export default class UserController {
     }
   }
 
-  public static readonly scheduledDelete = async(_req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public static readonly scheduledDelete = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const currentTime = new Date().toISOString()
       const query = { $and: [{ isDisabled: true }, { expiresIn: { $lt: currentTime } }] }
-      
+
       const accounts = await collections.users.find(query, { projection: { email: 1, settings: { language: 1 } } }).toArray()
-      const deleteAccounts = await collections.users.deleteMany(query)
 
-      const result = await ScheduledDelete.deleteAndNotify(accounts as unknown as AccountsToDelete, deleteAccounts)
+      if (accounts.length > 0) {
+        const deleteAccounts = await collections.users.deleteMany(query)
 
-      if (deleteAccounts.acknowledged && result) {
-        res.status(200).send(result)
+        const result = await ScheduledDelete.deleteAndNotify(accounts as unknown as AccountsToDelete, deleteAccounts)
+
+        if (deleteAccounts.acknowledged && result) {
+          res.status(200).send(result)
+        } else {
+          next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+          next()
+        }
       } else {
-        next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
-        next()
+        res.status(204).send()
       }
-
       Log.info('controller', 'UserController :: Calling Endpoint :: ScheduledDelete')
     } catch (error) {
       Log.error('controller', 'UserController :: Calling Endpoint :: ScheduledDelete', error)
