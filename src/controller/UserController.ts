@@ -7,6 +7,7 @@ import DisableUserService from '../service/DisableUserService'
 import GetUserService from '../service/GetUserService'
 import LoginService from '../service/LoginService'
 import UpdateUserService from '../service/UpdateUserService'
+import { AccountsToDelete } from '../types/ScheduledDelete'
 import { EmailInfo } from '../types/Email'
 import { GeneralUserQuery, UpdateUserQuery } from '../types/Query'
 import { User } from '../types/User'
@@ -16,6 +17,7 @@ import Log from '../util/log/Log'
 import JWT from '../util/security/JWT'
 import Password from '../util/security/Password'
 import Mailer from '../util/tasks/Mailer'
+import ScheduledDelete from '../util/tasks/ScheduledDelete'
 
 export default class UserController {
   public static readonly createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -191,6 +193,30 @@ export default class UserController {
       Log.info('controller', 'UserController :: Calling Endpoint :: UpdateUser')
     } catch (error) {
       Log.error('controller', 'UserController :: Calling Endpoint :: UpdateUser', error)
+      next(error)
+    }
+  }
+
+  public static readonly scheduledDelete = async(_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const currentTime = new Date().toISOString()
+      const query = { $and: [{ isDisabled: true }, { expiresIn: { $lt: currentTime } }] }
+      
+      const accounts = await collections.users.find(query, { projection: { email: 1, settings: { language: 1 } } }).toArray()
+      const deleteAccounts = await collections.users.deleteMany(query)
+
+      const result = await ScheduledDelete.deleteAndNotify(accounts as unknown as AccountsToDelete, deleteAccounts)
+
+      if (deleteAccounts.acknowledged && result) {
+        res.status(200).send(result)
+      } else {
+        next(new InternalServerError(CustomErrorMessage.INTERNAL_SERVER_ERROR))
+        next()
+      }
+
+      Log.info('controller', 'UserController :: Calling Endpoint :: ScheduledDelete')
+    } catch (error) {
+      Log.error('controller', 'UserController :: Calling Endpoint :: ScheduledDelete', error)
       next(error)
     }
   }

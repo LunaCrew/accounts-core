@@ -9,7 +9,6 @@ import ErrorHandler from './middleware/ErrorHandler'
 import { routes } from './router/routes'
 import Log from './util/log/Log'
 import configurePassport from './util/security/Passport'
-import AutoDelete from './util/tasks/AutoDelete'
 
 dotenv.config({ path: '.env' })
 
@@ -45,8 +44,6 @@ const start = () => {
     app.listen(PORT, () => {
       Log.info('application', `Running on port ${PORT}`)
     })
-
-    AutoDelete.startCronJob()
   } catch (error) {
     Log.error('application', 'Error starting application', error)
   }

@@ -1,35 +1,16 @@
-import { CronJob } from 'cron'
-import { collections } from '../../app'
+import { DeleteResult } from 'mongodb'
 import { EmailInfo } from '../../types/Email'
 import Language from '../enum/Language'
 import Log from '../log/Log'
+import { AccountsToDelete, DeletedStatus } from '../../types/ScheduledDelete'
 import Mailer from './Mailer'
 
-export default class AutoDelete {
-
-  public static readonly startCronJob = () => {
-    this._job.start()
-    Log.info('task', 'Tasks :: AutoDelete :: Job started')
-  }
-
-  private static readonly _job = CronJob.from({
-    cronTime: '13 12 01 * * 0-6', // every day at 01:12:13 GMT-03:00
-    onTick: function () {
-      AutoDelete.autoDelete()
-    },
-    start: true,
-    timeZone: 'America/Sao_Paulo'
-  })
-
-  private static readonly autoDelete = async () => {
+export default class ScheduledDelete {
+  public static readonly deleteAndNotify = async (
+    accounts: AccountsToDelete,
+    deleteAccounts: DeleteResult
+  ): Promise<DeletedStatus | undefined> => {
     try {
-      const currentTime = new Date().toISOString()
-      const query = { $and: [{ isDisabled: true }, { expiresIn: { $lt: currentTime } }] }
-
-      const accounts = await collections.users.find(query, { projection: { email: 1, settings: { language: 1 } } }).toArray()
-
-      // delete all accounts
-      const deleteAccounts = await collections.users.deleteMany(query)
 
       /**
        * Create lists of emails based on the language.
@@ -116,27 +97,27 @@ export default class AutoDelete {
        * These emails are sent to inform users that their accounts have been deleted
        * in compliance with the data lifecycle policy listed on Terms of Service and Privacy Policy.
        */
-      const sentEmails = { sent: 0, accepted: 0, rejected: 0 }
+      const emails = { sent: 0, accepted: 0, rejected: 0 }
 
       emailBatches.forEach(async (batch) => {
         const receivers = batch.receiversEmail.length
         if (receivers > 0) {
           const send = await Mailer.sendAccountDeletedEmail(batch)
-          sentEmails.sent += receivers
-          sentEmails.accepted += send.accepted
-          sentEmails.rejected += send.rejected
+          emails.sent += receivers
+          emails.accepted += send.accepted
+          emails.rejected += send.rejected
         }
       })
 
-      const details = {
-        nextRequest: this._job.nextDate().toISO(),
-        deletedAccounts: deleteAccounts.deletedCount,
-        sentEmails
+      const details: DeletedStatus = {
+        deleted: deleteAccounts.deletedCount,
+        emails
       }
 
-      Log.info('task_auto_delete', 'AutoDelete :: Executed', details)
+      Log.info('task', 'ScheduledDelete :: Executed', details)
+      return details
     } catch (error) {
-      Log.error('task_auto_delete', 'Tasks :: AutoDelete', error)
+      Log.error('task', 'Tasks :: ScheduledDelete', error)
     }
   }
 }

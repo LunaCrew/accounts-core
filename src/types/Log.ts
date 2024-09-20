@@ -9,7 +9,6 @@ export type Tag =
   | 'error_handler'
   | 'task'
   | 'task_mailer'
-  | 'task_auto_delete'
 
 export type LogInfo = {
   message: string
